@@ -1,13 +1,18 @@
 package com.example.androidstudio_footballpong.objects;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.view.MotionEvent;
 
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 
+import com.example.androidstudio_footballpong.MainActivity;
 import com.example.androidstudio_footballpong.R;
 
 /**
@@ -21,6 +26,8 @@ public class Player1 extends GameObject {
     private boolean moving = false;
     private double targetX = 0, targetY = 0;
 
+    private Bitmap player1;
+
     public Player1(Context context, double x, double y, int width, int height) {
         super(x, y, width, height);
         this.context = context;
@@ -28,11 +35,14 @@ public class Player1 extends GameObject {
         paint = new Paint();
         int color = ContextCompat.getColor(context, R.color.black);
         paint.setColor(color);
+
+        player1 = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemy_sheet);
+        player1 = player1.createScaledBitmap(player1, MainActivity.screenWidth / 3, MainActivity.screenHeight / 3, false);
     }
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawRect(getBounds(), paint);
+        canvas.drawBitmap(player1, (float) x, (float) y, paint);
     }
 
     @Override
