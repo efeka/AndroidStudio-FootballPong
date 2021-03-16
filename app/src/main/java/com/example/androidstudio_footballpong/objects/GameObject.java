@@ -12,6 +12,8 @@ public abstract class GameObject {
     protected double y;
     protected int width;
     protected int height;
+    protected double velX = 0;
+    protected double velY = 0;
 
     public GameObject(double x, double y) {
         this.x = x;
@@ -28,6 +30,22 @@ public abstract class GameObject {
     public abstract void draw(Canvas canvas);
     public abstract void update();
     public abstract Rect getBounds();
+
+    public double getVelX() {
+        return velX;
+    }
+
+    public void setVelX(double velX) {
+        this.velX = velX;
+    }
+
+    public double getVelY() {
+        return  velY;
+    }
+
+    public void setVelY(double velY) {
+        this.velY = velY;
+    }
 
     public double getX() {
         return x;

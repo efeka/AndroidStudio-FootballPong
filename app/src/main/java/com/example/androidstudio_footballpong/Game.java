@@ -33,7 +33,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
         gameLoop = new GameLoop(this, surfaceHolder);
 
-        player1 = new Player1(getContext(), MainActivity.screenWidth / 2, MainActivity.screenHeight / 2, 32, 32);
+        player1 = new Player1(getContext(), MainActivity.screenWidth / 2, MainActivity.screenHeight / 2, 64, 64);
 
         setFocusable(true);
     }
@@ -49,6 +49,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        player1.handleTouchEvent(event);
         return super.onTouchEvent(event);
     }
 
@@ -77,13 +78,15 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         paint.setColor(color);
         canvas.drawRect(new Rect(0, 0, MainActivity.screenWidth, MainActivity.screenHeight), paint);
 
+        //drawUPS(canvas);
+        //drawFPS(canvas);
         player1.draw(canvas);
     }
 
     public void drawUPS(Canvas canvas) {
         String averageUPS = Double.toString(gameLoop.getAverageUPS());
         Paint paint = new Paint();
-        int color = ContextCompat.getColor(getContext(), R.color.white);
+        int color = ContextCompat.getColor(getContext(), R.color.teal_700);
         paint.setColor(color);
         paint.setTextSize(36);
         canvas.drawText("UPS: " + averageUPS, 100, 100, paint);
@@ -92,7 +95,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     public void drawFPS(Canvas canvas) {
         String averageFPS = Double.toString(gameLoop.getAverageFPS());
         Paint paint = new Paint();
-        int color = ContextCompat.getColor(getContext(), R.color.white);
+        int color = ContextCompat.getColor(getContext(), R.color.teal_700);
         paint.setColor(color);
         paint.setTextSize(36);
         canvas.drawText("FPS: " + averageFPS, 100, 200, paint);
