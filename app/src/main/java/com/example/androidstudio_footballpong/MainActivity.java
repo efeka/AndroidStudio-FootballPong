@@ -1,4 +1,4 @@
-package com.example.androidstudio_pingpong;
+package com.example.androidstudio_footballpong;
 
 import androidx.appcompat.app.AppCompatActivity;
 

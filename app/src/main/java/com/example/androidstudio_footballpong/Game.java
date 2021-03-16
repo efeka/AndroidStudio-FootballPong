@@ -11,6 +11,8 @@ import android.view.SurfaceView;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
+import com.example.androidstudio_footballpong.objects.Player1;
+
 /**
  * Manages all objects in the game by updating and rendering them.
  */
@@ -18,6 +20,8 @@ import androidx.core.content.ContextCompat;
 public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
     private GameLoop gameLoop;
+
+    private final Player1 player1;
 
     private int touchPauseTimer = 0, touchPauseCooldown = 0;
     private boolean touchPaused = false;
@@ -28,6 +32,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         surfaceHolder.addCallback(this);
 
         gameLoop = new GameLoop(this, surfaceHolder);
+
+        player1 = new Player1(getContext(), MainActivity.screenWidth / 2, MainActivity.screenHeight / 2, 32, 32);
 
         setFocusable(true);
     }
@@ -65,6 +71,13 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
+
+        Paint paint = new Paint();
+        int color = ContextCompat.getColor(getContext(), R.color.white);
+        paint.setColor(color);
+        canvas.drawRect(new Rect(0, 0, MainActivity.screenWidth, MainActivity.screenHeight), paint);
+
+        player1.draw(canvas);
     }
 
     public void drawUPS(Canvas canvas) {
@@ -86,7 +99,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void update() {
-
+        player1.update();
     }
 
     public void pauseGame() {
