@@ -35,7 +35,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
         gameLoop = new GameLoop(this, surfaceHolder);
 
-        player1 = new Player1(getContext(), MainActivity.screenWidth / 2, MainActivity.screenHeight / 2, 64, 64);
+        player1 = new Player1(getContext(), MainActivity.screenWidth / 2, MainActivity.screenHeight / 2, MainActivity.screenHeight / 10, MainActivity.screenWidth / 10);
 
         setFocusable(true);
     }
@@ -76,7 +76,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         super.draw(canvas);
 
         Paint paint = new Paint();
-        int color = ContextCompat.getColor(getContext(), R.color.white);
+        //background
+        int color = ContextCompat.getColor(getContext(), R.color.background);
         paint.setColor(color);
         canvas.drawRect(new Rect(0, 0, MainActivity.screenWidth, MainActivity.screenHeight), paint);
 
