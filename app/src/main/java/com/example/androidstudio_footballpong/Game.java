@@ -1,6 +1,8 @@
 package com.example.androidstudio_footballpong;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -24,6 +26,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
     private GameLoop gameLoop;
 
+    private Bitmap background;
+
     private final Player1 player1;
     private final Ball ball;
 
@@ -34,6 +38,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         super(context);
         SurfaceHolder surfaceHolder = getHolder();
         surfaceHolder.addCallback(this);
+
+        background = BitmapFactory.decodeResource(context.getResources(), R.drawable.background);
+        background = background.createScaledBitmap(background, MainActivity.screenWidth, MainActivity.screenHeight, false);
 
         gameLoop = new GameLoop(this, surfaceHolder);
 
@@ -80,9 +87,12 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
         Paint paint = new Paint();
         //background
+        /*
         int color = ContextCompat.getColor(getContext(), R.color.background);
         paint.setColor(color);
         canvas.drawRect(new Rect(0, 0, MainActivity.screenWidth, MainActivity.screenHeight), paint);
+        */
+        canvas.drawBitmap(background, 0f, 0f, paint);
 
         //drawUPS(canvas);
         //drawFPS(canvas);
