@@ -21,10 +21,10 @@ import com.example.androidstudio_footballpong.R;
  */
 public class Player1 extends GameObject {
 
-    private final int BORDER_UP = MainActivity.screenWidth;
-    private final int BORDER_DOWN = 0;
     private final int BORDER_LEFT = 0;
-    private final int BORDER_RIGHT = MainActivity.screenHeight;
+    private final int BORDER_RIGHT = MainActivity.screenWidth;
+    private final int BORDER_UP = 0;
+    private final int BORDER_DOWN = MainActivity.screenHeight;
 
     private Paint paint;
     private Context context;
@@ -72,6 +72,27 @@ public class Player1 extends GameObject {
     }
 
     private void collision() {
+        if (x < BORDER_LEFT) {
+            x = BORDER_LEFT;
+            ignoreX = true;
+            velX = 0;
+        }
+        if (x + width > BORDER_RIGHT) {
+            x = BORDER_RIGHT - width;
+            ignoreX = true;
+            velX = 0;
+        }
+        if (y < BORDER_UP) {
+            y = BORDER_UP;
+            ignoreY = true;
+            velY = 0;
+        }
+        if (y + height > BORDER_DOWN) {
+            y = BORDER_DOWN - height;
+            ignoreY = true;
+            velY = 0;
+        }
+        /*
         if (x + width> BORDER_UP) {
             x = BORDER_UP - width;
             ignoreX = true;
@@ -92,6 +113,7 @@ public class Player1 extends GameObject {
             ignoreY = true;
             velY = 0;
         }
+         */
     }
 
     @Override
