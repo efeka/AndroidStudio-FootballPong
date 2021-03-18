@@ -13,13 +13,18 @@ import android.view.MotionEvent;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
+import com.example.androidstudio_footballpong.Animation;
+import com.example.androidstudio_footballpong.Game;
 import com.example.androidstudio_footballpong.MainActivity;
 import com.example.androidstudio_footballpong.R;
+import com.example.androidstudio_footballpong.Texture;
 
 /**
  * Player1 is the main character which is controlled by the user in both "1 player" and "2 player" modes.
  */
 public class Player1 extends GameObject {
+
+    private Texture tex = Game.getTexture();
 
     private final int BORDER_LEFT = 0;
     private final int BORDER_RIGHT = MainActivity.screenWidth;
@@ -36,7 +41,7 @@ public class Player1 extends GameObject {
     private int defaultMaxSpeed = 10;
     private int maxSpeed = 10;
 
-    private Bitmap player1;
+    private Animation player1Walk;
 
     public Player1(Context context, double x, double y, int width, int height) {
         super(x, y, width, height);
@@ -46,14 +51,15 @@ public class Player1 extends GameObject {
         int color = ContextCompat.getColor(context, R.color.player1);
         paint.setColor(color);
 
-        //player1 = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemy_sheet);
-        //player1 = player1.createScaledBitmap(player1, MainActivity.screenWidth / 3, MainActivity.screenHeight / 3, false);
+        player1Walk = new Animation(1, tex.player1[0], tex.player1[1], tex.player1[2], tex.player1[3], tex.player1[2], tex.player1[1]);
     }
 
     @Override
     public void draw(Canvas canvas) {
-        //canvas.drawBitmap(player1, (float) x, (float) y, paint);
-        canvas.drawRect(getBounds(), paint);
+        //canvas.drawRect(getBounds(), paint);
+        try {
+            player1Walk.drawAnimation(canvas, paint, (float) x, (float) y);
+        } catch(Exception ignored) {}
     }
 
     @Override
@@ -69,6 +75,7 @@ public class Player1 extends GameObject {
         }
 
         collision();
+        player1Walk.runAnimation();
     }
 
     private void collision() {
@@ -92,28 +99,6 @@ public class Player1 extends GameObject {
             ignoreY = true;
             velY = 0;
         }
-        /*
-        if (x + width> BORDER_UP) {
-            x = BORDER_UP - width;
-            ignoreX = true;
-            velX = 0;
-        }
-        if (x < BORDER_DOWN) {
-            x = BORDER_DOWN;
-            ignoreX = true;
-            velX = 0;
-        }
-        if (y < BORDER_LEFT) {
-            y = BORDER_LEFT;
-            ignoreY = true;
-            velY = 0;
-        }
-        if (y + height > BORDER_RIGHT) {
-            y = BORDER_RIGHT - height;
-            ignoreY = true;
-            velY = 0;
-        }
-         */
     }
 
     @Override

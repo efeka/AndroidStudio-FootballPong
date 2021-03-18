@@ -21,8 +21,9 @@ import com.example.androidstudio_footballpong.objects.Player1;
 /**
  * Manages all objects in the game by updating and rendering them.
  */
-
 public class Game extends SurfaceView implements SurfaceHolder.Callback {
+
+    private static Texture tex;
 
     private GameLoop gameLoop;
 
@@ -39,9 +40,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         SurfaceHolder surfaceHolder = getHolder();
         surfaceHolder.addCallback(this);
 
-        background = BitmapFactory.decodeResource(context.getResources(), R.drawable.background);
-        background = background.createScaledBitmap(background, MainActivity.screenWidth, MainActivity.screenHeight, false);
-
+        tex = new Texture(context);
         gameLoop = new GameLoop(this, surfaceHolder);
 
         player1 = new Player1(getContext(), MainActivity.screenWidth / 2, MainActivity.screenHeight / 2, MainActivity.screenHeight / 10, MainActivity.screenWidth / 10);
@@ -58,6 +57,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         TWO_PLAYERS
     };
     public static STATE state;
+
+    public static Texture getTexture() {
+        return tex;
+    }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -87,15 +90,11 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
         Paint paint = new Paint();
         //background
-        /*
-        int color = ContextCompat.getColor(getContext(), R.color.background);
-        paint.setColor(color);
-        canvas.drawRect(new Rect(0, 0, MainActivity.screenWidth, MainActivity.screenHeight), paint);
-        */
-        canvas.drawBitmap(background, 0f, 0f, paint);
+        canvas.drawBitmap(tex.gameBackground, 0f, 0f, paint);
 
         //drawUPS(canvas);
         //drawFPS(canvas);
+
         player1.draw(canvas);
         ball.draw(canvas);
     }
