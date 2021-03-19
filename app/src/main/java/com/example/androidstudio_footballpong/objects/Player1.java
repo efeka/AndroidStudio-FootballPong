@@ -27,7 +27,7 @@ public class Player1 extends GameObject {
     private Texture tex = Game.getTexture();
 
     private final int BORDER_LEFT = 0;
-    private final int BORDER_RIGHT = MainActivity.screenWidth;
+    private final int BORDER_RIGHT = MainActivity.screenWidth / 2;
     private final int BORDER_UP = 0;
     private final int BORDER_DOWN = MainActivity.screenHeight;
 

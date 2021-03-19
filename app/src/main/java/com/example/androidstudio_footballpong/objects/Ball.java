@@ -54,7 +54,7 @@ public class Ball extends GameObject {
 
     @Override
     public void draw(Canvas canvas) {
-        paint.setColor(ContextCompat.getColor(context, R.color.white));
+        paint.setColor(ContextCompat.getColor(context, R.color.purple_200));
         canvas.drawCircle((int) x, (int) y, width, paint);
     }
 

@@ -16,7 +16,19 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.example.androidstudio_footballpong.objects.Ball;
+import com.example.androidstudio_footballpong.objects.GameMenu;
 import com.example.androidstudio_footballpong.objects.Player1;
+
+/* TODO: fix ball collisions
+ * TODO: add goals on each side
+ * TODO: make the game menu functional
+ * TODO: add energy system
+ * TODO: add kicking system for players
+ * TODO: add 1 player and 2 player modes
+ * TODO: make a main menu
+ * TODO: add random power ups
+ * TODO: graphics
+ */
 
 /**
  * Manages all objects in the game by updating and rendering them.
@@ -29,6 +41,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
     private Bitmap background;
 
+    private final GameMenu gameMenu;
     private final Player1 player1;
     private final Ball ball;
 
@@ -43,8 +56,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         tex = new Texture(context);
         gameLoop = new GameLoop(this, surfaceHolder);
 
-        player1 = new Player1(getContext(), MainActivity.screenWidth / 2, MainActivity.screenHeight / 2, MainActivity.screenHeight / 10, MainActivity.screenWidth / 10);
-        ball = new Ball(getContext(), MainActivity.screenWidth / 2, MainActivity.screenHeight / 2, MainActivity.screenWidth / 30, MainActivity.screenHeight / 30, player1);
+        gameMenu = new GameMenu(getContext(), MainActivity.screenWidth / 2 - MainActivity.screenWidth / 28, 3);
+        player1 = new Player1(getContext(), MainActivity.screenWidth / 4, MainActivity.screenHeight / 2, MainActivity.screenHeight / 10, MainActivity.screenWidth / 10);
+        ball = new Ball(getContext(), MainActivity.screenWidth / 2, MainActivity.screenHeight / 2, MainActivity.screenWidth / 38, MainActivity.screenHeight / 38, player1);
 
         setFocusable(true);
     }
@@ -97,6 +111,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
         player1.draw(canvas);
         ball.draw(canvas);
+        gameMenu.draw(canvas);
     }
 
     public void drawUPS(Canvas canvas) {
@@ -120,6 +135,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     public void update() {
         player1.update();
         ball.update();
+        gameMenu.update();
     }
 
     public void pauseGame() {
