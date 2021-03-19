@@ -7,7 +7,9 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-
     <color name="background">#8FCB62</color>
     <color name="player1">#F8C7A4</color>
+    <color name="energy_border">#F4F5EF</color>
+    <color name="energy_background">#303030</color>
+    <color name="energy_bar">#F4C700</color>
 </resources>

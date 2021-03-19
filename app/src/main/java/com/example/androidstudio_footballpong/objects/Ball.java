@@ -24,13 +24,12 @@ public class Ball extends GameObject {
     private final int BORDER_DOWN = MainActivity.screenHeight;
 
     private Paint paint;
+    private Context context;
 
     public int velX, velY;
-    private final int MAX_SPEED = 5;
+    private final int MAX_SPEED = 10;
 
     private Player1 player1;
-
-    private Context context;
 
     private double initialX, initialY;
 

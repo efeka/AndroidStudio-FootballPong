@@ -1,17 +1,12 @@
 package com.example.androidstudio_footballpong.objects;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.MotionEvent;
 
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 
 import com.example.androidstudio_footballpong.Animation;
 import com.example.androidstudio_footballpong.Game;
@@ -34,12 +29,15 @@ public class Player1 extends GameObject {
     private Paint paint;
     private Context context;
 
+    private int defaultMaxSpeed = 10;
+    private int maxSpeed = 10;
+
     private boolean moving = false;
     private double targetX = 0, targetY = 0;
     private boolean ignoreX = false, ignoreY = false;
 
-    private int defaultMaxSpeed = 10;
-    private int maxSpeed = 10;
+    private int maxEnergy = 150;
+    private int energy = 100;
 
     private Animation player1Walk;
 
@@ -64,7 +62,16 @@ public class Player1 extends GameObject {
 
     @Override
     public void update() {
+        if (!moving && energy < maxEnergy)
+            energy++;
+        if (energy >= maxEnergy)
+            energy = maxEnergy;
+
         if (moving) {
+            energy -= 2;
+            if (energy <= 0)
+                moving = false;
+
             x += velX;
             y += velY;
 
@@ -115,5 +122,13 @@ public class Player1 extends GameObject {
         double hypot = Math.hypot(targetX - x, targetY - y);
         velX = (float) (maxSpeed * (targetX - x) / hypot);
         velY = (float) (maxSpeed * (targetY - y) / hypot);
+    }
+
+    public int getEnergy() {
+        return energy;
+    }
+
+    public int getMaxEnergy() {
+        return maxEnergy;
     }
 }

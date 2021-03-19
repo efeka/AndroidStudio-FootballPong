@@ -40,7 +40,7 @@ public class Texture {
             player1[i] = player1[i].createScaledBitmap(player1[i], MainActivity.screenHeight / 10, MainActivity.screenWidth / 10, false);
         }
 
-        gameMenu[0] = Bitmap.createBitmap(game_menu, 1, 1, 100, 100);
+        gameMenu[0] = Bitmap.createBitmap(game_menu, 1, 1, 101, 101);
         gameMenu[0] = gameMenu[0].createScaledBitmap(gameMenu[0], MainActivity.screenWidth / 14, MainActivity.screenWidth / 14, false);
 
     }
