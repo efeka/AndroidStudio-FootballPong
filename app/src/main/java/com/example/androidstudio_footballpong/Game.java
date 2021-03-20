@@ -19,10 +19,9 @@ import com.example.androidstudio_footballpong.objects.Ball;
 import com.example.androidstudio_footballpong.objects.GameMenu;
 import com.example.androidstudio_footballpong.objects.Player1;
 
-/* TODO: fix ball collisions
+/*
  * TODO: add goals on each side
  * TODO: make the game menu functional
- * TODO: add energy system
  * TODO: add kicking system for players
  * TODO: add 1 player and 2 player modes
  * TODO: make a main menu

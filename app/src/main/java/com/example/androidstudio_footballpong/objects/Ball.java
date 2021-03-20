@@ -18,10 +18,10 @@ import java.util.ArrayList;
  */
 public class Ball extends GameObject {
 
-    private final int BORDER_LEFT = 0;
-    private final int BORDER_RIGHT = MainActivity.screenWidth;
-    private final int BORDER_UP = 0;
-    private final int BORDER_DOWN = MainActivity.screenHeight;
+    private final int BORDER_LEFT = 10;
+    private final int BORDER_RIGHT = MainActivity.screenWidth - 10;
+    private final int BORDER_UP = 10;
+    private final int BORDER_DOWN = MainActivity.screenHeight - 10;
 
     private Paint paint;
     private Context context;
@@ -55,6 +55,14 @@ public class Ball extends GameObject {
     public void draw(Canvas canvas) {
         paint.setColor(ContextCompat.getColor(context, R.color.purple_200));
         canvas.drawCircle((int) x, (int) y, width, paint);
+        /*
+        int color = ContextCompat.getColor(context, R.color.black);
+        paint.setColor(color);
+        canvas.drawRect(getBoundsLeft(), paint);
+        canvas.drawRect(getBoundsTop(), paint);
+        canvas.drawRect(getBoundsBottom(), paint);
+        canvas.drawRect(getBoundsRight(), paint);
+         */
     }
 
     @Override
@@ -67,21 +75,21 @@ public class Ball extends GameObject {
 
     private void collision() {
         //collision with screen borders
-        if (x < BORDER_LEFT) {
+        if (x - width / 2 < BORDER_LEFT) {
             velX *= -1;
-            x = BORDER_LEFT;
+            x = BORDER_LEFT + width / 2;
         }
-        if (x > BORDER_RIGHT) {
+        if (x + width / 2 > BORDER_RIGHT) {
             velX *= -1;
-            x = BORDER_RIGHT;
+            x = BORDER_RIGHT - width / 2;
         }
-        if (y < BORDER_UP) {
+        if (y - width < BORDER_UP) {
             velY *= -1;
-            y = BORDER_UP;
+            y = BORDER_UP + width;
         }
-        if (y > BORDER_DOWN) {
+        if (y + width > BORDER_DOWN) {
             velY *= -1;
-            y = BORDER_DOWN;
+            y = BORDER_DOWN - width;
         }
 
         //collision with Player1
@@ -96,12 +104,12 @@ public class Ball extends GameObject {
         if (getBoundsTop().intersect(player1.getBounds())) {
             if (velY < 0)
                 velY *= -1;
-            y = player1.getY() + player1.getHeight() + height;
+            y = player1.getY() + player1.getHeight() + width;
         }
         if (getBoundsBottom().intersect(player1.getBounds())) {
             if (velY > 0)
                 velY *= -1;
-            y = player1.getY() - height;
+            y = player1.getY() - width;
         }
 
 
@@ -114,23 +122,27 @@ public class Ball extends GameObject {
 
     @Override
     public Rect getBounds() {
-        return new Rect((int) x, (int) y, (int) x + width, (int) y + height);
+        return new Rect((int) x, (int) y, (int) x + width, (int) y + width);
     }
 
     public Rect getBoundsTop() {
-        return new Rect((int) x - 2 * width / 4, (int) y - height, (int) x + 2 * width / 4, (int) y - height / 3);
+        return createRect((int) x - width + 15, (int) y - width, width * 2 - 30, width / 4);
     }
 
     public Rect getBoundsBottom() {
-        return new Rect((int) x - 2 * width / 4, (int) y + height / 3, (int) x + 2 * width / 4, (int) y + height);
+        return createRect((int) x - width + 15, (int) y + width - 10, width * 2 - 30, width / 4);
     }
 
     public Rect getBoundsLeft() {
-        return new Rect((int) x - width, (int) y - 2 * height / 4, (int) x - width / 3, (int) y + 2 * height / 4);
+        return createRect((int) x - width, (int) y - width + 15, width / 4, width * 2 - 30);
     }
 
     public Rect getBoundsRight() {
-        return new Rect((int) x + width / 3, (int) y - 2 * height / 4, (int) x + width, (int) y + 2 * height / 4);
+        return createRect((int) x + width - 10, (int) y - width + 15, width / 4, width * 2 - 30);
+    }
+
+    public Rect createRect(int x, int y, int width, int height) {
+        return new Rect(x, y, x + width, y + height);
     }
 
 }
