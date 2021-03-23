@@ -26,12 +26,14 @@ public class Ball extends GameObject {
     private Paint paint;
     private Context context;
 
-    public int velX, velY;
-    private final int MAX_SPEED = 10;
-
     private Player1 player1;
 
     private double initialX, initialY;
+
+    private final int MIN_SPEED = 10;
+    private final int MAX_SPEED = 60;
+    private final int DECELERATION = 5;
+    private float currentSpeedX, currentSpeedY;
 
     public ArrayList<GameObject> trailList = new ArrayList<>();
 
@@ -43,8 +45,10 @@ public class Ball extends GameObject {
         initialX = x;
         initialY = y;
 
-        velX = -MAX_SPEED;
-        velY = MAX_SPEED;
+        velX = -MIN_SPEED;
+        velY = MIN_SPEED;
+        currentSpeedX = (float) velX;
+        currentSpeedY = (float) velY;
 
         paint = new Paint();
         int color = ContextCompat.getColor(context, R.color.white);
@@ -70,6 +74,15 @@ public class Ball extends GameObject {
         x += velX;
         y += velY;
 
+        if (Math.abs(velX) > MIN_SPEED) {
+            velX -= velX * 0.01;
+        }
+
+        if (Math.abs(velY) > MIN_SPEED) {
+            velY -= velY * 0.01;
+        }
+
+
         collision();
     }
 
@@ -92,6 +105,7 @@ public class Ball extends GameObject {
             y = BORDER_DOWN - width;
         }
 
+        /*
         //collision with Player1
         if (getBoundsLeft().intersect(player1.getBounds())) {
             velX *= -1;
@@ -111,8 +125,23 @@ public class Ball extends GameObject {
                 velY *= -1;
             y = player1.getY() - width;
         }
+        */
+    }
 
+    /**
+     * @param playerId setting this to 1 indicates that the swipe belongs to player1, 2 indicates that it was player2 instead
+     */
+    public void handleSwipe(int playerId, float touchStartX, float touchStartY, float releaseX, float releaseY) {
+        if (playerId == 1) {
+            if (getBounds().intersect(player1.getBounds())) {
+                double hypot = Math.hypot(releaseX - touchStartX, releaseY - touchStartY);
+                velX = (float) (MAX_SPEED * (releaseX - touchStartX) / hypot);
+                velY = (float) (MAX_SPEED * (releaseY - touchStartY) / hypot);
+            }
+        }
+        else if (playerId == 2) {
 
+        }
     }
 
     public void resetPosition() {
@@ -139,10 +168,6 @@ public class Ball extends GameObject {
 
     public Rect getBoundsRight() {
         return createRect((int) x + width - 10, (int) y - width + 15, width / 4, width * 2 - 30);
-    }
-
-    public Rect createRect(int x, int y, int width, int height) {
-        return new Rect(x, y, x + width, y + height);
     }
 
 }

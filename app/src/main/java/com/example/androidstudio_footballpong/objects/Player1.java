@@ -36,6 +36,9 @@ public class Player1 extends GameObject {
     private double targetX = 0, targetY = 0;
     private boolean ignoreX = false, ignoreY = false;
 
+    private float swipeStartX = 0, swipeStartY = 0;
+    private float swipeEndX = 0, swipeEndY = 0;
+
     private int maxEnergy = 150;
     private int energy = 100;
 
@@ -54,7 +57,8 @@ public class Player1 extends GameObject {
 
     @Override
     public void draw(Canvas canvas) {
-        //canvas.drawRect(getBounds(), paint);
+        canvas.drawRect(getBounds(), paint);
+        canvas.drawLine(swipeStartX, swipeStartY, swipeEndX, swipeEndY, paint);
         try {
             player1Walk.drawAnimation(canvas, paint, (float) x, (float) y);
         } catch(Exception ignored) {}
@@ -110,18 +114,25 @@ public class Player1 extends GameObject {
 
     @Override
     public Rect getBounds() {
-        return new Rect((int) x, (int) y, (int) x + width, (int) y + height);
+        return createRect((int) x - width / 2, (int) y - height / 4, width + width, height + height / 2);
     }
 
-    public void handleTouchEvent(MotionEvent event) {
-        targetX = event.getX() - width / 2;
-        targetY = event.getY() - height / 2;
+    public void handleTap(float touchStartX, float touchStartY) {
+        targetX = touchStartX;
+        targetY = touchStartY;
         moving = true;
         ignoreX = ignoreY = false;
 
         double hypot = Math.hypot(targetX - x, targetY - y);
         velX = (float) (maxSpeed * (targetX - x) / hypot);
         velY = (float) (maxSpeed * (targetY - y) / hypot);
+    }
+
+    public void handleSwipe(float touchStartX, float touchStartY, float releaseX, float releaseY) {
+        swipeStartX = touchStartX;
+        swipeStartY = touchStartY;
+        swipeEndX = releaseX;
+        swipeEndY = releaseY;
     }
 
     public int getEnergy() {
@@ -131,4 +142,5 @@ public class Player1 extends GameObject {
     public int getMaxEnergy() {
         return maxEnergy;
     }
+
 }

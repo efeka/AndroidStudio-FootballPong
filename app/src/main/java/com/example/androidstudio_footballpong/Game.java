@@ -2,18 +2,14 @@ package com.example.androidstudio_footballpong;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 
 import com.example.androidstudio_footballpong.objects.Ball;
 import com.example.androidstudio_footballpong.objects.GameMenu;
@@ -75,9 +71,38 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         return tex;
     }
 
+    boolean pressed = false;
+    float releaseX = 0, releaseY = 0;
+    float touchStartX = 1;
+    float touchStartY = 1;
+    boolean swiped = false;
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        player1.handleTouchEvent(event);
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                if (!pressed) {
+                    touchStartX = event.getX();
+                    touchStartY = event.getY();
+                    releaseX = releaseY = 0;
+                }
+                pressed = true;
+                return true;
+            case MotionEvent.ACTION_UP:
+                pressed = false;
+                releaseX = event.getX();
+                releaseY = event.getY();
+
+                //if the user did not swipe far enough, the swipe will be assumed to be accidental and it will count as a tap instead
+                int minimumSwipeLimit = 50;
+                if (Math.abs(touchStartX - releaseX) < minimumSwipeLimit && Math.abs(touchStartY - releaseY) < minimumSwipeLimit)
+                    player1.handleTap(touchStartX, touchStartY);
+                else {
+                    player1.handleSwipe(touchStartX, touchStartY, releaseX, releaseY);
+                    ball.handleSwipe(1, touchStartX, touchStartY, releaseX, releaseY);
+                }
+                return true;
+        }
         return super.onTouchEvent(event);
     }
 
@@ -102,7 +127,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         super.draw(canvas);
 
         Paint paint = new Paint();
-        //background
+        //background (in game)
         canvas.drawBitmap(tex.gameBackground, 0f, 0f, paint);
 
         //drawUPS(canvas);
@@ -116,16 +141,16 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     public void drawUPS(Canvas canvas) {
         String averageUPS = Double.toString(gameLoop.getAverageUPS());
         Paint paint = new Paint();
-        int color = ContextCompat.getColor(getContext(), R.color.teal_700);
+        int color = ContextCompat.getColor(getContext(), R.color.white);
         paint.setColor(color);
         paint.setTextSize(36);
-        canvas.drawText("UPS: " + averageUPS, 100, 100, paint);
+        //canvas.drawText("UPS: " + averageUPS, 100, 100, paint);
     }
 
     public void drawFPS(Canvas canvas) {
         String averageFPS = Double.toString(gameLoop.getAverageFPS());
         Paint paint = new Paint();
-        int color = ContextCompat.getColor(getContext(), R.color.teal_700);
+        int color = ContextCompat.getColor(getContext(), R.color.white);
         paint.setColor(color);
         paint.setTextSize(36);
         canvas.drawText("FPS: " + averageFPS, 100, 200, paint);

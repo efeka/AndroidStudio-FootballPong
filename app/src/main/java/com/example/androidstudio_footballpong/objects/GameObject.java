@@ -79,4 +79,15 @@ public abstract class GameObject {
         this.height = height;
     }
 
+    /**
+     * Used for simplifying Rect creation, making it similar Rectangle class from java.awt
+     * @param x x coordinate of the top left corner
+     * @param y y coordinate of the top left corner
+     * @param width width of the Rect, originating from the top left corner
+     * @param height height of the Rect, originating from the top left corner
+     */
+    public Rect createRect(int x, int y, int width, int height) {
+        return new Rect(x, y, x + width, y + height);
+    }
+
 }
