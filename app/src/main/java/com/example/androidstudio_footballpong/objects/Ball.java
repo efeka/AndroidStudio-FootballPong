@@ -14,7 +14,8 @@ import com.example.androidstudio_footballpong.R;
 import java.util.ArrayList;
 
 /**
- * Ball is an object that bounces from players and screen borders and is used for scoring goals.
+ * Ball is an object that bounces from goals and screen borders and is used for scoring goals.
+ * Players can kick the ball by swiping the screen to give it speed and direction.
  */
 public class Ball extends GameObject {
 

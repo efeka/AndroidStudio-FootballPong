@@ -149,6 +149,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         touchEffect.drawAnimation(canvas, paint);
     }
 
+    //displays the number of updates
     public void drawUPS(Canvas canvas) {
         String averageUPS = Double.toString(gameLoop.getAverageUPS());
         Paint paint = new Paint();
@@ -158,6 +159,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         canvas.drawText("UPS: " + averageUPS, 100, 100, paint);
     }
 
+    //displays the number of frames
     public void drawFPS(Canvas canvas) {
         String averageFPS = Double.toString(gameLoop.getAverageFPS());
         Paint paint = new Paint();

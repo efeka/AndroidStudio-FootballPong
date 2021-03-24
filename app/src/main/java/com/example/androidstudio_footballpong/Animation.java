@@ -4,6 +4,9 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
+/**
+ * This class if for drawing sprite animations on the screen.
+ */
 public class Animation {
 
     private int speed;
@@ -20,6 +23,10 @@ public class Animation {
 
     private float x = -1, y = -1;
 
+    /**
+     * @param speed Number of frames to skip before drawing the next sprite.
+     * @param args Each sprite of the animation in order.
+     */
     public Animation(int speed, Bitmap... args) {
         this.speed = speed;
 

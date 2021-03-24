@@ -5,6 +5,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
+/**
+ * This class is for getting image files as Bitmaps.
+ * It prepares the Bitmaps by scaling and cropping so that they can be easily used in other classes.
+ */
 public class Texture {
 
     private Bitmap background_sheet = null;
