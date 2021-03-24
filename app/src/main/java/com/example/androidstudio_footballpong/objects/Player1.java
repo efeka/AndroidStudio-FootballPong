@@ -57,11 +57,9 @@ public class Player1 extends GameObject {
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawRect(getBounds(), paint);
-        canvas.drawLine(swipeStartX, swipeStartY, swipeEndX, swipeEndY, paint);
-        try {
-            player1Walk.drawAnimation(canvas, paint, (float) x, (float) y);
-        } catch(Exception ignored) {}
+        //canvas.drawRect(getBounds(), paint);
+        //canvas.drawLine(swipeStartX, swipeStartY, swipeEndX, swipeEndY, paint);
+        player1Walk.drawAnimation(canvas, paint, (float) x, (float) y);
     }
 
     @Override

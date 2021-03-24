@@ -16,8 +16,11 @@ public class Animation {
     private Bitmap currentSprite;
 
     private boolean playedOnce = false;
+    private boolean stopped = false;
 
-    public Animation(int speed, Bitmap ... args) {
+    private float x = -1, y = -1;
+
+    public Animation(int speed, Bitmap... args) {
         this.speed = speed;
 
         sprites = new Bitmap[args.length];
@@ -27,10 +30,12 @@ public class Animation {
     }
 
     public void runAnimation() {
-        index++;
-        if (index > speed) {
-            index = 0;
-            nextFrame();
+        if (!stopped) {
+            index++;
+            if (index > speed) {
+                index = 0;
+                nextFrame();
+            }
         }
     }
 
@@ -49,11 +54,64 @@ public class Animation {
     }
 
     public void drawAnimation(Canvas canvas, Paint paint, float x, float y) {
-        canvas.drawBitmap(currentSprite, x, y, paint);
+        if (!stopped) {
+            try {
+                canvas.drawBitmap(currentSprite, x, y, paint);
+            } catch (NullPointerException e) {
+            }
+        }
+    }
+
+    public void drawAnimation(Canvas canvas, Paint paint) {
+        if (!stopped && x != -1 && y != -1) {
+            try {
+                canvas.drawBitmap(currentSprite, x, y, paint);
+            } catch (NullPointerException e) {
+            }
+        }
+    }
+
+    public void resetAnimation() {
+        index = 0;
+        frameCount = 0;
+        nextFrame();
+        playedOnce = false;
+    }
+
+    public void stopAnimation() {
+        stopped = true;
+    }
+
+    public void resumeAnimation() {
+        stopped = false;
     }
 
     public boolean getPlayedOnce() {
         return playedOnce;
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public void setY(float y) {
+        this.y = y;
+    }
+
+    public int getWidth() {
+        return currentSprite.getWidth();
+    }
+
+    public int getHeight() {
+        return currentSprite.getHeight();
     }
 
 }

@@ -40,6 +40,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private final Player1 player1;
     private final Ball ball;
 
+    public Animation touchEffect;
+
     private int touchPauseTimer = 0, touchPauseCooldown = 0;
     private boolean touchPaused = false;
 
@@ -50,6 +52,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
         tex = new Texture(context);
         gameLoop = new GameLoop(this, surfaceHolder);
+
+        touchEffect = new Animation(1, tex.touchEffect[7], tex.touchEffect[6], tex.touchEffect[5], tex.touchEffect[4], tex.touchEffect[3], tex.touchEffect[2], tex.touchEffect[1], tex.touchEffect[0]);
 
         player1 = new Player1(getContext(), MainActivity.screenWidth / 4, MainActivity.screenHeight / 2, MainActivity.screenHeight / 10, MainActivity.screenWidth / 10);
         gameMenu = new GameMenu(getContext(), MainActivity.screenWidth / 2 - MainActivity.screenWidth / 28, 3, player1);
@@ -95,8 +99,14 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
                 //if the user did not swipe far enough, the swipe will be assumed to be accidental and it will count as a tap instead
                 int minimumSwipeLimit = 50;
-                if (Math.abs(touchStartX - releaseX) < minimumSwipeLimit && Math.abs(touchStartY - releaseY) < minimumSwipeLimit)
+                if (Math.abs(touchStartX - releaseX) < minimumSwipeLimit && Math.abs(touchStartY - releaseY) < minimumSwipeLimit) {
                     player1.handleTap(touchStartX, touchStartY);
+
+                    touchEffect.resetAnimation();
+                    touchEffect.setX(touchStartX - touchEffect.getWidth() / 2);
+                    touchEffect.setY(touchStartY - touchEffect.getHeight() / 2);
+                    touchEffect.resumeAnimation();
+                }
                 else {
                     player1.handleSwipe(touchStartX, touchStartY, releaseX, releaseY);
                     ball.handleSwipe(1, touchStartX, touchStartY, releaseX, releaseY);
@@ -136,6 +146,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         player1.draw(canvas);
         ball.draw(canvas);
         gameMenu.draw(canvas);
+        touchEffect.drawAnimation(canvas, paint);
     }
 
     public void drawUPS(Canvas canvas) {
@@ -144,7 +155,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         int color = ContextCompat.getColor(getContext(), R.color.white);
         paint.setColor(color);
         paint.setTextSize(36);
-        //canvas.drawText("UPS: " + averageUPS, 100, 100, paint);
+        canvas.drawText("UPS: " + averageUPS, 100, 100, paint);
     }
 
     public void drawFPS(Canvas canvas) {
@@ -160,6 +171,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         player1.update();
         ball.update();
         gameMenu.update();
+
+        touchEffect.runAnimation();
+        if (touchEffect.getPlayedOnce())
+            touchEffect.stopAnimation();
     }
 
     public void pauseGame() {
