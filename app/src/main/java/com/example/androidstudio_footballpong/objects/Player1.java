@@ -27,7 +27,6 @@ public class Player1 extends GameObject {
     private final int BORDER_DOWN = MainActivity.screenHeight;
 
     private Paint paint;
-    private Context context;
 
     private int defaultMaxSpeed = 10;
     private int maxSpeed = 10;
@@ -46,7 +45,6 @@ public class Player1 extends GameObject {
 
     public Player1(Context context, double x, double y, int width, int height) {
         super(x, y, width, height);
-        this.context = context;
 
         paint = new Paint();
         int color = ContextCompat.getColor(context, R.color.player1);
@@ -116,8 +114,8 @@ public class Player1 extends GameObject {
     }
 
     public void handleTap(float touchStartX, float touchStartY) {
-        targetX = touchStartX;
-        targetY = touchStartY;
+        targetX = touchStartX - width / 2;
+        targetY = touchStartY - height;
         moving = true;
         ignoreX = ignoreY = false;
 
