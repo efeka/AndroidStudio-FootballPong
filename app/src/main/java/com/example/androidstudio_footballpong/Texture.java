@@ -21,7 +21,6 @@ public class Texture {
     public Bitmap[] player1 = new Bitmap[5];
     public Bitmap[] touchEffect = new Bitmap[8];
 
-
     public Texture(Context context) {
         try {
             background_sheet = BitmapFactory.decodeResource(context.getResources(), R.drawable.background);

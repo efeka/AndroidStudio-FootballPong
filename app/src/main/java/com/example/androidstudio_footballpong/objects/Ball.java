@@ -2,6 +2,7 @@ package com.example.androidstudio_footballpong.objects;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Log;
@@ -33,7 +34,7 @@ public class Ball extends GameObject {
 
     private final int MIN_SPEED = 10;
     private final int MAX_SPEED = 60;
-    private final int DECELERATION = 5;
+    private final float DECELERATION = 0.01f;
     private float currentSpeedX, currentSpeedY;
 
     public ArrayList<GameObject> trailList = new ArrayList<>();
@@ -52,13 +53,12 @@ public class Ball extends GameObject {
         currentSpeedY = (float) velY;
 
         paint = new Paint();
-        int color = ContextCompat.getColor(context, R.color.white);
+        int color = ContextCompat.getColor(context, R.color.purple_200);
         paint.setColor(color);
     }
 
     @Override
     public void draw(Canvas canvas) {
-        paint.setColor(ContextCompat.getColor(context, R.color.purple_200));
         canvas.drawCircle((int) x, (int) y, width, paint);
         /*
         int color = ContextCompat.getColor(context, R.color.black);
@@ -76,18 +76,17 @@ public class Ball extends GameObject {
         y += velY;
 
         if (Math.abs(velX) > MIN_SPEED) {
-            velX -= velX * 0.01;
+            velX -= velX * DECELERATION;
         }
 
         if (Math.abs(velY) > MIN_SPEED) {
-            velY -= velY * 0.01;
+            velY -= velY * DECELERATION;
         }
-
 
         collision();
     }
 
-    private void collision() {
+    public void collision() {
         //collision with screen borders
         if (x - width / 2 < BORDER_LEFT) {
             velX *= -1;
@@ -130,7 +129,7 @@ public class Ball extends GameObject {
     }
 
     /**
-     * @param playerId setting this to 1 indicates that the swipe belongs to player1, 2 indicates that it was player2 instead
+     * @param playerId indicates which player did the swipe, set this to 1 for player1 and 2 for player2
      */
     public void handleSwipe(int playerId, float touchStartX, float touchStartY, float releaseX, float releaseY) {
         if (playerId == 1) {

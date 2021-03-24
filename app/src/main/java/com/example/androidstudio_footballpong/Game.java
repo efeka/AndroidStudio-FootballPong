@@ -57,7 +57,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
         player1 = new Player1(getContext(), MainActivity.screenWidth / 4, MainActivity.screenHeight / 2, MainActivity.screenHeight / 10, MainActivity.screenWidth / 10);
         gameMenu = new GameMenu(getContext(), MainActivity.screenWidth / 2 - MainActivity.screenWidth / 28, 3, player1);
-        ball = new Ball(getContext(), MainActivity.screenWidth / 2, MainActivity.screenHeight / 2, MainActivity.screenWidth / 38, MainActivity.screenHeight / 38, player1);
+        ball = new Ball(getContext(), MainActivity.screenWidth / 2, MainActivity.screenHeight / 2, MainActivity.screenWidth / 38, MainActivity.screenWidth / 38, player1);
 
         setFocusable(true);
     }
@@ -181,6 +181,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
     public void pauseGame() {
         gameLoop.pauseLoop();
+    }
+
+    public Context getGameContext() {
+        return getContext();
     }
 
 }
