@@ -109,10 +109,6 @@ public class Ball extends GameObject {
         }
 
         //collision with the left goal
-        if (getBoundsLeft().intersect(leftGoal.getBoundsTop()) || getBoundsLeft().intersect(leftGoal.getBoundsBottom())) {
-            velX *= -1;
-            x = leftGoal.getX() + leftGoal.getWidth() + width;
-        }
         if (getBoundsTop().intersect(leftGoal.getBoundsTop())) {
             velY *= -1;
             y = leftGoal.getY() + leftGoal.getBoundsTop().height() + width;
@@ -129,9 +125,43 @@ public class Ball extends GameObject {
             velY *= -1;
             y = leftGoal.getY() + leftGoal.getHeight() - leftGoal.getHeight() / 8 - width;
         }
+        if (getBoundsLeft().intersect(leftGoal.getBoundsTop()) || getBoundsLeft().intersect(leftGoal.getBoundsBottom())) {
+            velX *= -1;
+            x = leftGoal.getX() + leftGoal.getWidth() + width;
+        }
+        if (getBounds().intersect(leftGoal.getBoundsScore())) {
+            //TODO: increase player2's score
+            //TODO: pause the game for a moment
+            resetPosition();
+        }
 
-        //TODO: collision with the right goal
-        
+        //collision with the right goal
+        if (getBoundsTop().intersect(rightGoal.getBoundsTop())) {
+            velY *= -1;
+            y = rightGoal.getY() + rightGoal.getBoundsTop().height() + width;
+        }
+        if (getBoundsTop().intersect(rightGoal.getBoundsBottom())) {
+            velY *= -1;
+            y = rightGoal.getY() + rightGoal.getHeight() + width;
+        }
+        if (getBoundsBottom().intersect(rightGoal.getBoundsTop())) {
+            velY *= -1;
+            y = rightGoal.getY() - width;
+        }
+        if (getBoundsBottom().intersect(rightGoal.getBoundsBottom())) {
+            velY *= -1;
+            y = rightGoal.getY() + rightGoal.getHeight() - rightGoal.getHeight() / 8 - width;
+        }
+        if (getBoundsRight().intersect(rightGoal.getBoundsTop()) || getBoundsRight().intersect(rightGoal.getBoundsBottom())) {
+            velX *= -1;
+            x = rightGoal.getX() - width;
+        }
+        if (getBounds().intersect(rightGoal.getBoundsScore())) {
+            //TODO: increase player1's score
+            //TODO: pause the game for a moment
+            resetPosition();
+        }
+
     }
 
     /**

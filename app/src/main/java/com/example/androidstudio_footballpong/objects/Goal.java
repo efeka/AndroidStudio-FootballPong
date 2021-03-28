@@ -66,7 +66,7 @@ public class Goal extends GameObject {
         return createRect((int) x, (int) y + height - height / 8, width, height / 8);
     }
 
-    public Rect getBoundsScoring() {
+    public Rect getBoundsScore() {
         if (type == LEFT_GOAL)
             return createRect((int) x, (int) y + height / 8, width / 2, height - height / 4);
         else
