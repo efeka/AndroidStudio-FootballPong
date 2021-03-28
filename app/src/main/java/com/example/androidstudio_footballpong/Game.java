@@ -58,7 +58,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
         player1 = new Player1(getContext(), MainActivity.screenWidth / 4, MainActivity.screenHeight / 2, MainActivity.screenHeight / 10, MainActivity.screenWidth / 10);
         gameMenu = new GameMenu(getContext(), MainActivity.screenWidth / 2 - MainActivity.screenWidth / 28, 3, player1);
-        int goalWidth = MainActivity.screenWidth / 25, goalHeight = 2 * MainActivity.screenHeight / 7;
+        int goalWidth = 100, goalHeight = 2 * MainActivity.screenHeight / 7;
         leftGoal = new Goal(getContext(), 0, MainActivity.screenHeight / 2 - goalHeight / 2, goalWidth, goalHeight, Goal.LEFT_GOAL);
         rightGoal = new Goal(getContext(),MainActivity.screenWidth - goalWidth, MainActivity.screenHeight / 2 - goalHeight / 2, goalWidth, goalHeight, Goal.RIGHT_GOAL);
         ball = new Ball(getContext(), leftGoal, rightGoal, player1, MainActivity.screenWidth / 2 - MainActivity.screenWidth / 80, MainActivity.screenHeight / 2 - MainActivity.screenWidth / 80, MainActivity.screenWidth / 40, MainActivity.screenWidth / 40);

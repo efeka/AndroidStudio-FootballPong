@@ -7,7 +7,9 @@ import android.graphics.Rect;
 
 import androidx.core.content.ContextCompat;
 
+import com.example.androidstudio_footballpong.Game;
 import com.example.androidstudio_footballpong.R;
+import com.example.androidstudio_footballpong.Texture;
 
 public class Goal extends GameObject {
 
@@ -17,6 +19,7 @@ public class Goal extends GameObject {
 
     private Paint paint;
     private Context context;
+    private Texture tex = Game.getTexture();
 
     private int initialHeight;
     private float initialX;
@@ -36,8 +39,12 @@ public class Goal extends GameObject {
 
     @Override
     public void draw(Canvas canvas) {
+        canvas.drawBitmap(tex.goals[type], (float) x, (float) y, paint);
+
+        /*
         paint.setColor(ContextCompat.getColor(context, R.color.player1));
         canvas.drawRect(getBounds(), paint);
+        */
 
         /* boundaries
         paint.setColor(ContextCompat.getColor(context, R.color.white));
