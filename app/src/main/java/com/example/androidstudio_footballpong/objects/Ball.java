@@ -29,6 +29,7 @@ public class Ball extends GameObject {
     private Context context;
 
     private Player1 player1;
+    private Goal leftGoal, rightGoal;
 
     private double initialX, initialY;
 
@@ -39,9 +40,11 @@ public class Ball extends GameObject {
 
     public ArrayList<GameObject> trailList = new ArrayList<>();
 
-    public Ball(Context context, double x, double y, int width, int height, Player1 player1) {
+    public Ball(Context context, Goal leftGoal, Goal rightGoal, Player1 player1, double x, double y, int width, int height) {
         super(x, y, width, height);
         this.context = context;
+        this.leftGoal = leftGoal;
+        this.rightGoal = rightGoal;
         this.player1 = player1;
 
         initialX = x;
@@ -105,27 +108,30 @@ public class Ball extends GameObject {
             y = BORDER_DOWN - width;
         }
 
-        /*
-        //collision with Player1
-        if (getBoundsLeft().intersect(player1.getBounds())) {
+        //collision with the left goal
+        if (getBoundsLeft().intersect(leftGoal.getBoundsTop()) || getBoundsLeft().intersect(leftGoal.getBoundsBottom())) {
             velX *= -1;
-            x = player1.getX() + player1.getWidth() + width;
+            x = leftGoal.getX() + leftGoal.getWidth() + width;
         }
-        if (getBoundsRight().intersect(player1.getBounds())) {
-            velX *= -1;
-            x = player1.getX() - width;
+        if (getBoundsTop().intersect(leftGoal.getBoundsTop())) {
+            velY *= -1;
+            y = leftGoal.getY() + leftGoal.getBoundsTop().height() + width;
         }
-        if (getBoundsTop().intersect(player1.getBounds())) {
-            if (velY < 0)
-                velY *= -1;
-            y = player1.getY() + player1.getHeight() + width;
+        if (getBoundsTop().intersect(leftGoal.getBoundsBottom())) {
+            velY *= -1;
+            y = leftGoal.getY() + leftGoal.getHeight() + width;
         }
-        if (getBoundsBottom().intersect(player1.getBounds())) {
-            if (velY > 0)
-                velY *= -1;
-            y = player1.getY() - width;
+        if (getBoundsBottom().intersect(leftGoal.getBoundsTop())) {
+            velY *= -1;
+            y = leftGoal.getY() - width;
         }
-        */
+        if (getBoundsBottom().intersect(leftGoal.getBoundsBottom())) {
+            velY *= -1;
+            y = leftGoal.getY() + leftGoal.getHeight() - leftGoal.getHeight() / 8 - width;
+        }
+
+        //TODO: collision with the right goal
+        
     }
 
     /**

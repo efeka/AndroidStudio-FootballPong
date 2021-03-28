@@ -19,7 +19,6 @@ import com.example.androidstudio_footballpong.objects.Player1;
 /*
  * TODO: add goals on each side
  * TODO: make the game menu functional
- * TODO: add kicking system for players
  * TODO: add 1 player and 2 player modes
  * TODO: make a main menu
  * TODO: add random power ups
@@ -59,10 +58,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
         player1 = new Player1(getContext(), MainActivity.screenWidth / 4, MainActivity.screenHeight / 2, MainActivity.screenHeight / 10, MainActivity.screenWidth / 10);
         gameMenu = new GameMenu(getContext(), MainActivity.screenWidth / 2 - MainActivity.screenWidth / 28, 3, player1);
-        ball = new Ball(getContext(), MainActivity.screenWidth / 2 - MainActivity.screenWidth / 80, MainActivity.screenHeight / 2 - MainActivity.screenWidth / 80, MainActivity.screenWidth / 40, MainActivity.screenWidth / 40, player1);
         int goalWidth = MainActivity.screenWidth / 25, goalHeight = 2 * MainActivity.screenHeight / 7;
-        leftGoal = new Goal(getContext(), ball, 0, MainActivity.screenHeight / 2 - goalHeight / 2, goalWidth, goalHeight);
-        rightGoal = new Goal(getContext(), ball,MainActivity.screenWidth - goalWidth, MainActivity.screenHeight / 2 - goalHeight / 2, goalWidth, goalHeight);
+        leftGoal = new Goal(getContext(), 0, MainActivity.screenHeight / 2 - goalHeight / 2, goalWidth, goalHeight, Goal.LEFT_GOAL);
+        rightGoal = new Goal(getContext(),MainActivity.screenWidth - goalWidth, MainActivity.screenHeight / 2 - goalHeight / 2, goalWidth, goalHeight, Goal.RIGHT_GOAL);
+        ball = new Ball(getContext(), leftGoal, rightGoal, player1, MainActivity.screenWidth / 2 - MainActivity.screenWidth / 80, MainActivity.screenHeight / 2 - MainActivity.screenWidth / 80, MainActivity.screenWidth / 40, MainActivity.screenWidth / 40);
 
         setFocusable(true);
     }
