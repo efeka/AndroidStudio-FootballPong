@@ -12,7 +12,7 @@ import android.util.Log;
 public class Texture {
 
     private Bitmap background_sheet = null;
-    private Bitmap player_sheet = null;
+    private Bitmap assets_sheet = null;
     private Bitmap game_menu = null;
     private Bitmap effect_sheet = null;
 
@@ -28,8 +28,8 @@ public class Texture {
             game_menu = BitmapFactory.decodeResource(context.getResources(), R.drawable.game_menu);
             game_menu = game_menu.createScaledBitmap(game_menu, 500, 500, false);
 
-            player_sheet = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemy_sheet);
-            player_sheet = player_sheet.createScaledBitmap(player_sheet, 397, 331, false);
+            assets_sheet = BitmapFactory.decodeResource(context.getResources(), R.drawable.assets_sheet);
+            assets_sheet = assets_sheet.createScaledBitmap(assets_sheet, 800, 600, false);
 
             effect_sheet = BitmapFactory.decodeResource(context.getResources(), R.drawable.effect_sheet);
             effect_sheet = effect_sheet.createScaledBitmap(effect_sheet, 800, 600, false);
@@ -46,7 +46,7 @@ public class Texture {
         gameBackground = background_sheet.createScaledBitmap(background_sheet, MainActivity.screenWidth, MainActivity.screenHeight, false);
 
         for (int i = 0; i < player1.length; i++) {
-            player1[i] = Bitmap.createBitmap(player_sheet, 1 + 33 * i, 1, 32, 32);
+            player1[i] = Bitmap.createBitmap(assets_sheet, 1 + 33 * i, 1, 32, 32);
             player1[i] = player1[i].createScaledBitmap(player1[i], MainActivity.screenHeight / 10, MainActivity.screenWidth / 10, false);
         }
 

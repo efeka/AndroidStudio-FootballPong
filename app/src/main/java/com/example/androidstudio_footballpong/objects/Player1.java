@@ -28,8 +28,8 @@ public class Player1 extends GameObject {
 
     private Paint paint;
 
-    private int defaultMaxSpeed = 10;
-    private int maxSpeed = 10;
+    private final int DEFAULT_MAX_SPEED = 15;
+    private int maxSpeed = 15;
 
     private boolean moving = false;
     private double targetX = 0, targetY = 0;
@@ -39,12 +39,14 @@ public class Player1 extends GameObject {
     private float swipeEndX = 0, swipeEndY = 0;
 
     private int maxEnergy = 150;
-    private int energy = 100;
+    private int energy;
 
     private Animation player1Walk;
 
     public Player1(Context context, double x, double y, int width, int height) {
         super(x, y, width, height);
+
+        energy = maxEnergy;
 
         paint = new Paint();
         int color = ContextCompat.getColor(context, R.color.player1);

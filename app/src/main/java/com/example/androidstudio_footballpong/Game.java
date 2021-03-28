@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat;
 
 import com.example.androidstudio_footballpong.objects.Ball;
 import com.example.androidstudio_footballpong.objects.GameMenu;
+import com.example.androidstudio_footballpong.objects.Goal;
 import com.example.androidstudio_footballpong.objects.Player1;
 
 /*
@@ -39,6 +40,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private final GameMenu gameMenu;
     private final Player1 player1;
     private final Ball ball;
+    private final Goal leftGoal, rightGoal;
 
     public Animation touchEffect;
 
@@ -57,7 +59,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
         player1 = new Player1(getContext(), MainActivity.screenWidth / 4, MainActivity.screenHeight / 2, MainActivity.screenHeight / 10, MainActivity.screenWidth / 10);
         gameMenu = new GameMenu(getContext(), MainActivity.screenWidth / 2 - MainActivity.screenWidth / 28, 3, player1);
-        ball = new Ball(getContext(), MainActivity.screenWidth / 2, MainActivity.screenHeight / 2, MainActivity.screenWidth / 38, MainActivity.screenWidth / 38, player1);
+        ball = new Ball(getContext(), MainActivity.screenWidth / 2 - MainActivity.screenWidth / 80, MainActivity.screenHeight / 2 - MainActivity.screenWidth / 80, MainActivity.screenWidth / 40, MainActivity.screenWidth / 40, player1);
+        int goalWidth = MainActivity.screenWidth / 25, goalHeight = 2 * MainActivity.screenHeight / 7;
+        leftGoal = new Goal(getContext(), ball, 0, MainActivity.screenHeight / 2 - goalHeight / 2, goalWidth, goalHeight);
+        rightGoal = new Goal(getContext(), ball,MainActivity.screenWidth - goalWidth, MainActivity.screenHeight / 2 - goalHeight / 2, goalWidth, goalHeight);
 
         setFocusable(true);
     }
@@ -147,6 +152,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         ball.draw(canvas);
         gameMenu.draw(canvas);
         touchEffect.drawAnimation(canvas, paint);
+        leftGoal.draw(canvas);
+        rightGoal.draw(canvas);
     }
 
     //displays the number of updates
@@ -173,6 +180,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         player1.update();
         ball.update();
         gameMenu.update();
+        leftGoal.update();
+        rightGoal.update();
 
         touchEffect.runAnimation();
         if (touchEffect.getPlayedOnce())
