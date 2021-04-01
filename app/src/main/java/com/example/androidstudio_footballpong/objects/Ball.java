@@ -78,13 +78,10 @@ public class Ball extends GameObject {
         x += velX;
         y += velY;
 
-        if (Math.abs(velX) > MIN_SPEED) {
+        if (Math.abs(velX) > MIN_SPEED)
             velX -= velX * DECELERATION;
-        }
-
-        if (Math.abs(velY) > MIN_SPEED) {
+        if (Math.abs(velY) > MIN_SPEED)
             velY -= velY * DECELERATION;
-        }
 
         collision();
     }
@@ -183,6 +180,8 @@ public class Ball extends GameObject {
     public void resetPosition() {
         x = initialX;
         y = initialY;
+        velX = -MIN_SPEED;
+        velY = MIN_SPEED;
     }
 
     @Override

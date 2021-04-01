@@ -14,14 +14,16 @@ import androidx.core.content.ContextCompat;
 import com.example.androidstudio_footballpong.objects.Ball;
 import com.example.androidstudio_footballpong.objects.GameMenu;
 import com.example.androidstudio_footballpong.objects.Goal;
+import com.example.androidstudio_footballpong.objects.MainMenu;
 import com.example.androidstudio_footballpong.objects.Player1;
 
 /*
- * TODO: add goals on each side
  * TODO: make the game menu functional
+ * TODO: change energy system to not replenish. Players will get energy according to the game length
+ *  they selected. They wont be able to move or they will only move very slowly if they run out.
+ * TODO: Make easy-medium-hard modes for AI opponent
  * TODO: add 1 player and 2 player modes
  * TODO: make a main menu
- * TODO: add random power ups
  * TODO: graphics
  */
 
@@ -31,11 +33,11 @@ import com.example.androidstudio_footballpong.objects.Player1;
 public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
     private static Texture tex;
+    private Paint paint;
 
     private GameLoop gameLoop;
 
-    private Bitmap background;
-
+    private final MainMenu mainMenu;
     private final GameMenu gameMenu;
     private final Player1 player1;
     private final Ball ball;
@@ -52,10 +54,12 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         surfaceHolder.addCallback(this);
 
         tex = new Texture(context);
+        paint = new Paint();
         gameLoop = new GameLoop(this, surfaceHolder);
 
         touchEffect = new Animation(1, tex.touchEffect[7], tex.touchEffect[6], tex.touchEffect[5], tex.touchEffect[4], tex.touchEffect[3], tex.touchEffect[2], tex.touchEffect[1], tex.touchEffect[0]);
 
+        mainMenu = new MainMenu(getContext(), 0, 0, MainActivity.screenWidth, MainActivity.screenHeight);
         player1 = new Player1(getContext(), MainActivity.screenWidth / 4, MainActivity.screenHeight / 2, MainActivity.screenHeight / 10, MainActivity.screenWidth / 10);
         gameMenu = new GameMenu(getContext(), MainActivity.screenWidth / 2 - MainActivity.screenWidth / 28, 3, player1);
         int goalWidth = 100, goalHeight = 2 * MainActivity.screenHeight / 7;
@@ -68,12 +72,15 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
     public static enum STATE{
         MAIN_MENU,
+        ONE_P_SELECTION,
+        TWO_P_SELECTION,
+        SETTINGS,
         PAUSED_1P,
         PAUSED_2P,
         ONE_PLAYER,
         TWO_PLAYERS
     };
-    public static STATE state;
+    public static STATE state = STATE.MAIN_MENU;
 
     public static Texture getTexture() {
         return tex;
@@ -140,19 +147,24 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     public void draw(Canvas canvas) {
         super.draw(canvas);
 
-        Paint paint = new Paint();
-        //background (in game)
-        canvas.drawBitmap(tex.gameBackground, 0f, 0f, paint);
-
         //drawUPS(canvas);
         //drawFPS(canvas);
 
-        player1.draw(canvas);
-        ball.draw(canvas);
-        gameMenu.draw(canvas);
-        touchEffect.drawAnimation(canvas, paint);
-        leftGoal.draw(canvas);
-        rightGoal.draw(canvas);
+        if (state == STATE.ONE_PLAYER || state == STATE.TWO_PLAYERS) {
+            //football field background (in game)
+            if (state == STATE.ONE_PLAYER || state == STATE.TWO_PLAYERS)
+                canvas.drawBitmap(tex.gameBackground, 0f, 0f, paint);
+
+            player1.draw(canvas);
+            ball.draw(canvas);
+            gameMenu.draw(canvas);
+            touchEffect.drawAnimation(canvas, paint);
+            leftGoal.draw(canvas);
+            rightGoal.draw(canvas);
+        }
+        else if (state == STATE.MAIN_MENU) {
+            mainMenu.draw(canvas);
+        }
     }
 
     //displays the number of updates
@@ -176,15 +188,20 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void update() {
-        player1.update();
-        ball.update();
-        gameMenu.update();
-        leftGoal.update();
-        rightGoal.update();
+        if (state == STATE.ONE_PLAYER || state == STATE.TWO_PLAYERS) {
+            player1.update();
+            ball.update();
+            gameMenu.update();
+            leftGoal.update();
+            rightGoal.update();
 
-        touchEffect.runAnimation();
-        if (touchEffect.getPlayedOnce())
-            touchEffect.stopAnimation();
+            touchEffect.runAnimation();
+            if (touchEffect.getPlayedOnce())
+                touchEffect.stopAnimation();
+        }
+        else if (state == STATE.MAIN_MENU) {
+            mainMenu.update();
+        }
     }
 
     public void pauseGame() {

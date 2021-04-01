@@ -80,7 +80,7 @@ public abstract class GameObject {
     }
 
     /**
-     * Used for simplifying Rect creation, making it similar Rectangle class from java.awt
+     * For creating Rects in a simpler way, similar to java.awt style.
      * @param x x coordinate of the top left corner
      * @param y y coordinate of the top left corner
      * @param width width of the Rect, originating from the top left corner
