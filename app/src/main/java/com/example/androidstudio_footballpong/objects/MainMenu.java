@@ -60,7 +60,17 @@ public class MainMenu extends GameObject {
 
     @Override
     public void update() {
-
+        if (touchX != -1 && touchY != -1) {
+            if (getBounds1P().contains((int) touchX, (int) touchY)) {
+                Game.state = Game.STATE.ONE_PLAYER;
+            }
+            if (getBounds2P().contains((int) touchX, (int) touchY)) {
+                Game.state = Game.STATE.TWO_PLAYERS;
+            }
+            if (getBoundsSettings().contains((int) touchX, (int) touchY)) {
+                Game.state = Game.STATE.SETTINGS;
+            }
+        }
     }
 
     public void handleTouchEvent(MotionEvent event) {

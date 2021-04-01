@@ -94,35 +94,46 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                if (!pressed) {
-                    touchStartX = event.getX();
-                    touchStartY = event.getY();
-                    releaseX = releaseY = 0;
-                }
-                pressed = true;
-                return true;
-            case MotionEvent.ACTION_UP:
-                pressed = false;
-                releaseX = event.getX();
-                releaseY = event.getY();
+        if (state == STATE.ONE_PLAYER || state == STATE.TWO_PLAYERS) {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    if (!pressed) {
+                        touchStartX = event.getX();
+                        touchStartY = event.getY();
+                        releaseX = releaseY = 0;
+                    }
+                    pressed = true;
+                    return true;
+                case MotionEvent.ACTION_UP:
+                    pressed = false;
+                    releaseX = event.getX();
+                    releaseY = event.getY();
 
-                //if the user did not swipe far enough, the swipe will be assumed to be accidental and it will count as a tap instead
-                int minimumSwipeLimit = 50;
-                if (Math.abs(touchStartX - releaseX) < minimumSwipeLimit && Math.abs(touchStartY - releaseY) < minimumSwipeLimit) {
-                    player1.handleTap(touchStartX, touchStartY);
+                    //if the user did not swipe far enough, the swipe will be assumed to be accidental and it will count as a tap instead
+                    int minimumSwipeLimit = 50;
+                    if (Math.abs(touchStartX - releaseX) < minimumSwipeLimit && Math.abs(touchStartY - releaseY) < minimumSwipeLimit) {
+                        player1.handleTap(touchStartX, touchStartY);
 
-                    touchEffect.resetAnimation();
-                    touchEffect.setX(touchStartX - touchEffect.getWidth() / 2);
-                    touchEffect.setY(touchStartY - touchEffect.getHeight() / 2);
-                    touchEffect.resumeAnimation();
-                }
-                else {
-                    player1.handleSwipe(touchStartX, touchStartY, releaseX, releaseY);
-                    ball.handleSwipe(1, touchStartX, touchStartY, releaseX, releaseY);
-                }
-                return true;
+                        touchEffect.resetAnimation();
+                        touchEffect.setX(touchStartX - touchEffect.getWidth() / 2);
+                        touchEffect.setY(touchStartY - touchEffect.getHeight() / 2);
+                        touchEffect.resumeAnimation();
+                    } else {
+                        player1.handleSwipe(touchStartX, touchStartY, releaseX, releaseY);
+                        ball.handleSwipe(1, touchStartX, touchStartY, releaseX, releaseY);
+                    }
+                    return true;
+            }
+        }
+        else if (state == STATE.MAIN_MENU) {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    mainMenu.handleTouchEvent(event);
+                    return true;
+                case MotionEvent.ACTION_UP:
+                    mainMenu.resetTouch();
+                    return true;
+            }
         }
         return super.onTouchEvent(event);
     }
