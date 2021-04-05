@@ -34,7 +34,6 @@ public class MainActivity extends Activity {
         screenWidth = displayMetrics.widthPixels;
 
         game = new Game(this);
-        game.state = Game.STATE.MAIN_MENU;
         setContentView(game);
     }
 

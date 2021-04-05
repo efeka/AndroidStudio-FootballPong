@@ -55,17 +55,18 @@ public class MainMenu extends GameObject {
 
         paint.setColor(colors[1]);
         paint.setTextSize(216);
-        canvas.drawText("Football Pong", 0, height / 4, paint);
+        canvas.drawText("Football Pong", width / 6, height / 3, paint);
     }
 
     @Override
     public void update() {
         if (touchX != -1 && touchY != -1) {
             if (getBounds1P().contains((int) touchX, (int) touchY)) {
-                Game.state = Game.STATE.ONE_PLAYER;
+                Game.state = Game.STATE.ONE_PLAYER_MENU;
+                OnePlayerMenu.resetTouch();
             }
             if (getBounds2P().contains((int) touchX, (int) touchY)) {
-                Game.state = Game.STATE.TWO_PLAYERS;
+                Game.state = Game.STATE.TWO_PLAYERS_MENU;
             }
             if (getBoundsSettings().contains((int) touchX, (int) touchY)) {
                 Game.state = Game.STATE.SETTINGS;
@@ -76,7 +77,7 @@ public class MainMenu extends GameObject {
     public void handleTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_UP:
-                touchX = touchY = 0;
+                touchX = touchY = -1;
                 break;
             case MotionEvent.ACTION_DOWN:
                 touchX = event.getX();

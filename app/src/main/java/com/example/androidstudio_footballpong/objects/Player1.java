@@ -38,15 +38,13 @@ public class Player1 extends GameObject {
     private float swipeStartX = 0, swipeStartY = 0;
     private float swipeEndX = 0, swipeEndY = 0;
 
-    private int maxEnergy = 150;
-    private int energy;
+    public int maxEnergy = 200;
+    public static int energy = 200;
 
     private Animation player1Walk;
 
     public Player1(Context context, double x, double y, int width, int height) {
         super(x, y, width, height);
-
-        energy = maxEnergy;
 
         paint = new Paint();
         int color = ContextCompat.getColor(context, R.color.player1);
@@ -64,15 +62,18 @@ public class Player1 extends GameObject {
 
     @Override
     public void update() {
+        /*
         if (!moving && energy < maxEnergy)
             energy++;
         if (energy >= maxEnergy)
             energy = maxEnergy;
+         */
+        if (energy <= 0 && maxSpeed > DEFAULT_MAX_SPEED / 4)
+            maxSpeed = DEFAULT_MAX_SPEED / 4;
 
         if (moving) {
-            energy -= 2;
-            if (energy <= 0)
-                moving = false;
+            if (energy > 0)
+                energy -= 1;
 
             x += velX;
             y += velY;
@@ -137,8 +138,16 @@ public class Player1 extends GameObject {
         return energy;
     }
 
+    public void setEnergy(int energy) {
+        this.energy = energy;
+    }
+
     public int getMaxEnergy() {
         return maxEnergy;
+    }
+
+    public void setMaxEnergy(int maxEnergy) {
+        this.maxEnergy = maxEnergy;
     }
 
 }

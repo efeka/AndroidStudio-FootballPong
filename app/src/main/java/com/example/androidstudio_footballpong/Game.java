@@ -15,6 +15,7 @@ import com.example.androidstudio_footballpong.objects.Ball;
 import com.example.androidstudio_footballpong.objects.GameMenu;
 import com.example.androidstudio_footballpong.objects.Goal;
 import com.example.androidstudio_footballpong.objects.MainMenu;
+import com.example.androidstudio_footballpong.objects.OnePlayerMenu;
 import com.example.androidstudio_footballpong.objects.Player1;
 
 /*
@@ -38,6 +39,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private GameLoop gameLoop;
 
     private final MainMenu mainMenu;
+    private final OnePlayerMenu onePlayerMenu;
     private final GameMenu gameMenu;
     private final Player1 player1;
     private final Ball ball;
@@ -60,6 +62,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         touchEffect = new Animation(1, tex.touchEffect[7], tex.touchEffect[6], tex.touchEffect[5], tex.touchEffect[4], tex.touchEffect[3], tex.touchEffect[2], tex.touchEffect[1], tex.touchEffect[0]);
 
         mainMenu = new MainMenu(getContext(), 0, 0, MainActivity.screenWidth, MainActivity.screenHeight);
+        onePlayerMenu = new OnePlayerMenu(getContext(), 0, 0, MainActivity.screenWidth, MainActivity.screenHeight);
         player1 = new Player1(getContext(), MainActivity.screenWidth / 4, MainActivity.screenHeight / 2, MainActivity.screenHeight / 10, MainActivity.screenWidth / 10);
         gameMenu = new GameMenu(getContext(), MainActivity.screenWidth / 2 - MainActivity.screenWidth / 28, 3, player1);
         int goalWidth = 100, goalHeight = 2 * MainActivity.screenHeight / 7;
@@ -72,8 +75,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
     public static enum STATE{
         MAIN_MENU,
-        ONE_P_SELECTION,
-        TWO_P_SELECTION,
+        ONE_PLAYER_MENU,
+        TWO_PLAYERS_MENU,
         SETTINGS,
         PAUSED_1P,
         PAUSED_2P,
@@ -135,6 +138,16 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                     return true;
             }
         }
+        else if (state == STATE.ONE_PLAYER_MENU) {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    onePlayerMenu.handleTouchEvent(event);
+                    return true;
+                case MotionEvent.ACTION_UP:
+                    onePlayerMenu.resetTouch();
+                    return true;
+            }
+        }
         return super.onTouchEvent(event);
     }
 
@@ -165,7 +178,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
             //football field background (in game)
             if (state == STATE.ONE_PLAYER || state == STATE.TWO_PLAYERS)
                 canvas.drawBitmap(tex.gameBackground, 0f, 0f, paint);
-
             player1.draw(canvas);
             ball.draw(canvas);
             gameMenu.draw(canvas);
@@ -173,29 +185,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
             leftGoal.draw(canvas);
             rightGoal.draw(canvas);
         }
-        else if (state == STATE.MAIN_MENU) {
+        else if (state == STATE.MAIN_MENU)
             mainMenu.draw(canvas);
-        }
-    }
-
-    //displays the number of updates
-    public void drawUPS(Canvas canvas) {
-        String averageUPS = Double.toString(gameLoop.getAverageUPS());
-        Paint paint = new Paint();
-        int color = ContextCompat.getColor(getContext(), R.color.white);
-        paint.setColor(color);
-        paint.setTextSize(36);
-        canvas.drawText("UPS: " + averageUPS, 100, 100, paint);
-    }
-
-    //displays the number of frames
-    public void drawFPS(Canvas canvas) {
-        String averageFPS = Double.toString(gameLoop.getAverageFPS());
-        Paint paint = new Paint();
-        int color = ContextCompat.getColor(getContext(), R.color.white);
-        paint.setColor(color);
-        paint.setTextSize(36);
-        canvas.drawText("FPS: " + averageFPS, 100, 200, paint);
+        else if (state == STATE.ONE_PLAYER_MENU)
+            onePlayerMenu.draw(canvas);
     }
 
     public void update() {
@@ -210,9 +203,34 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
             if (touchEffect.getPlayedOnce())
                 touchEffect.stopAnimation();
         }
-        else if (state == STATE.MAIN_MENU) {
+        else if (state == STATE.MAIN_MENU)
             mainMenu.update();
-        }
+        else if (state == STATE.ONE_PLAYER_MENU)
+            onePlayerMenu.update();
+    }
+
+    /**
+     * displays the number of updates
+     */
+    public void drawUPS(Canvas canvas) {
+        String averageUPS = Double.toString(gameLoop.getAverageUPS());
+        Paint paint = new Paint();
+        int color = ContextCompat.getColor(getContext(), R.color.white);
+        paint.setColor(color);
+        paint.setTextSize(36);
+        canvas.drawText("UPS: " + averageUPS, 100, 100, paint);
+    }
+
+    /**
+     * displays the number of frames
+     */
+    public void drawFPS(Canvas canvas) {
+        String averageFPS = Double.toString(gameLoop.getAverageFPS());
+        Paint paint = new Paint();
+        int color = ContextCompat.getColor(getContext(), R.color.white);
+        paint.setColor(color);
+        paint.setTextSize(36);
+        canvas.drawText("FPS: " + averageFPS, 100, 200, paint);
     }
 
     public void pauseGame() {
