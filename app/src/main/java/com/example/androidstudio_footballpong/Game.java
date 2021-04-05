@@ -60,16 +60,21 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         gameLoop = new GameLoop(this, surfaceHolder);
 
         touchEffect = new Animation(1, tex.touchEffect[7], tex.touchEffect[6], tex.touchEffect[5], tex.touchEffect[4], tex.touchEffect[3], tex.touchEffect[2], tex.touchEffect[1], tex.touchEffect[0]);
-
+        /*
+        for manual angle testing
+        float bX = MainActivity.screenWidth / 2, bY = MainActivity.screenHeight;
+        float pX = 0, pY = 300;
+        player1 = new Player1(getContext(), MainActivity.screenWidth / 4, MainActivity.screenHeight / 2, MainActivity.screenHeight / 10, MainActivity.screenWidth / 10);
+        ball = new Ball(getContext(), leftGoal, rightGoal, player1, MainActivity.screenWidth / 2 - MainActivity.screenWidth / 80, MainActivity.screenHeight / 2 - MainActivity.screenWidth / 80, MainActivity.screenWidth / 40, MainActivity.screenWidth / 40);
+        */
         mainMenu = new MainMenu(getContext(), 0, 0, MainActivity.screenWidth, MainActivity.screenHeight);
         onePlayerMenu = new OnePlayerMenu(getContext(), 0, 0, MainActivity.screenWidth, MainActivity.screenHeight);
-        player1 = new Player1(getContext(), MainActivity.screenWidth / 4, MainActivity.screenHeight / 2, MainActivity.screenHeight / 10, MainActivity.screenWidth / 10);
+        player1 = new Player1(getContext(), pX, pY, MainActivity.screenHeight / 10, MainActivity.screenWidth / 10);
         gameMenu = new GameMenu(getContext(), MainActivity.screenWidth / 2 - MainActivity.screenWidth / 28, 3, player1);
         int goalWidth = 100, goalHeight = 2 * MainActivity.screenHeight / 7;
         leftGoal = new Goal(getContext(), 0, MainActivity.screenHeight / 2 - goalHeight / 2, goalWidth, goalHeight, Goal.LEFT_GOAL);
         rightGoal = new Goal(getContext(),MainActivity.screenWidth - goalWidth, MainActivity.screenHeight / 2 - goalHeight / 2, goalWidth, goalHeight, Goal.RIGHT_GOAL);
-        ball = new Ball(getContext(), leftGoal, rightGoal, player1, MainActivity.screenWidth / 2 - MainActivity.screenWidth / 80, MainActivity.screenHeight / 2 - MainActivity.screenWidth / 80, MainActivity.screenWidth / 40, MainActivity.screenWidth / 40);
-
+        ball = new Ball(getContext(), leftGoal, rightGoal, player1, bX, bY, MainActivity.screenWidth / 40, MainActivity.screenWidth / 40);
         setFocusable(true);
     }
 
@@ -83,7 +88,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         ONE_PLAYER,
         TWO_PLAYERS
     };
-    public static STATE state = STATE.MAIN_MENU;
+    public static STATE state = STATE.ONE_PLAYER;
 
     public static Texture getTexture() {
         return tex;

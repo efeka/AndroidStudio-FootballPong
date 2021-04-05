@@ -2,10 +2,8 @@ package com.example.androidstudio_footballpong.objects;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.util.Log;
 
 import androidx.core.content.ContextCompat;
 
