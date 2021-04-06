@@ -59,7 +59,7 @@ public class AIPlayer extends GameObject {
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawRect(getBounds(), paint);
+        canvas.drawRect(getBoundsExact(), paint);
     }
 
     @Override

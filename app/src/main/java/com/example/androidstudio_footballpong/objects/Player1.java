@@ -53,9 +53,15 @@ public class Player1 extends GameObject {
 
     @Override
     public void draw(Canvas canvas) {
-        //canvas.drawRect(getBounds(), paint);
-        //canvas.drawLine(swipeStartX, swipeStartY, swipeEndX, swipeEndY, paint);
         player1Walk.drawAnimation(canvas, paint, (float) x, (float) y);
+        /*
+        canvas.drawRect(getBounds(), paint);
+        canvas.drawLine(swipeStartX, swipeStartY, swipeEndX, swipeEndY, paint);
+        canvas.drawRect(getBoundsLeft(), paint);
+        canvas.drawRect(getBoundsRight(), paint);
+        canvas.drawRect(getBoundsTop(), paint);
+        canvas.drawRect(getBoundsBot(), paint);
+         */
     }
 
     @Override
@@ -109,10 +115,44 @@ public class Player1 extends GameObject {
             velY = 0;
         }
 
-        //collisions with the left goal
+        if (getBoundsTop().intersect(leftGoal.getBounds())) {
+            y = leftGoal.getBounds().centerY() + leftGoal.getBounds().height() / 2;
+            ignoreY = true;
+            velY = 0;
+        }
+        else if (getBoundsBot().intersect(leftGoal.getBounds())) {
+            y = leftGoal.getBounds().centerY() - leftGoal.getBounds().height() / 2 - height;
+            ignoreY = true;
+            velY = 0;
+        }
+        else if (getBoundsLeft().intersect(leftGoal.getBounds())) {
+            x = leftGoal.getBounds().centerX() + leftGoal.getBounds().width() / 2;
+            ignoreX = true;
+            velX = 0;
+        }
 
     }
 
+    public Rect getBoundsTop() {
+        return createRect((int) x + 15, (int) y, width - 30, height / 5);
+    }
+
+    public Rect getBoundsBot() {
+        return createRect((int) x + 15, (int) y + height - 10, width - 30, width / 5);
+    }
+
+    public Rect getBoundsLeft() {
+        return createRect((int) x, (int) y + 15, height / 5, height - 30);
+    }
+
+    public Rect getBoundsRight() {
+        return createRect((int) x + width - height / 5, (int) y + 15, height / 5, height - 30);
+    }
+
+    /**
+     * Returns a bigger rectangle than the player's model.
+     * This method is only used to check if the player is close enough to the ball to kick it.
+     */
     @Override
     public Rect getBounds() {
         return createRect((int) x - width / 2, (int) y - height / 4, width + width, height + height / 2);

@@ -31,6 +31,10 @@ public abstract class GameObject {
     public abstract void update();
     public abstract Rect getBounds();
 
+    public Rect getBoundsExact() {
+        return createRect((int) x, (int) y, width, height);
+    }
+
     public double getVelX() {
         return velX;
     }
