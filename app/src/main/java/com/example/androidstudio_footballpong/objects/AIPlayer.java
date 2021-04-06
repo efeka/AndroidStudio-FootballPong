@@ -5,7 +5,10 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
+import androidx.core.content.ContextCompat;
+
 import com.example.androidstudio_footballpong.Game;
+import com.example.androidstudio_footballpong.R;
 import com.example.androidstudio_footballpong.Texture;
 
 public class AIPlayer extends GameObject {
@@ -15,12 +18,20 @@ public class AIPlayer extends GameObject {
     public static final int HARD = 2;
     public static int selectedDifficulty = MEDIUM;
 
-    private Context context;
     private Paint paint;
     private Texture tex = Game.getTexture();
 
     private Ball ball;
 
+    private final int DEFAULT_MAX_SPEED = 15;
+    private int maxSpeed = 15;
+
+    private boolean moving = false;
+    private double targetX = 0, targetY = 0;
+    private boolean ignoreX = false, ignoreY = false;
+
+    public int maxEnergy = 200;
+    public static int energy = 200;
     /*
     Data for angle & coordinate relations
     downwards shots
@@ -40,24 +51,38 @@ public class AIPlayer extends GameObject {
 
     public AIPlayer(Context context, Ball ball, double x, double y, int width, int height) {
         super(x, y, width, height);
-        this.context = context;
         this.ball = ball;
 
         paint = new Paint();
+        paint.setColor(ContextCompat.getColor(context, R.color.black));
     }
 
     @Override
     public void draw(Canvas canvas) {
-
+        canvas.drawRect(getBounds(), paint);
     }
 
     @Override
     public void update() {
+        if (energy <= 0 && maxSpeed > DEFAULT_MAX_SPEED / 4)
+            maxSpeed = DEFAULT_MAX_SPEED / 4;
 
+        if (moving) {
+            if (energy > 0)
+                energy -= 1;
+
+            x += velX;
+            y += velY;
+
+            if ((Math.abs(x - targetX) <= 10 || ignoreX) && (Math.abs(y - targetY) <= 10 || ignoreY)) {
+                moving = false;
+                velX = velY = 0;
+            }
+        }
     }
 
     @Override
     public Rect getBounds() {
-        return null;
+        return createRect((int) x - width / 2, (int) y - height / 4, width + width, height + height / 2);
     }
 }

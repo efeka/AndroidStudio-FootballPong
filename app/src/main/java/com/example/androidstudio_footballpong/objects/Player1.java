@@ -18,14 +18,15 @@ import com.example.androidstudio_footballpong.Texture;
  */
 public class Player1 extends GameObject {
 
-    private Texture tex = Game.getTexture();
-
     private final int BORDER_LEFT = 0;
     private final int BORDER_RIGHT = MainActivity.screenWidth / 2;
     private final int BORDER_UP = 0;
     private final int BORDER_DOWN = MainActivity.screenHeight;
 
+    private Texture tex = Game.getTexture();
     private Paint paint;
+
+    private Goal leftGoal;
 
     private final int DEFAULT_MAX_SPEED = 15;
     private int maxSpeed = 15;
@@ -34,16 +35,14 @@ public class Player1 extends GameObject {
     private double targetX = 0, targetY = 0;
     private boolean ignoreX = false, ignoreY = false;
 
-    private float swipeStartX = 0, swipeStartY = 0;
-    private float swipeEndX = 0, swipeEndY = 0;
-
     public int maxEnergy = 200;
     public static int energy = 200;
 
     private Animation player1Walk;
 
-    public Player1(Context context, double x, double y, int width, int height) {
+    public Player1(Context context, Goal leftGoal, double x, double y, int width, int height) {
         super(x, y, width, height);
+        this.leftGoal = leftGoal;
 
         paint = new Paint();
         int color = ContextCompat.getColor(context, R.color.player1);
@@ -88,6 +87,7 @@ public class Player1 extends GameObject {
     }
 
     private void collision() {
+        //collisions with screen borders
         if (x < BORDER_LEFT) {
             x = BORDER_LEFT;
             ignoreX = true;
@@ -108,6 +108,9 @@ public class Player1 extends GameObject {
             ignoreY = true;
             velY = 0;
         }
+
+        //collisions with the left goal
+
     }
 
     @Override
@@ -124,13 +127,6 @@ public class Player1 extends GameObject {
         double hypot = Math.hypot(targetX - x, targetY - y);
         velX = (float) (maxSpeed * (targetX - x) / hypot);
         velY = (float) (maxSpeed * (targetY - y) / hypot);
-    }
-
-    public void handleSwipe(float touchStartX, float touchStartY, float releaseX, float releaseY) {
-        swipeStartX = touchStartX;
-        swipeStartY = touchStartY;
-        swipeEndX = releaseX;
-        swipeEndY = releaseY;
     }
 
     public int getEnergy() {

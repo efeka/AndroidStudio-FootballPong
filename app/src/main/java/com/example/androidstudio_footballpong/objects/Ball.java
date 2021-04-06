@@ -160,10 +160,13 @@ public class Ball extends GameObject {
     }
 
     /**
-     * @param playerId indicates which player did the swipe, set this to 1 for player1 and 2 for player2
+     * @param playerId indicates which player did the swipe, set this to 0 for AIPlayer, 1 for Player1 and 2 for Player2
      */
     public void handleSwipe(int playerId, float touchStartX, float touchStartY, float releaseX, float releaseY) {
-        if (playerId == 1) {
+        if (playerId == 0) {
+
+        }
+        else if (playerId == 1) {
             if (getBounds().intersect(player1.getBounds())) {
                 double hypot = Math.hypot(releaseX - touchStartX, releaseY - touchStartY);
                 velX = (float) (MAX_SPEED * (releaseX - touchStartX) / hypot);
