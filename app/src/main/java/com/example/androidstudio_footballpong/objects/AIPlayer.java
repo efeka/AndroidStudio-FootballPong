@@ -127,7 +127,7 @@ public class AIPlayer extends GameObject {
         float w = MainActivity.screenWidth;
         float distRight = w - (float) x;
         float distUp = (float) y;
-        float targetX = (h * w - h * distRight) / (2 * distUp + h);
+        float targetX = (h * w - h * distRight) / (2 * distUp + h) - ball.getWidth() / 2;
         float targetY = 0;
         ball.handleSwipe(0, (float) ball.getX() + ball.getWidth() / 2, (float) ball.getY() + ball.getWidth() / 2, targetX, targetY);
     }

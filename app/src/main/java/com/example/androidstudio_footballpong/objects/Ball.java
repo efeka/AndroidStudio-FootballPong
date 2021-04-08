@@ -7,8 +7,10 @@ import android.graphics.Rect;
 
 import androidx.core.content.ContextCompat;
 
+import com.example.androidstudio_footballpong.Game;
 import com.example.androidstudio_footballpong.MainActivity;
 import com.example.androidstudio_footballpong.R;
+import com.example.androidstudio_footballpong.Texture;
 
 import java.util.ArrayList;
 
@@ -24,6 +26,7 @@ public class Ball extends GameObject {
     private final int BORDER_DOWN = MainActivity.screenHeight - 10;
 
     private Paint paint;
+    private Texture tex = Game.getTexture();
     private Context context;
 
     private Player1 player1;
@@ -60,15 +63,17 @@ public class Ball extends GameObject {
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawCircle((int) x, (int) y, width, paint);
+        //canvas.drawCircle((int) x, (int) y, width, paint);
+        canvas.drawBitmap(tex.ball, (int) x - width, (int) y - width, paint);
         /*
+        canvas.drawRect(getBounds(), paint);
         int color = ContextCompat.getColor(context, R.color.black);
         paint.setColor(color);
         canvas.drawRect(getBoundsLeft(), paint);
         canvas.drawRect(getBoundsTop(), paint);
         canvas.drawRect(getBoundsBottom(), paint);
         canvas.drawRect(getBoundsRight(), paint);
-         */
+        */
     }
 
     @Override
@@ -86,17 +91,17 @@ public class Ball extends GameObject {
 
     public void collision() {
         //collision with screen borders
-        if (x - width / 2 < BORDER_LEFT) {
+        if (x < BORDER_LEFT) {
             velX *= -1;
             x = BORDER_LEFT + width / 2;
         }
-        if (x + width / 2 > BORDER_RIGHT) {
+        if (x + width > BORDER_RIGHT) {
             velX *= -1;
-            x = BORDER_RIGHT - width / 2;
+            x = BORDER_RIGHT - width;
         }
-        if (y - width < BORDER_UP) {
+        if (y < BORDER_UP) {
             velY *= -1;
-            y = BORDER_UP + width;
+            y = BORDER_UP + width / 2;
         }
         if (y + width > BORDER_DOWN) {
             velY *= -1;
@@ -189,7 +194,7 @@ public class Ball extends GameObject {
 
     @Override
     public Rect getBounds() {
-        return new Rect((int) x, (int) y, (int) x + width, (int) y + width);
+        return createRect((int) x - width, (int) y - width, width * 2, width * 2);
     }
 
     public Rect getBoundsTop() {

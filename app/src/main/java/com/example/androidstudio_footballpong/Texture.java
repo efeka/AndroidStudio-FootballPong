@@ -21,6 +21,7 @@ public class Texture {
     public Bitmap[] player1 = new Bitmap[5];
     public Bitmap[] touchEffect = new Bitmap[8];
     public Bitmap[] goals = new Bitmap[2];
+    public Bitmap ball;
 
     public Texture(Context context) {
         try {
@@ -64,6 +65,9 @@ public class Texture {
         goals[0] = goals[0].createScaledBitmap(goals[0], 100, 2 * MainActivity.screenHeight / 7, false);
         goals[1] = Bitmap.createBitmap(assets_sheet, 34, 34, 32, 100);
         goals[1] = goals[1].createScaledBitmap(goals[1], 100, 2 * MainActivity.screenHeight / 7, false);
+
+        ball = Bitmap.createBitmap(assets_sheet, 67, 34, 100, 100);
+        ball = ball.createScaledBitmap(ball, MainActivity.screenWidth / 20, MainActivity.screenWidth / 20, false);
     }
 
 }
