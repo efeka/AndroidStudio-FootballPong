@@ -8,6 +8,7 @@ import android.graphics.Rect;
 import androidx.core.content.ContextCompat;
 
 import com.example.androidstudio_footballpong.Game;
+import com.example.androidstudio_footballpong.MainActivity;
 import com.example.androidstudio_footballpong.R;
 import com.example.androidstudio_footballpong.Texture;
 
@@ -37,6 +38,8 @@ public class AIPlayer extends GameObject {
     public int maxEnergy = 200;
     public static int energy = 200;
 
+    private int shootTimer = 0, shootCooldown = 60;
+
     /*
     Data for angle & coordinate relations
     -------------------------------------
@@ -58,8 +61,8 @@ public class AIPlayer extends GameObject {
     ----------------------------------
     double h = MainActivity.screenHeight;
     double w = MainActivity.screenWidth;
-    double t = w - player1.getX();
-    double z = player1.getY();
+    double t = w - x;
+    double z = y;
     int releaseX = (int) ((h * w - h * t) / (2 * z + h));
     int releaseY = 0;
     */
@@ -94,6 +97,39 @@ public class AIPlayer extends GameObject {
                 velX = velY = 0;
             }
         }
+
+        collision();
+    }
+
+    private void collision() {
+        if (shootTimer < shootCooldown)
+            shootTimer++;
+        else {
+            if (getBounds().intersect(ball.getBounds())) {
+                shootTimer = 0;
+                shoot();
+            }
+        }
+
+    }
+
+    /**
+     * This method makes the AI take a shot and it should only be called if the ball is close enough to the AIPlayer.
+     * The AI will attempt to do different and more difficult shots depending on the selected difficulty.
+     */
+    private void shoot() {
+        /*
+        This formula calculates a shot where the ball will bounce from the top border and go into the middle of the goal.
+        It does not take into account the opponent player's position or the ball's dimensions.
+        This type of shot should be exclusive to medium and hard difficulties because it calculates the shot beforehand, even though it doesn't always execute perfectly.
+         */
+        float h = MainActivity.screenHeight;
+        float w = MainActivity.screenWidth;
+        float distRight = w - (float) x;
+        float distUp = (float) y;
+        float targetX = (h * w - h * distRight) / (2 * distUp + h);
+        float targetY = 0;
+        ball.handleSwipe(0, (float) ball.getX() + ball.getWidth() / 2, (float) ball.getY() + ball.getWidth() / 2, targetX, targetY);
     }
 
     @Override

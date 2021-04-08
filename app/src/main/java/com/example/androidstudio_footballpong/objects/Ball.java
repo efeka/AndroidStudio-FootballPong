@@ -164,7 +164,9 @@ public class Ball extends GameObject {
      */
     public void handleSwipe(int playerId, float touchStartX, float touchStartY, float releaseX, float releaseY) {
         if (playerId == 0) {
-
+            double hypot = Math.hypot(releaseX - touchStartX, releaseY - touchStartY);
+            velX = (float) (MAX_SPEED * (releaseX - touchStartX) / hypot);
+            velY = (float) (MAX_SPEED * (releaseY - touchStartY) / hypot);
         }
         else if (playerId == 1) {
             if (getBounds().intersect(player1.getBounds())) {
