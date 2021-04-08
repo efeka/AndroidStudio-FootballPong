@@ -11,6 +11,10 @@ import com.example.androidstudio_footballpong.Game;
 import com.example.androidstudio_footballpong.R;
 import com.example.androidstudio_footballpong.Texture;
 
+/**
+ * AIPlayer is controlled by the computer when the user selects the "1 Player" mode.
+ * It has easy, medium and hard modes which will change how it shoots and how it manages it's energy.
+ */
 public class AIPlayer extends GameObject {
 
     public static final int EASY = 0;
@@ -32,8 +36,10 @@ public class AIPlayer extends GameObject {
 
     public int maxEnergy = 200;
     public static int energy = 200;
+
     /*
     Data for angle & coordinate relations
+    -------------------------------------
     downwards shots
     top left = 485.96375 334.0393 1295.9033 925.02686
     top mid = 794.96704 363.0432 1240.9589 789.0381
@@ -47,6 +53,15 @@ public class AIPlayer extends GameObject {
     bot left = 29.945068 1028.0237 1394.9524 21.060791
     bot mid = 518.9575 1025.0244 1549.8944 21.060791
     bot right = 1041.9122 1021.0034 1637.9004 25.048828
+
+    Scoring with a wall bounce formula
+    ----------------------------------
+    double h = MainActivity.screenHeight;
+    double w = MainActivity.screenWidth;
+    double t = w - player1.getX();
+    double z = player1.getY();
+    int releaseX = (int) ((h * w - h * t) / (2 * z + h));
+    int releaseY = 0;
     */
 
     public AIPlayer(Context context, Ball ball, double x, double y, int width, int height) {

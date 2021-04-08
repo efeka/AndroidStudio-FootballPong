@@ -14,7 +14,7 @@ import com.example.androidstudio_footballpong.R;
 import com.example.androidstudio_footballpong.Texture;
 
 /**
- * Player1 is the main character which is controlled by the user in both "1 player" and "2 player" modes.
+ * Player1 is the main character which is controlled by a user in both "1 player" and "2 player" modes.
  */
 public class Player1 extends GameObject {
 
@@ -35,8 +35,8 @@ public class Player1 extends GameObject {
     private double targetX = 0, targetY = 0;
     private boolean ignoreX = false, ignoreY = false;
 
-    public int maxEnergy = 200;
-    public static int energy = 200;
+    public int maxEnergy = 1000;
+    public static int energy = 1000;
 
     private Animation player1Walk;
 
