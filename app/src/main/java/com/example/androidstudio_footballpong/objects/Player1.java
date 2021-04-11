@@ -119,13 +119,11 @@ public class Player1 extends GameObject {
             y = leftGoal.getBounds().centerY() + leftGoal.getBounds().height() / 2;
             ignoreY = true;
             velY = 0;
-        }
-        else if (getBoundsBot().intersect(leftGoal.getBounds())) {
+        } else if (getBoundsBot().intersect(leftGoal.getBounds())) {
             y = leftGoal.getBounds().centerY() - leftGoal.getBounds().height() / 2 - height;
             ignoreY = true;
             velY = 0;
-        }
-        else if (getBoundsLeft().intersect(leftGoal.getBounds())) {
+        } else if (getBoundsLeft().intersect(leftGoal.getBounds())) {
             x = leftGoal.getBounds().centerX() + leftGoal.getBounds().width() / 2;
             ignoreX = true;
             velX = 0;

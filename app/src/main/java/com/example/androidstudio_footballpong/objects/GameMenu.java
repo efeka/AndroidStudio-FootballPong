@@ -20,12 +20,14 @@ public class GameMenu extends GameObject {
     private Paint paint;
 
     private Player1 player1;
+    private AIPlayer aiPlayer;
 
     private int[] energyColors = new int[3];
 
-    public GameMenu(Context context, double x, double y, Player1 player1) {
+    public GameMenu(Context context, Player1 player1, AIPlayer aiPlayer, double x, double y) {
         super(x, y);
         this.player1 = player1;
+        this.aiPlayer = aiPlayer;
 
         paint = new Paint();
         energyColors[0] = ContextCompat.getColor(context, R.color.energy_border);
@@ -38,7 +40,7 @@ public class GameMenu extends GameObject {
         //pause button
         canvas.drawBitmap(tex.gameMenu[0], (float) x, (float) y, paint);
 
-        //player1 energy
+        //Player1 energy
         int rectRadius = 10;
         paint.setColor(energyColors[0]);
         canvas.drawRoundRect(getEnergy1Border(), rectRadius, rectRadius, paint);
@@ -46,6 +48,15 @@ public class GameMenu extends GameObject {
         canvas.drawRoundRect(getEnergy1Background(), rectRadius, rectRadius, paint);
         paint.setColor(energyColors[2]);
         canvas.drawRoundRect(getEnergy1Bar(), rectRadius, rectRadius, paint);
+
+        //AIPlayer energy
+        rectRadius = 10;
+        paint.setColor(energyColors[0]);
+        canvas.drawRoundRect(getEnergyAIBorder(), rectRadius, rectRadius, paint);
+        paint.setColor(energyColors[1]);
+        canvas.drawRoundRect(getEnergyAIBackground(), rectRadius, rectRadius, paint);
+        paint.setColor(energyColors[2]);
+        canvas.drawRoundRect(getEnergyAIBar(), rectRadius, rectRadius, paint);
     }
 
     @Override
@@ -79,8 +90,25 @@ public class GameMenu extends GameObject {
         return createRectF(MainActivity.screenWidth / 40 + offset / 2, (int) y + height / 2 + offset / 2, (int) (normalize * player1.getEnergy()), height - offset);
     }
 
-    public Rect createRect(int x, int y, int width, int height) {
-        return new Rect(x, y, x + width, y + height);
+    public RectF getEnergyAIBorder() {
+        int width = MainActivity.screenWidth / 6;
+        int height = MainActivity.screenHeight / 16;
+        return createRectF(MainActivity.screenWidth - MainActivity.screenWidth / 40 - width, (int) y + height / 2, width, height);
+    }
+
+    public RectF getEnergyAIBackground() {
+        int offset = 8;
+        int width = MainActivity.screenWidth / 6;
+        int height = MainActivity.screenHeight / 16;
+        return createRectF(MainActivity.screenWidth - MainActivity.screenWidth / 40 - width + offset / 2, (int) y + height / 2 + offset / 2, width - offset, height - offset);
+    }
+
+    public RectF getEnergyAIBar() {
+        int offset = 8;
+        int width = MainActivity.screenWidth / 6;
+        int height = MainActivity.screenHeight / 16;
+        double normalize = (double) (width - offset) / aiPlayer.getMaxEnergy();
+        return createRectF(MainActivity.screenWidth - MainActivity.screenWidth / 40 - width + offset / 2 + (int) (normalize * aiPlayer.getMaxEnergy() - normalize * aiPlayer.getEnergy()), (int) y + height / 2 + offset / 2, (int) (normalize * aiPlayer.getEnergy()), height - offset);
     }
 
     public RectF createRectF(int x, int y, int width, int height) {

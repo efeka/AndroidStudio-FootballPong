@@ -9,7 +9,7 @@ public class GameData {
     private int score1 = 0, score2 = 0;
     private int gameTimer = 60;
     private int difficulty = DIFFICULTY_MEDIUM;
-,
+
     public int decrementTimer(int seconds) {
         gameTimer -= seconds;
         return gameTimer >= 0 ? gameTimer : (gameTimer = 0);

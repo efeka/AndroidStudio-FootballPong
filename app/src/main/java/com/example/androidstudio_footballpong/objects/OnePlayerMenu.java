@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 import androidx.core.content.ContextCompat;
 
 import com.example.androidstudio_footballpong.Game;
+import com.example.androidstudio_footballpong.GameData;
 import com.example.androidstudio_footballpong.MainActivity;
 import com.example.androidstudio_footballpong.R;
 import com.example.androidstudio_footballpong.Texture;
@@ -21,17 +22,19 @@ public class OnePlayerMenu extends GameObject {
 
     private static float touchX = -1f, touchY = -1f;
 
-    private int selectedDifficulty = AIPlayer.MEDIUM;
+    private GameData gameData;
+    private int selectedDifficulty = GameData.DIFFICULTY_MEDIUM;
     private int selectedLength = 2;
 
     //temporary
     int[] colors = new int[3];
 
-    public OnePlayerMenu(Context context, double x, double y, int width, int height) {
+    public OnePlayerMenu(Context context, GameData gameData, double x, double y, int width, int height) {
         super(x, y, width, height);
         this.context = context;
-        paint = new Paint();
+        this.gameData = gameData;
 
+        paint = new Paint();
         colors[0] = ContextCompat.getColor(context, R.color.teal_200);
         colors[1] = ContextCompat.getColor(context, R.color.white);
         colors[2] = ContextCompat.getColor(context, R.color.black);
@@ -46,21 +49,19 @@ public class OnePlayerMenu extends GameObject {
         canvas.drawRect(getBoundsBack(), paint);
         canvas.drawRect(getBoundsStart(), paint);
 
-        if (selectedDifficulty == AIPlayer.EASY) {
+        if (selectedDifficulty == GameData.DIFFICULTY_EASY) {
             paint.setColor(colors[1]);
             canvas.drawRect(getBoundsEasy(), paint);
             paint.setColor(colors[2]);
             canvas.drawRect(getBoundsMedium(), paint);
             canvas.drawRect(getBoundsHard(), paint);
-        }
-        else if (selectedDifficulty == AIPlayer.MEDIUM) {
+        } else if (selectedDifficulty == GameData.DIFFICULTY_MEDIUM) {
             paint.setColor(colors[1]);
             canvas.drawRect(getBoundsMedium(), paint);
             paint.setColor(colors[2]);
             canvas.drawRect(getBoundsEasy(), paint);
             canvas.drawRect(getBoundsHard(), paint);
-        }
-        else {
+        } else if (selectedDifficulty == GameData.DIFFICULTY_HARD) {
             paint.setColor(colors[1]);
             canvas.drawRect(getBoundsHard(), paint);
             paint.setColor(colors[2]);
@@ -74,15 +75,13 @@ public class OnePlayerMenu extends GameObject {
             paint.setColor(colors[2]);
             canvas.drawRect(getBoundsLength2(), paint);
             canvas.drawRect(getBoundsLength3(), paint);
-        }
-        else if (selectedLength == 2) {
+        } else if (selectedLength == 2) {
             paint.setColor(colors[1]);
             canvas.drawRect(getBoundsLength2(), paint);
             paint.setColor(colors[2]);
             canvas.drawRect(getBoundsLength1(), paint);
             canvas.drawRect(getBoundsLength3(), paint);
-        }
-        else {
+        } else {
             paint.setColor(colors[1]);
             canvas.drawRect(getBoundsLength3(), paint);
             paint.setColor(colors[2]);
@@ -95,7 +94,7 @@ public class OnePlayerMenu extends GameObject {
 
         paint.setColor(colors[0]);
         paint.setTextSize(108);
-        canvas.drawText("Back",10, getBoundsBack().centerY(), paint);
+        canvas.drawText("Back", 10, getBoundsBack().centerY(), paint);
         canvas.drawText("Easy", getBoundsEasy().centerX() - getBoundsEasy().width() / 2, getBoundsEasy().centerY(), paint);
         canvas.drawText("Medium", getBoundsMedium().centerX() - getBoundsMedium().width() / 2, getBoundsMedium().centerY(), paint);
         canvas.drawText("Hard", getBoundsHard().centerX() - getBoundsHard().width() / 2, getBoundsHard().centerY(), paint);
@@ -113,14 +112,15 @@ public class OnePlayerMenu extends GameObject {
             }
             if (getBoundsStart().contains((int) touchX, (int) touchY)) {
                 Game.state = Game.STATE.ONE_PLAYER;
-                AIPlayer.selectedDifficulty = selectedDifficulty;
+                gameData.setDifficulty(selectedDifficulty);
+
             }
             if (getBoundsEasy().contains((int) touchX, (int) touchY))
-                selectedDifficulty = AIPlayer.EASY;
+                selectedDifficulty = GameData.DIFFICULTY_EASY;
             if (getBoundsMedium().contains((int) touchX, (int) touchY))
-                selectedDifficulty = AIPlayer.MEDIUM;
+                selectedDifficulty = GameData.DIFFICULTY_MEDIUM;
             if (getBoundsHard().contains((int) touchX, (int) touchY))
-                selectedDifficulty = AIPlayer.HARD;
+                selectedDifficulty = GameData.DIFFICULTY_HARD;
             if (getBoundsLength1().contains((int) touchX, (int) touchY))
                 selectedLength = 1;
             if (getBoundsLength2().contains((int) touchX, (int) touchY))

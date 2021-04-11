@@ -8,6 +8,7 @@ import android.graphics.Rect;
 import androidx.core.content.ContextCompat;
 
 import com.example.androidstudio_footballpong.Game;
+import com.example.androidstudio_footballpong.GameData;
 import com.example.androidstudio_footballpong.MainActivity;
 import com.example.androidstudio_footballpong.R;
 import com.example.androidstudio_footballpong.Texture;
@@ -18,14 +19,10 @@ import com.example.androidstudio_footballpong.Texture;
  */
 public class AIPlayer extends GameObject {
 
-    public static final int EASY = 0;
-    public static final int MEDIUM = 1;
-    public static final int HARD = 2;
-    public static int selectedDifficulty = MEDIUM;
-
     private Paint paint;
     private Texture tex = Game.getTexture();
 
+    private GameData gameData;
     private Ball ball;
 
     private final int DEFAULT_MAX_SPEED = 15;
@@ -35,8 +32,8 @@ public class AIPlayer extends GameObject {
     private double targetX = 0, targetY = 0;
     private boolean ignoreX = false, ignoreY = false;
 
-    public int maxEnergy = 200;
-    public static int energy = 200;
+    public int maxEnergy = 1000;
+    public static int energy = 1000;
 
     private int shootTimer = 0, shootCooldown = 60;
 
@@ -67,8 +64,9 @@ public class AIPlayer extends GameObject {
     int releaseY = 0;
     */
 
-    public AIPlayer(Context context, Ball ball, double x, double y, int width, int height) {
+    public AIPlayer(Context context, GameData gameData, Ball ball, double x, double y, int width, int height) {
         super(x, y, width, height);
+        this.gameData = gameData;
         this.ball = ball;
 
         paint = new Paint();
@@ -135,5 +133,21 @@ public class AIPlayer extends GameObject {
     @Override
     public Rect getBounds() {
         return createRect((int) x - width / 2, (int) y - height / 4, width + width, height + height / 2);
+    }
+
+    public int getEnergy() {
+        return energy;
+    }
+
+    public void setEnergy(int energy) {
+        this.energy = energy;
+    }
+
+    public int getMaxEnergy() {
+        return maxEnergy;
+    }
+
+    public void setMaxEnergy(int maxEnergy) {
+        this.maxEnergy = maxEnergy;
     }
 }

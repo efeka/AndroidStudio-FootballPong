@@ -36,6 +36,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
     private GameLoop gameLoop;
 
+    private final GameData gameData;
     private final MainMenu mainMenu;
     private final OnePlayerMenu onePlayerMenu;
     private final GameMenu gameMenu;
@@ -68,15 +69,16 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         player1 = new Player1(getContext(), pX, pY, MainActivity.screenHeight / 10, MainActivity.screenWidth / 10);
         ball = new Ball(getContext(), leftGoal, rightGoal, player1, bX, bY, MainActivity.screenWidth / 40, MainActivity.screenWidth / 40);
         */
+        gameData = new GameData();
         mainMenu = new MainMenu(getContext(), 0, 0, MainActivity.screenWidth, MainActivity.screenHeight);
-        onePlayerMenu = new OnePlayerMenu(getContext(), 0, 0, MainActivity.screenWidth, MainActivity.screenHeight);
+        onePlayerMenu = new OnePlayerMenu(getContext(), gameData, 0, 0, MainActivity.screenWidth, MainActivity.screenHeight);
         int goalWidth = 100, goalHeight = 2 * MainActivity.screenHeight / 7;
         leftGoal = new Goal(getContext(), 0, (float) MainActivity.screenHeight / 2 - (float) goalHeight / 2, goalWidth, goalHeight, Goal.LEFT_GOAL);
         rightGoal = new Goal(getContext(), MainActivity.screenWidth - goalWidth, (float) MainActivity.screenHeight / 2 - (float) goalHeight / 2, goalWidth, goalHeight, Goal.RIGHT_GOAL);
-        player1 = new Player1(getContext(), leftGoal,(float) MainActivity.screenWidth / 4 - MainActivity.screenHeight / 20, (float) MainActivity.screenHeight / 2 - MainActivity.screenWidth / 20, MainActivity.screenHeight / 10, MainActivity.screenWidth / 10);
-        gameMenu = new GameMenu(getContext(), (float) MainActivity.screenWidth / 2 - (float) MainActivity.screenWidth / 28, 3, player1);
+        player1 = new Player1(getContext(), leftGoal, (float) MainActivity.screenWidth / 4 - MainActivity.screenHeight / 20, (float) MainActivity.screenHeight / 2 - MainActivity.screenWidth / 20, MainActivity.screenHeight / 10, MainActivity.screenWidth / 10);
         ball = new Ball(getContext(), leftGoal, rightGoal, player1, (float) MainActivity.screenWidth / 2, (float) MainActivity.screenHeight / 2, MainActivity.screenWidth / 40, MainActivity.screenWidth / 40);
-        aiPlayer = new AIPlayer(getContext(), ball, (float) 3 * MainActivity.screenWidth / 4, (float) MainActivity.screenHeight / 2, MainActivity.screenHeight / 10, MainActivity.screenWidth / 10);
+        aiPlayer = new AIPlayer(getContext(), gameData, ball, (float) 3 * MainActivity.screenWidth / 4, (float) MainActivity.screenHeight / 2, MainActivity.screenHeight / 10, MainActivity.screenWidth / 10);
+        gameMenu = new GameMenu(getContext(), player1, aiPlayer, (float) MainActivity.screenWidth / 2 - (float) MainActivity.screenWidth / 28, 3);
 
         setFocusable(true);
     }
@@ -163,10 +165,12 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     @Override
-    public void surfaceChanged(@NonNull SurfaceHolder holder, int format, int width, int height) {}
+    public void surfaceChanged(@NonNull SurfaceHolder holder, int format, int width, int height) {
+    }
 
     @Override
-    public void surfaceDestroyed(@NonNull SurfaceHolder holder) {}
+    public void surfaceDestroyed(@NonNull SurfaceHolder holder) {
+    }
 
     @Override
     public void draw(Canvas canvas) {
