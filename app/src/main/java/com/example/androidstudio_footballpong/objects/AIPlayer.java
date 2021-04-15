@@ -19,6 +19,11 @@ import com.example.androidstudio_footballpong.Texture;
  */
 public class AIPlayer extends GameObject {
 
+    private final int BORDER_LEFT = MainActivity.screenWidth / 2;
+    private final int BORDER_RIGHT = MainActivity.screenWidth;
+    private final int BORDER_UP = 0;
+    private final int BORDER_DOWN = MainActivity.screenHeight;
+
     private Paint paint;
     private Texture tex = Game.getTexture();
 
@@ -83,6 +88,26 @@ public class AIPlayer extends GameObject {
         if (energy <= 0 && maxSpeed > DEFAULT_MAX_SPEED / 4)
             maxSpeed = DEFAULT_MAX_SPEED / 4;
 
+        if (ball.getX() < MainActivity.screenWidth / 2) {
+            if (ball.getVelX() <= 0) {
+                velX = velY = 0;
+                moving = false;
+            } else {
+                if (Math.abs(y - ball.getY()) < 30) {
+                    velY = 0;
+                    moving = false;
+                }
+                else if (y < ball.getY()) {
+                    velY = maxSpeed;
+                    moving = true;
+                }
+                else if (y > ball.getY()) {
+                    velY = -maxSpeed;
+                    moving = true;
+                }
+            }
+        }
+
         if (moving) {
             if (energy > 0)
                 energy -= 1;
@@ -109,6 +134,27 @@ public class AIPlayer extends GameObject {
             }
         }
 
+        //collisions with screen borders
+        if (x < BORDER_LEFT) {
+            x = BORDER_LEFT;
+            ignoreX = true;
+            velX = 0;
+        }
+        if (x + width > BORDER_RIGHT) {
+            x = BORDER_RIGHT - width;
+            ignoreX = true;
+            velX = 0;
+        }
+        if (y < BORDER_UP) {
+            y = BORDER_UP;
+            ignoreY = true;
+            velY = 0;
+        }
+        if (y + height > BORDER_DOWN) {
+            y = BORDER_DOWN - height;
+            ignoreY = true;
+            velY = 0;
+        }
     }
 
     /**
