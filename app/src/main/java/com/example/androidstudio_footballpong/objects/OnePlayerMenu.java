@@ -17,22 +17,21 @@ import com.example.androidstudio_footballpong.Texture;
 public class OnePlayerMenu extends GameObject {
 
     private Texture tex = Game.getTexture();
+    private GameData gameData = Game.getGameData();
     private Context context;
     private Paint paint;
 
     private static float touchX = -1f, touchY = -1f;
 
-    private GameData gameData;
     private int selectedDifficulty = GameData.DIFFICULTY_MEDIUM;
     private int selectedLength = 2;
 
     //temporary
     int[] colors = new int[3];
 
-    public OnePlayerMenu(Context context, GameData gameData, double x, double y, int width, int height) {
+    public OnePlayerMenu(Context context, double x, double y, int width, int height) {
         super(x, y, width, height);
         this.context = context;
-        this.gameData = gameData;
 
         paint = new Paint();
         colors[0] = ContextCompat.getColor(context, R.color.teal_200);

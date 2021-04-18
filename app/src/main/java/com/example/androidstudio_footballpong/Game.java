@@ -20,7 +20,6 @@ import com.example.androidstudio_footballpong.objects.OnePlayerMenu;
 import com.example.androidstudio_footballpong.objects.Player1;
 
 /*
- * TODO: make the game menu functional
  * TODO: Make easy-medium-hard modes for AI opponent
  * TODO: add 1 player and 2 player modes
  * TODO: graphics
@@ -32,11 +31,12 @@ import com.example.androidstudio_footballpong.objects.Player1;
 public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
     private static Texture tex;
+    private static GameData gameData;
+
     private Paint paint;
 
     private GameLoop gameLoop;
 
-    private final GameData gameData;
     private final MainMenu mainMenu;
     private final OnePlayerMenu onePlayerMenu;
     private final GameMenu gameMenu;
@@ -62,22 +62,16 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         gameLoop = new GameLoop(this, surfaceHolder);
 
         touchEffect = new Animation(1, tex.touchEffect[7], tex.touchEffect[6], tex.touchEffect[5], tex.touchEffect[4], tex.touchEffect[3], tex.touchEffect[2], tex.touchEffect[1], tex.touchEffect[0]);
-        /*
-        for manual angle testing
-        float bX = MainActivity.screenWidth / 2, bY = MainActivity.screenHeight;
-        float pX = 0, pY = 300;
-        player1 = new Player1(getContext(), pX, pY, MainActivity.screenHeight / 10, MainActivity.screenWidth / 10);
-        ball = new Ball(getContext(), leftGoal, rightGoal, player1, bX, bY, MainActivity.screenWidth / 40, MainActivity.screenWidth / 40);
-        */
+
         gameData = new GameData();
         mainMenu = new MainMenu(getContext(), 0, 0, MainActivity.screenWidth, MainActivity.screenHeight);
-        onePlayerMenu = new OnePlayerMenu(getContext(), gameData, 0, 0, MainActivity.screenWidth, MainActivity.screenHeight);
+        onePlayerMenu = new OnePlayerMenu(getContext(), 0, 0, MainActivity.screenWidth, MainActivity.screenHeight);
         int goalWidth = 100, goalHeight = 2 * MainActivity.screenHeight / 7;
         leftGoal = new Goal(getContext(), 0, (float) MainActivity.screenHeight / 2 - (float) goalHeight / 2, goalWidth, goalHeight, Goal.LEFT_GOAL);
         rightGoal = new Goal(getContext(), MainActivity.screenWidth - goalWidth, (float) MainActivity.screenHeight / 2 - (float) goalHeight / 2, goalWidth, goalHeight, Goal.RIGHT_GOAL);
         player1 = new Player1(getContext(), leftGoal, (float) MainActivity.screenWidth / 4 - MainActivity.screenHeight / 20, (float) MainActivity.screenHeight / 2 - MainActivity.screenWidth / 20, MainActivity.screenHeight / 10, MainActivity.screenWidth / 10);
         ball = new Ball(getContext(), leftGoal, rightGoal, player1, (float) MainActivity.screenWidth / 2, (float) MainActivity.screenHeight / 2, MainActivity.screenWidth / 40, MainActivity.screenWidth / 40);
-        aiPlayer = new AIPlayer(getContext(), gameData, ball, (float) 3 * MainActivity.screenWidth / 4, (float) MainActivity.screenHeight / 2, MainActivity.screenHeight / 10, MainActivity.screenWidth / 10);
+        aiPlayer = new AIPlayer(getContext(), ball, leftGoal, (float) 3 * MainActivity.screenWidth / 4, (float) MainActivity.screenHeight / 2, MainActivity.screenHeight / 10, MainActivity.screenWidth / 10);
         gameMenu = new GameMenu(getContext(), player1, aiPlayer, (float) MainActivity.screenWidth / 2 - (float) MainActivity.screenWidth / 28, 3);
 
         setFocusable(true);
@@ -93,12 +87,13 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         ONE_PLAYER,
         TWO_PLAYERS
     }
-
-    public static STATE state = STATE.ONE_PLAYER;
+    public static STATE state = STATE.MAIN_MENU;
 
     public static Texture getTexture() {
         return tex;
     }
+
+    public static GameData getGameData() { return gameData; }
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
