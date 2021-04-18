@@ -153,15 +153,14 @@ public class AIPlayer extends GameObject {
                 int accuracy = (int) (Math.random() * 5);
                 if (accuracy < 2) { //40% chance for a purposefully flawed shot
                     int mistakeType = (int) (Math.random() * 2);
+                    float targetX = leftGoal.getBounds().centerX();
+                    float targetY;
                     if (mistakeType == 0) { //shoot too high
-                        float targetX = leftGoal.getBounds().centerX();
-                        float targetY = leftGoal.getBounds().centerY() - leftGoal.getBounds().height() / 2;
-                        ball.handleSwipe(0, (float) ball.getX() + ball.getWidth() / 2, (float) ball.getY() + ball.getWidth() / 2, targetX, targetY);
+                        targetY = leftGoal.getBounds().centerY() - leftGoal.getBounds().height() / 2;
                     } else { //shoot too low
-                        float targetX = leftGoal.getBounds().centerX();
-                        float targetY = leftGoal.getBounds().centerY() + leftGoal.getBounds().height();
-                        ball.handleSwipe(0, (float) ball.getX() + ball.getWidth() / 2, (float) ball.getY() + ball.getWidth() / 2, targetX, targetY);
+                        targetY = leftGoal.getBounds().centerY() + leftGoal.getBounds().height() / 2;
                     }
+                    ball.handleSwipe(0, (float) ball.getX() + ball.getWidth() / 2, (float) ball.getY() + ball.getWidth() / 2, targetX, targetY);
                 } else { //60% chance for an accurate shot
                     float targetX = leftGoal.getBounds().centerX();
                     float targetY = leftGoal.getBounds().centerY();
