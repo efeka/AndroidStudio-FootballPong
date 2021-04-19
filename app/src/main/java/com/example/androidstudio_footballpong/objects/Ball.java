@@ -30,6 +30,7 @@ public class Ball extends GameObject {
     private Context context;
 
     private Player1 player1;
+    private Player2 player2;
     private Goal leftGoal, rightGoal;
 
     private double initialX, initialY;
@@ -41,12 +42,13 @@ public class Ball extends GameObject {
 
     public ArrayList<GameObject> trailList = new ArrayList<>();
 
-    public Ball(Context context, Goal leftGoal, Goal rightGoal, Player1 player1, double x, double y, int width, int height) {
+    public Ball(Context context, Goal leftGoal, Goal rightGoal, Player1 player1, Player2 player2, double x, double y, int width, int height) {
         super(x, y, width, height);
         this.context = context;
         this.leftGoal = leftGoal;
         this.rightGoal = rightGoal;
         this.player1 = player1;
+        this.player2 = player2;
 
         initialX = x;
         initialY = y;
@@ -165,7 +167,7 @@ public class Ball extends GameObject {
     }
 
     /**
-     * @param playerId indicates which player did the swipe, set this to 0 for AIPlayer, 1 for Player1 and 2 for Player2
+     * @param playerId indicates which player did the swipe, set this to 0 for AIPlayer, 1 for Player1 or Player2
      */
     public void handleSwipe(int playerId, float touchStartX, float touchStartY, float releaseX, float releaseY) {
         if (playerId == 0) {
@@ -179,9 +181,11 @@ public class Ball extends GameObject {
                 velX = (float) (MAX_SPEED * (releaseX - touchStartX) / hypot);
                 velY = (float) (MAX_SPEED * (releaseY - touchStartY) / hypot);
             }
-        }
-        else if (playerId == 2) {
-
+            if (getBounds().intersect(player2.getBounds())) {
+                double hypot = Math.hypot(releaseX - touchStartX, releaseY - touchStartY);
+                velX = (float) (MAX_SPEED * (releaseX - touchStartX) / hypot);
+                velY = (float) (MAX_SPEED * (releaseY - touchStartY) / hypot);
+            }
         }
     }
 

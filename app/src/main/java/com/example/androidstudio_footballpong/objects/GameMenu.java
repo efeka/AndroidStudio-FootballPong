@@ -20,13 +20,15 @@ public class GameMenu extends GameObject {
     private Paint paint;
 
     private Player1 player1;
+    private Player2 player2;
     private AIPlayer aiPlayer;
 
     private int[] energyColors = new int[3];
 
-    public GameMenu(Context context, Player1 player1, AIPlayer aiPlayer, double x, double y) {
+    public GameMenu(Context context, Player1 player1, Player2 player2, AIPlayer aiPlayer, double x, double y) {
         super(x, y);
         this.player1 = player1;
+        this.player2 = player2;
         this.aiPlayer = aiPlayer;
 
         paint = new Paint();
@@ -49,14 +51,26 @@ public class GameMenu extends GameObject {
         paint.setColor(energyColors[2]);
         canvas.drawRoundRect(getEnergy1Bar(), rectRadius, rectRadius, paint);
 
-        //AIPlayer energy
-        rectRadius = 10;
-        paint.setColor(energyColors[0]);
-        canvas.drawRoundRect(getEnergyAIBorder(), rectRadius, rectRadius, paint);
-        paint.setColor(energyColors[1]);
-        canvas.drawRoundRect(getEnergyAIBackground(), rectRadius, rectRadius, paint);
-        paint.setColor(energyColors[2]);
-        canvas.drawRoundRect(getEnergyAIBar(), rectRadius, rectRadius, paint);
+        if (Game.state == Game.STATE.ONE_PLAYER) {
+            //AIPlayer energy
+            rectRadius = 10;
+            paint.setColor(energyColors[0]);
+            canvas.drawRoundRect(getEnergyAIBorder(), rectRadius, rectRadius, paint);
+            paint.setColor(energyColors[1]);
+            canvas.drawRoundRect(getEnergyAIBackground(), rectRadius, rectRadius, paint);
+            paint.setColor(energyColors[2]);
+            canvas.drawRoundRect(getEnergyAIBar(), rectRadius, rectRadius, paint);
+        }
+        else if (Game.state == Game.STATE.TWO_PLAYERS) {
+            //Player2 energy
+            rectRadius = 10;
+            paint.setColor(energyColors[0]);
+            canvas.drawRoundRect(getEnergy2Border(), rectRadius, rectRadius, paint);
+            paint.setColor(energyColors[1]);
+            canvas.drawRoundRect(getEnergy2Background(), rectRadius, rectRadius, paint);
+            paint.setColor(energyColors[2]);
+            canvas.drawRoundRect(getEnergy2Bar(), rectRadius, rectRadius, paint);
+        }
     }
 
     @Override
@@ -88,6 +102,27 @@ public class GameMenu extends GameObject {
         int height = MainActivity.screenHeight / 16;
         double normalize = (double) (width - offset) / player1.getMaxEnergy();
         return createRectF(MainActivity.screenWidth / 40 + offset / 2, (int) y + height / 2 + offset / 2, (int) (normalize * player1.getEnergy()), height - offset);
+    }
+
+    public RectF getEnergy2Border() {
+        int width = MainActivity.screenWidth / 6;
+        int height = MainActivity.screenHeight / 16;
+        return createRectF(MainActivity.screenWidth - MainActivity.screenWidth / 40 - width, (int) y + height / 2, width, height);
+    }
+
+    public RectF getEnergy2Background() {
+        int offset = 8;
+        int width = MainActivity.screenWidth / 6;
+        int height = MainActivity.screenHeight / 16;
+        return createRectF(MainActivity.screenWidth - MainActivity.screenWidth / 40 - width + offset / 2, (int) y + height / 2 + offset / 2, width - offset, height - offset);
+    }
+
+    public RectF getEnergy2Bar() {
+        int offset = 8;
+        int width = MainActivity.screenWidth / 6;
+        int height = MainActivity.screenHeight / 16;
+        double normalize = (double) (width - offset) / player2.getMaxEnergy();
+        return createRectF(MainActivity.screenWidth - MainActivity.screenWidth / 40 - width + offset / 2 + (int) (normalize * player2.getMaxEnergy() - normalize * player2.getEnergy()), (int) y + height / 2 + offset / 2, (int) (normalize * player2.getEnergy()), height - offset);
     }
 
     public RectF getEnergyAIBorder() {

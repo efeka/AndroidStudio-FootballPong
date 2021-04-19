@@ -18,6 +18,7 @@ import com.example.androidstudio_footballpong.objects.Goal;
 import com.example.androidstudio_footballpong.objects.MainMenu;
 import com.example.androidstudio_footballpong.objects.OnePlayerMenu;
 import com.example.androidstudio_footballpong.objects.Player1;
+import com.example.androidstudio_footballpong.objects.Player2;
 
 /*
  * TODO: Make easy-medium-hard modes for AI opponent
@@ -41,6 +42,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private final OnePlayerMenu onePlayerMenu;
     private final GameMenu gameMenu;
     private final Player1 player1;
+    private final Player2 player2;
     private final AIPlayer aiPlayer;
     private final Ball ball;
     private final Goal leftGoal, rightGoal;
@@ -69,10 +71,11 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         int goalWidth = 100, goalHeight = 2 * MainActivity.screenHeight / 7;
         leftGoal = new Goal(getContext(), 0, (float) MainActivity.screenHeight / 2 - (float) goalHeight / 2, goalWidth, goalHeight, Goal.LEFT_GOAL);
         rightGoal = new Goal(getContext(), MainActivity.screenWidth - goalWidth, (float) MainActivity.screenHeight / 2 - (float) goalHeight / 2, goalWidth, goalHeight, Goal.RIGHT_GOAL);
-        player1 = new Player1(getContext(), leftGoal, (float) MainActivity.screenWidth / 4 - MainActivity.screenHeight / 20, (float) MainActivity.screenHeight / 2 - MainActivity.screenWidth / 20, MainActivity.screenHeight / 10, MainActivity.screenWidth / 10);
-        ball = new Ball(getContext(), leftGoal, rightGoal, player1, (float) MainActivity.screenWidth / 2, (float) MainActivity.screenHeight / 2, MainActivity.screenWidth / 40, MainActivity.screenWidth / 40);
+        player1 = new Player1(getContext(), leftGoal, (float) MainActivity.screenWidth / 4 - MainActivity.screenWidth / 20, (float) MainActivity.screenHeight / 2 - MainActivity.screenWidth / 20, MainActivity.screenHeight / 10, MainActivity.screenWidth / 10);
+        player2 = new Player2(getContext(), rightGoal, (float) 3 * MainActivity.screenWidth / 4 - MainActivity.screenWidth / 20, (float) MainActivity.screenHeight / 2 - MainActivity.screenWidth / 20, MainActivity.screenHeight / 10, MainActivity.screenWidth / 10);
+        ball = new Ball(getContext(), leftGoal, rightGoal, player1, player2, (float) MainActivity.screenWidth / 2, (float) MainActivity.screenHeight / 2, MainActivity.screenWidth / 40, MainActivity.screenWidth / 40);
         aiPlayer = new AIPlayer(getContext(), ball, leftGoal, (float) 3 * MainActivity.screenWidth / 4, (float) MainActivity.screenHeight / 2, MainActivity.screenHeight / 10, MainActivity.screenWidth / 10);
-        gameMenu = new GameMenu(getContext(), player1, aiPlayer, (float) MainActivity.screenWidth / 2 - (float) MainActivity.screenWidth / 28, 3);
+        gameMenu = new GameMenu(getContext(), player1, player2, aiPlayer, (float) MainActivity.screenWidth / 2 - (float) MainActivity.screenWidth / 28, 3);
 
         setFocusable(true);
     }
@@ -116,7 +119,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                     //if the user did not swipe far enough, the swipe will be assumed to be accidental and it will count as a tap instead
                     int minimumSwipeLimit = 50;
                     if ((Math.abs(touchStartX - releaseX) < minimumSwipeLimit) && (Math.abs(touchStartY - releaseY) < minimumSwipeLimit)) {
-                        player1.handleTap(touchStartX, touchStartY);
+                        if (touchStartX < MainActivity.screenWidth / 2)
+                            player1.handleTap(touchStartX, touchStartY);
+                        else
+                            player2.handleTap(touchStartX, touchStartY);
 
                         touchEffect.resetAnimation();
                         touchEffect.setX(touchStartX - (float) touchEffect.getWidth() / 2);
@@ -188,7 +194,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
             case TWO_PLAYERS:
                 canvas.drawBitmap(tex.gameBackground, 0f, 0f, paint);
                 player1.draw(canvas);
-                //player2.draw(canvas);
+                player2.draw(canvas);
                 ball.draw(canvas);
                 gameMenu.draw(canvas);
                 touchEffect.drawAnimation(canvas, paint);
@@ -220,7 +226,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                 break;
             case TWO_PLAYERS:
                 player1.update();
-                //player2.update();
+                player2.update();
                 ball.update();
                 gameMenu.update();
                 leftGoal.update();

@@ -16,17 +16,17 @@ import com.example.androidstudio_footballpong.Texture;
 /**
  * Player1 is the main character which is controlled by a user in both "1 player" and "2 player" modes.
  */
-public class Player1 extends GameObject {
+public class Player2 extends GameObject {
 
-    private final int BORDER_LEFT = 0;
-    private final int BORDER_RIGHT = MainActivity.screenWidth / 2;
+    private final int BORDER_LEFT = MainActivity.screenWidth / 2;
+    private final int BORDER_RIGHT = MainActivity.screenWidth;
     private final int BORDER_UP = 0;
     private final int BORDER_DOWN = MainActivity.screenHeight;
 
     private Texture tex = Game.getTexture();
     private Paint paint;
 
-    private Goal leftGoal;
+    private Goal rightGoal;
 
     private final int DEFAULT_MAX_SPEED = 15;
     private int maxSpeed = 15;
@@ -38,40 +38,26 @@ public class Player1 extends GameObject {
     public int maxEnergy = 1000;
     public static int energy = 1000;
 
-    private Animation player1Walk;
+    private Animation player2Walk;
 
-    public Player1(Context context, Goal leftGoal, double x, double y, int width, int height) {
+    public Player2(Context context, Goal rightGoal, double x, double y, int width, int height) {
         super(x, y, width, height);
-        this.leftGoal = leftGoal;
+        this.rightGoal = rightGoal;
 
         paint = new Paint();
         int color = ContextCompat.getColor(context, R.color.player1);
         paint.setColor(color);
 
-        player1Walk = new Animation(1, tex.player1[0], tex.player1[1], tex.player1[2], tex.player1[3], tex.player1[2], tex.player1[1]);
+        player2Walk = new Animation(1, tex.player1[0], tex.player1[1], tex.player1[2], tex.player1[3], tex.player1[2], tex.player1[1]);
     }
 
     @Override
     public void draw(Canvas canvas) {
-        player1Walk.drawAnimation(canvas, paint, (float) x, (float) y);
-        /*
-        canvas.drawRect(getBounds(), paint);
-        canvas.drawLine(swipeStartX, swipeStartY, swipeEndX, swipeEndY, paint);
-        canvas.drawRect(getBoundsLeft(), paint);
-        canvas.drawRect(getBoundsRight(), paint);
-        canvas.drawRect(getBoundsTop(), paint);
-        canvas.drawRect(getBoundsBot(), paint);
-         */
+        player2Walk.drawAnimation(canvas, paint, (float) x, (float) y);
     }
 
     @Override
     public void update() {
-        /*
-        if (!moving && energy < maxEnergy)
-            energy++;
-        if (energy >= maxEnergy)
-            energy = maxEnergy;
-         */
         if (energy <= 0 && maxSpeed > DEFAULT_MAX_SPEED / 4)
             maxSpeed = DEFAULT_MAX_SPEED / 4;
 
@@ -89,7 +75,7 @@ public class Player1 extends GameObject {
         }
 
         collision();
-        player1Walk.runAnimation();
+        player2Walk.runAnimation();
     }
 
     private void collision() {
@@ -115,16 +101,16 @@ public class Player1 extends GameObject {
             velY = 0;
         }
 
-        if (getBoundsTop().intersect(leftGoal.getBounds())) {
-            y = leftGoal.getBounds().centerY() + leftGoal.getBounds().height() / 2;
+        if (getBoundsTop().intersect(rightGoal.getBounds())) {
+            y = rightGoal.getBounds().centerY() + rightGoal.getBounds().height() / 2;
             ignoreY = true;
             velY = 0;
-        } else if (getBoundsBot().intersect(leftGoal.getBounds())) {
-            y = leftGoal.getBounds().centerY() - leftGoal.getBounds().height() / 2 - height;
+        } else if (getBoundsBot().intersect(rightGoal.getBounds())) {
+            y = rightGoal.getBounds().centerY() - rightGoal.getBounds().height() / 2 - height;
             ignoreY = true;
             velY = 0;
-        } else if (getBoundsLeft().intersect(leftGoal.getBounds())) {
-            x = leftGoal.getBounds().centerX() + leftGoal.getBounds().width() / 2;
+        } else if (getBoundsRight().intersect(rightGoal.getBounds())) {
+            x = rightGoal.getBounds().centerX() - rightGoal.getBounds().width() / 2 - width;
             ignoreX = true;
             velX = 0;
         }

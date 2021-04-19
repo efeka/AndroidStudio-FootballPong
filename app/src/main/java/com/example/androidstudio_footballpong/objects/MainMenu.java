@@ -66,7 +66,8 @@ public class MainMenu extends GameObject {
                 OnePlayerMenu.resetTouch();
             }
             if (getBounds2P().contains((int) touchX, (int) touchY)) {
-                Game.state = Game.STATE.TWO_PLAYERS_MENU;
+                //Game.state = Game.STATE.TWO_PLAYERS_MENU;
+                Game.state = Game.STATE.TWO_PLAYERS;
             }
             if (getBoundsSettings().contains((int) touchX, (int) touchY)) {
                 Game.state = Game.STATE.SETTINGS;
