@@ -146,7 +146,7 @@ public class AIPlayer extends GameObject {
      * The AI will attempt to do different and more difficult shots depending on the selected difficulty.
      */
     private void shoot() {
-        int shotType = (int) (Math.random() * 3);
+        int shotType = (int) (Math.random() * 2);
 
         if (shotType == 0) { //direct shot
             if (gameData.getDifficulty() == GameData.DIFFICULTY_EASY) {
@@ -171,13 +171,10 @@ public class AIPlayer extends GameObject {
                 float targetY = leftGoal.getBounds().centerY();
                 ball.handleSwipe(0, (float) ball.getX() + ball.getWidth() / 2, (float) ball.getY() + ball.getWidth() / 2, targetX, targetY);
             }
-        } else if (shotType == 1) { //bounce from top border
-            if (gameData.getDifficulty() == GameData.DIFFICULTY_EASY) {
-
-            } else if (gameData.getDifficulty() == GameData.DIFFICULTY_MEDIUM || gameData.getDifficulty() == GameData.DIFFICULTY_HARD) {
+        } else if (shotType == 1) { //bounce from top/bottom borders
+            if (gameData.getDifficulty() == GameData.DIFFICULTY_MEDIUM || gameData.getDifficulty() == GameData.DIFFICULTY_HARD) {
                 /*
-                This formula calculates a shot where the ball will bounce from the top border and go into the middle of the goal.
-                It does not take into account the opponent player's position or the ball's dimensions.
+                Calculating a shot where the ball will bounce from the top or bottom border and go into the center of the goal.
                 */
                 float h = MainActivity.screenHeight;
                 float w = MainActivity.screenWidth;
@@ -185,13 +182,12 @@ public class AIPlayer extends GameObject {
                 float distUp = (float) y;
                 float targetX = (h * w - h * distRight) / (2 * distUp + h) - ball.getWidth() / 2;
                 float targetY = 0;
+
+                int randomBorder = (int) (Math.random() * 2);
+                if (randomBorder == 0)
+                    targetY = MainActivity.screenHeight;
+
                 ball.handleSwipe(0, (float) ball.getX() + ball.getWidth() / 2, (float) ball.getY() + ball.getWidth() / 2, targetX, targetY);
-            }
-        } else if (shotType == 2) { //bounce from bottom border
-            if (gameData.getDifficulty() == GameData.DIFFICULTY_EASY) {
-
-            } else if (gameData.getDifficulty() == GameData.DIFFICULTY_MEDIUM || gameData.getDifficulty() == GameData.DIFFICULTY_HARD) {
-
             }
         }
     }
