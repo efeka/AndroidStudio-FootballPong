@@ -142,7 +142,7 @@ public class AIPlayer extends GameObject {
     }
 
     /**
-     * This method makes the AI take a shot and it should only be called if the ball is close enough to the AIPlayer.
+     * This method makes the AI take a shot and it is only called if the ball is close enough to the AIPlayer.
      * The AI will attempt to do different and more difficult shots depending on the selected difficulty.
      */
     private void shoot() {
@@ -173,9 +173,7 @@ public class AIPlayer extends GameObject {
             }
         } else if (shotType == 1) { //bounce from top/bottom borders
             if (gameData.getDifficulty() == GameData.DIFFICULTY_MEDIUM || gameData.getDifficulty() == GameData.DIFFICULTY_HARD) {
-                /*
-                Calculating a shot where the ball will bounce from the top or bottom border and go into the center of the goal.
-                */
+                //Calculating a shot where the ball will bounce from the top or bottom border and go into the center of the goal.
                 float h = MainActivity.screenHeight;
                 float w = MainActivity.screenWidth;
                 float distRight = w - (float) x;
