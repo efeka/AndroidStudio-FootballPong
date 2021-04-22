@@ -74,23 +74,22 @@ public class AIPlayer extends GameObject {
         if (energy <= 0 && maxSpeed > DEFAULT_MAX_SPEED / 4)
             maxSpeed = DEFAULT_MAX_SPEED / 4;
 
-        if (ball.getX() < MainActivity.screenWidth / 2) {
-            if (ball.getVelX() <= 0) {
-                velX = velY = 0;
+        if (ball.getVelX() <= 0) {
+            velX = velY = 0;
+            moving = false;
+        } else {
+            if (Math.abs(y - ball.getY()) < 30) {
+                velY = 0;
                 moving = false;
-            } else {
-                if (Math.abs(y - ball.getY()) < 30) {
-                    velY = 0;
-                    moving = false;
-                } else if (y < ball.getY()) {
-                    velY = maxSpeed;
-                    moving = true;
-                } else if (y > ball.getY()) {
-                    velY = -maxSpeed;
-                    moving = true;
-                }
+            } else if (y < ball.getY()) {
+                velY = maxSpeed;
+                moving = true;
+            } else if (y > ball.getY()) {
+                velY = -maxSpeed;
+                moving = true;
             }
         }
+
 
         if (moving) {
             if (energy > 0)

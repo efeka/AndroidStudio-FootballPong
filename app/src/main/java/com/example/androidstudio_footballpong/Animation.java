@@ -54,7 +54,7 @@ public class Animation {
         }
         if (!playedOnce)
             frameCount++;
-        if (frameCount > frames) {
+        if (frameCount >= frames) {
             frameCount = 0;
             playedOnce = true;
         }

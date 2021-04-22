@@ -38,22 +38,23 @@ public class Player2 extends GameObject {
     public int maxEnergy = 1000;
     public static int energy = 1000;
 
-    private Animation player2Walk;
+    private Animation player2Idle, player2Walk;
 
     public Player2(Context context, Goal rightGoal, double x, double y, int width, int height) {
         super(x, y, width, height);
         this.rightGoal = rightGoal;
 
         paint = new Paint();
-        int color = ContextCompat.getColor(context, R.color.player1);
-        paint.setColor(color);
-
-        player2Walk = new Animation(1, tex.player1[0], tex.player1[1], tex.player1[2], tex.player1[3], tex.player1[2], tex.player1[1]);
+        player2Walk = new Animation(2, tex.player2[4], tex.player2[3], tex.player2[2], tex.player2[1], tex.player2[0]);
+        player2Idle = new Animation(2, tex.player2[7], tex.player2[6], tex.player2[5], tex.player2[6]);
     }
 
     @Override
     public void draw(Canvas canvas) {
-        player2Walk.drawAnimation(canvas, paint, (float) x, (float) y);
+        if (moving)
+            player2Walk.drawAnimation(canvas, paint, (float) x, (float) y);
+        else
+            player2Idle.drawAnimation(canvas, paint, (float) x, (float) y);
     }
 
     @Override
@@ -76,6 +77,7 @@ public class Player2 extends GameObject {
 
         collision();
         player2Walk.runAnimation();
+        player2Idle.runAnimation();
     }
 
     private void collision() {

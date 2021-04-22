@@ -18,7 +18,8 @@ public class Texture {
 
     public Bitmap[] gameMenu = new Bitmap[5];
     public Bitmap gameBackground;
-    public Bitmap[] player1 = new Bitmap[5];
+    public Bitmap[] player1 = new Bitmap[8];
+    public Bitmap[] player2 = new Bitmap[8];
     public Bitmap[] touchEffect = new Bitmap[8];
     public Bitmap[] goals = new Bitmap[2];
     public Bitmap ball;
@@ -48,8 +49,12 @@ public class Texture {
         gameBackground = background_sheet.createScaledBitmap(background_sheet, MainActivity.screenWidth, MainActivity.screenHeight, false);
 
         for (int i = 0; i < player1.length; i++) {
-            player1[i] = Bitmap.createBitmap(assets_sheet, 1 + 33 * i, 1, 32, 32);
-            player1[i] = player1[i].createScaledBitmap(player1[i], MainActivity.screenHeight / 10, MainActivity.screenWidth / 10, false);
+            player1[i] = Bitmap.createBitmap(assets_sheet, 1 + 49 * i, 102, 48, 48);
+            player1[i] = player1[i].createScaledBitmap(player1[i], MainActivity.screenHeight / 6, MainActivity.screenWidth / 12, false);
+        }
+        for (int i = 0; i < player2.length; i++) {
+            player2[i] = Bitmap.createBitmap(assets_sheet, 1 + 49 * i, 151, 48, 48);
+            player2[i] = player2[i].createScaledBitmap(player2[i], MainActivity.screenHeight / 6, MainActivity.screenWidth / 12, false);
         }
 
         //in game pause button
@@ -61,13 +66,13 @@ public class Texture {
             touchEffect[i] = touchEffect[i].createScaledBitmap(touchEffect[i], MainActivity.screenHeight / 10, MainActivity.screenHeight / 10, false);
         }
 
-        goals[0] = Bitmap.createBitmap(assets_sheet, 1, 34, 32, 100);
+        goals[0] = Bitmap.createBitmap(assets_sheet, 1, 1, 32, 100);
         goals[0] = goals[0].createScaledBitmap(goals[0], 100, 2 * MainActivity.screenHeight / 7, false);
-        goals[1] = Bitmap.createBitmap(assets_sheet, 34, 34, 32, 100);
+        goals[1] = Bitmap.createBitmap(assets_sheet, 34, 1, 32, 100);
         goals[1] = goals[1].createScaledBitmap(goals[1], 100, 2 * MainActivity.screenHeight / 7, false);
 
-        ball = Bitmap.createBitmap(assets_sheet, 67, 34, 100, 100);
-        ball = ball.createScaledBitmap(ball, MainActivity.screenWidth / 20, MainActivity.screenWidth / 20, false);
+        ball = Bitmap.createBitmap(assets_sheet, 67, 1, 100, 100);
+        ball = ball.createScaledBitmap(ball, MainActivity.screenWidth / 25, MainActivity.screenWidth / 25, false);
     }
 
 }

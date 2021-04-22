@@ -38,30 +38,23 @@ public class Player1 extends GameObject {
     public int maxEnergy = 1000;
     public static int energy = 1000;
 
-    private Animation player1Walk;
+    private Animation player1Idle, player1Walk;
 
     public Player1(Context context, Goal leftGoal, double x, double y, int width, int height) {
         super(x, y, width, height);
         this.leftGoal = leftGoal;
 
         paint = new Paint();
-        int color = ContextCompat.getColor(context, R.color.player1);
-        paint.setColor(color);
-
-        player1Walk = new Animation(1, tex.player1[0], tex.player1[1], tex.player1[2], tex.player1[3], tex.player1[2], tex.player1[1]);
+        player1Walk = new Animation(2, tex.player1[3], tex.player1[4], tex.player1[5], tex.player1[6], tex.player1[7]);
+        player1Idle = new Animation(2, tex.player1[0], tex.player1[1], tex.player1[2], tex.player1[1]);
     }
 
     @Override
     public void draw(Canvas canvas) {
-        player1Walk.drawAnimation(canvas, paint, (float) x, (float) y);
-        /*
-        canvas.drawRect(getBounds(), paint);
-        canvas.drawLine(swipeStartX, swipeStartY, swipeEndX, swipeEndY, paint);
-        canvas.drawRect(getBoundsLeft(), paint);
-        canvas.drawRect(getBoundsRight(), paint);
-        canvas.drawRect(getBoundsTop(), paint);
-        canvas.drawRect(getBoundsBot(), paint);
-         */
+        if (moving)
+            player1Walk.drawAnimation(canvas, paint, (float) x, (float) y);
+        else
+            player1Idle.drawAnimation(canvas, paint, (float) x, (float) y);
     }
 
     @Override
@@ -89,7 +82,9 @@ public class Player1 extends GameObject {
         }
 
         collision();
+
         player1Walk.runAnimation();
+        player1Idle.runAnimation();
     }
 
     private void collision() {
