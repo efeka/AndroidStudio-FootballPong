@@ -65,17 +65,7 @@ public class Ball extends GameObject {
 
     @Override
     public void draw(Canvas canvas) {
-        //canvas.drawCircle((int) x, (int) y, width, paint);
-        canvas.drawBitmap(tex.ball, (int) x - width, (int) y - width, paint);
-        /*
-        canvas.drawRect(getBounds(), paint);
-        int color = ContextCompat.getColor(context, R.color.black);
-        paint.setColor(color);
-        canvas.drawRect(getBoundsLeft(), paint);
-        canvas.drawRect(getBoundsTop(), paint);
-        canvas.drawRect(getBoundsBottom(), paint);
-        canvas.drawRect(getBoundsRight(), paint);
-        */
+        canvas.drawBitmap(tex.ball, (int) x, (int) y, paint);
     }
 
     @Override
@@ -95,7 +85,7 @@ public class Ball extends GameObject {
         //collision with screen borders
         if (x < BORDER_LEFT) {
             velX *= -1;
-            x = BORDER_LEFT + width / 2;
+            x = BORDER_LEFT;
         }
         if (x + width > BORDER_RIGHT) {
             velX *= -1;
@@ -103,7 +93,7 @@ public class Ball extends GameObject {
         }
         if (y < BORDER_UP) {
             velY *= -1;
-            y = BORDER_UP + width / 2;
+            y = BORDER_UP;
         }
         if (y + width > BORDER_DOWN) {
             velY *= -1;
@@ -113,21 +103,21 @@ public class Ball extends GameObject {
         //collision with the left goal
         if (getBoundsTop().intersect(leftGoal.getBoundsTop())) {
             velY *= -1;
-            y = leftGoal.getY() + leftGoal.getBoundsTop().height() + width;
+            y = leftGoal.getBoundsTop().centerY() + leftGoal.getBoundsTop().height() / 2;
         }
-        if (getBoundsTop().intersect(leftGoal.getBoundsBottom())) {
+        else if (getBoundsTop().intersect(leftGoal.getBoundsBottom())) {
             velY *= -1;
-            y = leftGoal.getY() + leftGoal.getHeight() + width;
+            y = leftGoal.getBoundsBottom().centerY() + leftGoal.getHeight() / 2;
         }
-        if (getBoundsBottom().intersect(leftGoal.getBoundsTop())) {
+        else if (getBoundsBottom().intersect(leftGoal.getBoundsTop())) {
             velY *= -1;
-            y = leftGoal.getY() - width;
+            y = leftGoal.getBoundsTop().centerY() - leftGoal.getBoundsTop().height() / 2 - width;
         }
-        if (getBoundsBottom().intersect(leftGoal.getBoundsBottom())) {
+        else if (getBoundsBottom().intersect(leftGoal.getBoundsBottom())) {
             velY *= -1;
-            y = leftGoal.getY() + leftGoal.getHeight() - leftGoal.getHeight() / 8 - width;
+            y = leftGoal.getBoundsBottom().centerY() + leftGoal.getBoundsBottom().height() / 2 - width;
         }
-        if (getBoundsLeft().intersect(leftGoal.getBoundsTop()) || getBoundsLeft().intersect(leftGoal.getBoundsBottom())) {
+        else if (getBoundsLeft().intersect(leftGoal.getBoundsTop()) || getBoundsLeft().intersect(leftGoal.getBoundsBottom())) {
             velX *= -1;
             x = leftGoal.getX() + leftGoal.getWidth() + width;
         }
@@ -140,21 +130,21 @@ public class Ball extends GameObject {
         //collision with the right goal
         if (getBoundsTop().intersect(rightGoal.getBoundsTop())) {
             velY *= -1;
-            y = rightGoal.getY() + rightGoal.getBoundsTop().height() + width;
+            y = rightGoal.getBoundsTop().centerY() + rightGoal.getBoundsTop().height() / 2;
         }
-        if (getBoundsTop().intersect(rightGoal.getBoundsBottom())) {
+        else if (getBoundsTop().intersect(rightGoal.getBoundsBottom())) {
             velY *= -1;
-            y = rightGoal.getY() + rightGoal.getHeight() + width;
+            y = rightGoal.getBoundsBottom().centerY() + rightGoal.getHeight() / 2;
         }
-        if (getBoundsBottom().intersect(rightGoal.getBoundsTop())) {
+        else if (getBoundsBottom().intersect(rightGoal.getBoundsTop())) {
             velY *= -1;
-            y = rightGoal.getY() - width;
+            y = rightGoal.getBoundsTop().centerY() - rightGoal.getBoundsTop().height() / 2 - width;
         }
-        if (getBoundsBottom().intersect(rightGoal.getBoundsBottom())) {
+        else if (getBoundsBottom().intersect(rightGoal.getBoundsBottom())) {
             velY *= -1;
-            y = rightGoal.getY() + rightGoal.getHeight() - rightGoal.getHeight() / 8 - width;
+            y = rightGoal.getBoundsBottom().centerY() + rightGoal.getBoundsBottom().height() / 2 - width;
         }
-        if (getBoundsRight().intersect(rightGoal.getBoundsTop()) || getBoundsRight().intersect(rightGoal.getBoundsBottom())) {
+        else if (getBoundsRight().intersect(rightGoal.getBoundsTop()) || getBoundsRight().intersect(rightGoal.getBoundsBottom())) {
             velX *= -1;
             x = rightGoal.getX() - width;
         }
@@ -198,23 +188,23 @@ public class Ball extends GameObject {
 
     @Override
     public Rect getBounds() {
-        return createRect((int) x - width, (int) y - width, width * 2, width * 2);
+        return createRect((int) x, (int) y, width, width);
     }
 
     public Rect getBoundsTop() {
-        return createRect((int) x - width + 15, (int) y - width, width * 2 - 30, width / 4);
+        return createRect((int) x + 15, (int) y, width - 30, width / 4);
     }
 
     public Rect getBoundsBottom() {
-        return createRect((int) x - width + 15, (int) y + width - 10, width * 2 - 30, width / 4);
+        return createRect((int) x + 15, (int) y + width - width / 4, width - 30, width / 4);
     }
 
     public Rect getBoundsLeft() {
-        return createRect((int) x - width, (int) y - width + 15, width / 4, width * 2 - 30);
+        return createRect((int) x, (int) y + 15, width / 4, width - 30);
     }
 
     public Rect getBoundsRight() {
-        return createRect((int) x + width - 10, (int) y - width + 15, width / 4, width * 2 - 30);
+        return createRect((int) x + width - width / 4, (int) y + 15, width / 4, width - 30);
     }
 
 }
