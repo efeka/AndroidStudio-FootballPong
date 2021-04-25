@@ -10,11 +10,17 @@ public class GameData {
     private int gameTimer = 60;
     private int difficulty = DIFFICULTY_MEDIUM;
 
+    /**
+     * Decreases game timer by the amount of given seconds.
+     */
     public int decrementTimer(int seconds) {
         gameTimer -= seconds;
         return gameTimer >= 0 ? gameTimer : (gameTimer = 0);
     }
 
+    /**
+     * @return the score of the player on the left.
+     */
     public int getScore1() {
         return score1;
     }
@@ -23,6 +29,9 @@ public class GameData {
         this.score1 = score1;
     }
 
+    /**
+     * @return the score of the player on the right.
+     */
     public int getScore2() {
         return score2;
     }
@@ -51,10 +60,16 @@ public class GameData {
         gameTimer = minutes * 60 + seconds;
     }
 
+    /**
+     * Returns formatted game timer.
+     */
     public String getTimerDisplay() {
         return convertTimerToString();
     }
 
+    /**
+     * Converts game timer into a [min][min]:[sec][sec] format.
+     */
     private String convertTimerToString() {
         int temp = gameTimer;
         int minutes = 0, seconds;

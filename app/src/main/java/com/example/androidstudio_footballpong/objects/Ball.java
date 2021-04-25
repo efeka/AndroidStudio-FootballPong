@@ -8,6 +8,7 @@ import android.graphics.Rect;
 import androidx.core.content.ContextCompat;
 
 import com.example.androidstudio_footballpong.Game;
+import com.example.androidstudio_footballpong.GameData;
 import com.example.androidstudio_footballpong.MainActivity;
 import com.example.androidstudio_footballpong.R;
 import com.example.androidstudio_footballpong.Texture;
@@ -32,6 +33,7 @@ public class Ball extends GameObject {
     private Player1 player1;
     private Player2 player2;
     private Goal leftGoal, rightGoal;
+    private GameData gameData;
 
     private double initialX, initialY;
 
@@ -42,13 +44,14 @@ public class Ball extends GameObject {
 
     public ArrayList<GameObject> trailList = new ArrayList<>();
 
-    public Ball(Context context, Goal leftGoal, Goal rightGoal, Player1 player1, Player2 player2, double x, double y, int width, int height) {
+    public Ball(Context context, Goal leftGoal, Goal rightGoal, Player1 player1, Player2 player2, GameData gamedata, double x, double y, int width, int height) {
         super(x, y, width, height);
         this.context = context;
         this.leftGoal = leftGoal;
         this.rightGoal = rightGoal;
         this.player1 = player1;
         this.player2 = player2;
+        this.gameData = gamedata;
 
         initialX = x;
         initialY = y;
@@ -122,7 +125,7 @@ public class Ball extends GameObject {
             x = leftGoal.getX() + leftGoal.getWidth() + width;
         }
         if (getBounds().intersect(leftGoal.getBoundsScore())) {
-            //TODO: increase player2's score
+            gameData.setScore2(gameData.getScore2() + 1);
             //TODO: pause the game for a moment
             resetPosition();
         }
@@ -149,7 +152,7 @@ public class Ball extends GameObject {
             x = rightGoal.getX() - width;
         }
         if (getBounds().intersect(rightGoal.getBoundsScore())) {
-            //TODO: increase player1's score
+            gameData.setScore1(gameData.getScore1() + 1);
             //TODO: pause the game for a moment
             resetPosition();
         }

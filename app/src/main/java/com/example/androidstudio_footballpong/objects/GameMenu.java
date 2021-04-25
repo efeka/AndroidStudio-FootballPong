@@ -10,6 +10,7 @@ import android.util.Log;
 import androidx.core.content.ContextCompat;
 
 import com.example.androidstudio_footballpong.Game;
+import com.example.androidstudio_footballpong.GameData;
 import com.example.androidstudio_footballpong.MainActivity;
 import com.example.androidstudio_footballpong.R;
 import com.example.androidstudio_footballpong.Texture;
@@ -22,19 +23,25 @@ public class GameMenu extends GameObject {
     private Player1 player1;
     private Player2 player2;
     private AIPlayer aiPlayer;
+    private GameData gameData;
+
+    private int updateCount = 0;
 
     private int[] energyColors = new int[3];
+    private int textColor;
 
-    public GameMenu(Context context, Player1 player1, Player2 player2, AIPlayer aiPlayer, double x, double y) {
+    public GameMenu(Context context, Player1 player1, Player2 player2, AIPlayer aiPlayer, GameData gameData, double x, double y) {
         super(x, y);
         this.player1 = player1;
         this.player2 = player2;
         this.aiPlayer = aiPlayer;
+        this.gameData = gameData;
 
         paint = new Paint();
         energyColors[0] = ContextCompat.getColor(context, R.color.energy_border);
         energyColors[1] = ContextCompat.getColor(context, R.color.energy_background);
         energyColors[2] = ContextCompat.getColor(context, R.color.energy_bar);
+        textColor = ContextCompat.getColor(context, R.color.white);
     }
 
     @Override
@@ -50,6 +57,19 @@ public class GameMenu extends GameObject {
         canvas.drawRoundRect(getEnergy1Background(), rectRadius, rectRadius, paint);
         paint.setColor(energyColors[2]);
         canvas.drawRoundRect(getEnergy1Bar(), rectRadius, rectRadius, paint);
+
+        //Scores & Game timer
+        paint.setTextAlign(Paint.Align.RIGHT);
+        paint.setColor(textColor);
+        paint.setTextSize(100);
+        RectF button = getPauseButtonBorder();
+        canvas.drawText(gameData.getScore1() + "", button.centerX() - button.width() / 2 - 15, button.centerY() + 25, paint);
+        paint.setTextAlign(Paint.Align.LEFT);
+        canvas.drawText(gameData.getScore2() + "", button.centerX() + button.width() / 2 + 10, button.centerY() + 25, paint);
+        paint.setTextSize(70);
+        paint.setTextAlign(Paint.Align.CENTER);
+        canvas.drawText(gameData.getTimerDisplay(), button.centerX(), button.centerY() + button.height(), paint);
+
 
         if (Game.state == Game.STATE.ONE_PLAYER) {
             //AIPlayer energy
@@ -75,12 +95,22 @@ public class GameMenu extends GameObject {
 
     @Override
     public void update() {
-
+        if (updateCount < 30)
+            updateCount++;
+        else {
+            updateCount = 0;
+            gameData.decrementTimer(1);
+        }
     }
 
     @Override
     public Rect getBounds() {
         return null;
+    }
+
+    public RectF getPauseButtonBorder() {
+        int width = MainActivity.screenWidth / 14;
+        return createRectF(MainActivity.screenWidth / 2 - width / 2, (int) y, width, width);
     }
 
     public RectF getEnergy1Border() {
