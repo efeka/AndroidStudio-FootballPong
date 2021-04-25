@@ -39,23 +39,13 @@ public class MainMenu extends GameObject {
 
     @Override
     public void draw(Canvas canvas) {
-        paint.setColor(colors[0]);
-        canvas.drawRect(createRect(0, 0, width, height), paint);
+        canvas.drawBitmap(tex.menuBackground, 0, 0, paint);
 
-        paint.setColor(colors[2]);
-        canvas.drawRect(getBounds1P(), paint);
-        canvas.drawRect(getBounds2P(), paint);
-        canvas.drawRect(getBoundsSettings(), paint);
+        canvas.drawBitmap(tex.mainMenuButtons[0], getBounds1P().centerX() - getBounds1P().width() / 2, getBounds1P().centerY() - getBounds1P().height() / 2, paint);
+        canvas.drawBitmap(tex.mainMenuButtons[1], getBounds2P().centerX() - getBounds2P().width() / 2, getBounds2P().centerY() - getBounds2P().height() / 2, paint);
+        canvas.drawBitmap(tex.mainMenuButtons[2], getBoundsSettings().centerX() - getBoundsSettings().width() / 2, getBoundsSettings().centerY() - getBoundsSettings().height() / 2, paint);
 
-        paint.setColor(colors[0]);
-        paint.setTextSize(108);
-        canvas.drawText("1 Player",width / 9, getBounds1P().centerY(), paint);
-        canvas.drawText("2 Players", 5 * width / 9, getBounds2P().centerY(), paint);
-        canvas.drawText("Settings", width / 3, getBoundsSettings().centerY(), paint);
-
-        paint.setColor(colors[1]);
-        paint.setTextSize(216);
-        canvas.drawText("Football Pong", width / 6, height / 3, paint);
+        canvas.drawBitmap(tex.menuTitles[0], width / 6, height / 7, paint);
     }
 
     @Override

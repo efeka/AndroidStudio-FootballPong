@@ -3,7 +3,6 @@ package com.example.androidstudio_footballpong;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 
 /**
  * This class is for getting image files as Bitmaps.
@@ -12,6 +11,7 @@ import android.util.Log;
 public class Texture {
 
     private Bitmap background_sheet = null;
+    private Bitmap menu_sheet = null;
     private Bitmap assets_sheet = null;
     private Bitmap game_menu = null;
     private Bitmap effect_sheet = null;
@@ -24,9 +24,17 @@ public class Texture {
     public Bitmap[] goals = new Bitmap[2];
     public Bitmap ball;
 
+    public Bitmap menuBackground;
+    public Bitmap[] mainMenuButtons = new Bitmap[3];
+    public Bitmap[] onePlayerMenuButtons = new Bitmap[8];
+    public Bitmap[] menuTitles = new Bitmap[3];
+
     public Texture(Context context) {
         try {
             background_sheet = BitmapFactory.decodeResource(context.getResources(), R.drawable.background);
+
+            menu_sheet = BitmapFactory.decodeResource(context.getResources(), R.drawable.menu_assets);
+            menu_sheet = menu_sheet.createScaledBitmap(menu_sheet, 555, 800, false);
 
             game_menu = BitmapFactory.decodeResource(context.getResources(), R.drawable.game_menu);
             game_menu = game_menu.createScaledBitmap(game_menu, 500, 500, false);
@@ -47,6 +55,21 @@ public class Texture {
     private void getTextures() {
         //in game background
         gameBackground = background_sheet.createScaledBitmap(background_sheet, MainActivity.screenWidth, MainActivity.screenHeight, false);
+
+        menuBackground = Bitmap.createBitmap(menu_sheet, 1, 1, 400, 200);
+        menuBackground = menuBackground.createScaledBitmap(menuBackground, MainActivity.screenWidth, MainActivity.screenHeight, false);
+
+        for (int i = 0; i < mainMenuButtons.length; i++) {
+            mainMenuButtons[i] = Bitmap.createBitmap(menu_sheet, 1 + 181 * i, 202, 180, 60);
+            mainMenuButtons[i] = mainMenuButtons[i].createScaledBitmap(mainMenuButtons[i], MainActivity.screenWidth / 3, MainActivity.screenHeight / 5, false);
+        }
+
+        menuTitles[0] = Bitmap.createBitmap(menu_sheet, 1, 263, 452, 66);
+        menuTitles[0] = menuTitles[0].createScaledBitmap(menuTitles[0], 2 * MainActivity.screenWidth / 3, MainActivity.screenHeight / 4, false);
+        menuTitles[1] = Bitmap.createBitmap(menu_sheet, 1, 330, 255, 66);
+        menuTitles[1] = menuTitles[1].createScaledBitmap(menuTitles[1], MainActivity.screenWidth / 3, MainActivity.screenHeight / 7, false);
+        menuTitles[2] = Bitmap.createBitmap(menu_sheet, 257, 330, 292, 66);
+        menuTitles[2] = menuTitles[2].createScaledBitmap(menuTitles[2], 2 * MainActivity.screenWidth / 3, MainActivity.screenHeight / 4, false);
 
         for (int i = 0; i < player1.length; i++) {
             player1[i] = Bitmap.createBitmap(assets_sheet, 1 + 49 * i, 102, 48, 48);

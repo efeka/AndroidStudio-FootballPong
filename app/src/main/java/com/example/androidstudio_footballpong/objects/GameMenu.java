@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat;
 
 import com.example.androidstudio_footballpong.Game;
 import com.example.androidstudio_footballpong.GameData;
+import com.example.androidstudio_footballpong.GameLoop;
 import com.example.androidstudio_footballpong.MainActivity;
 import com.example.androidstudio_footballpong.R;
 import com.example.androidstudio_footballpong.Texture;
@@ -95,7 +96,7 @@ public class GameMenu extends GameObject {
 
     @Override
     public void update() {
-        if (updateCount < 30)
+        if (updateCount < GameLoop.MAX_UPS)
             updateCount++;
         else {
             updateCount = 0;

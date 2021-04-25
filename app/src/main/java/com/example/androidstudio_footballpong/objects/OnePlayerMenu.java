@@ -24,7 +24,7 @@ public class OnePlayerMenu extends GameObject {
     private static float touchX = -1f, touchY = -1f;
 
     private int selectedDifficulty = GameData.DIFFICULTY_MEDIUM;
-    private int selectedLength = 2;
+    private int selectedTime = 2;
 
     //temporary
     int[] colors = new int[3];
@@ -41,8 +41,7 @@ public class OnePlayerMenu extends GameObject {
 
     @Override
     public void draw(Canvas canvas) {
-        paint.setColor(colors[0]);
-        canvas.drawRect(createRect(0, 0, width, height), paint);
+        canvas.drawBitmap(tex.menuBackground, 0, 0, paint);
 
         paint.setColor(colors[2]);
         canvas.drawRect(getBoundsBack(), paint);
@@ -68,13 +67,13 @@ public class OnePlayerMenu extends GameObject {
             canvas.drawRect(getBoundsEasy(), paint);
         }
 
-        if (selectedLength == 1) {
+        if (selectedTime == 1) {
             paint.setColor(colors[1]);
             canvas.drawRect(getBoundsLength1(), paint);
             paint.setColor(colors[2]);
             canvas.drawRect(getBoundsLength2(), paint);
             canvas.drawRect(getBoundsLength3(), paint);
-        } else if (selectedLength == 2) {
+        } else if (selectedTime == 2) {
             paint.setColor(colors[1]);
             canvas.drawRect(getBoundsLength2(), paint);
             paint.setColor(colors[2]);
@@ -88,8 +87,7 @@ public class OnePlayerMenu extends GameObject {
             canvas.drawRect(getBoundsLength1(), paint);
         }
 
-        paint.setTextSize(156);
-        canvas.drawText("1 Player", width / 3, height / 5, paint);
+        canvas.drawBitmap(tex.menuTitles[1], width / 3, height / 10, paint);
 
         paint.setColor(colors[0]);
         paint.setTextSize(108);
@@ -112,7 +110,12 @@ public class OnePlayerMenu extends GameObject {
             if (getBoundsStart().contains((int) touchX, (int) touchY)) {
                 Game.state = Game.STATE.ONE_PLAYER;
                 gameData.setDifficulty(selectedDifficulty);
-
+                if (selectedTime == 1)
+                    gameData.setGameTimer(3, 0);
+                else if (selectedTime == 2)
+                    gameData.setGameTimer(8, 0);
+                else
+                    gameData.setGameTimer(10, 0);
             }
             if (getBoundsEasy().contains((int) touchX, (int) touchY))
                 selectedDifficulty = GameData.DIFFICULTY_EASY;
@@ -121,11 +124,11 @@ public class OnePlayerMenu extends GameObject {
             if (getBoundsHard().contains((int) touchX, (int) touchY))
                 selectedDifficulty = GameData.DIFFICULTY_HARD;
             if (getBoundsLength1().contains((int) touchX, (int) touchY))
-                selectedLength = 1;
+                selectedTime = 1;
             if (getBoundsLength2().contains((int) touchX, (int) touchY))
-                selectedLength = 2;
+                selectedTime = 2;
             if (getBoundsLength3().contains((int) touchX, (int) touchY))
-                selectedLength = 3;
+                selectedTime = 3;
         }
     }
 

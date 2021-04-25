@@ -22,7 +22,6 @@ import com.example.androidstudio_footballpong.objects.Player2;
 
 /*
  * TODO: Make easy-medium-hard modes for AI opponent
- * TODO: add 1 player and 2 player modes
  * TODO: graphics
  */
 
