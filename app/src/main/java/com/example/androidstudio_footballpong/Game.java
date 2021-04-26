@@ -22,8 +22,17 @@ import com.example.androidstudio_footballpong.objects.Player2;
 import com.example.androidstudio_footballpong.objects.TwoPlayersMenu;
 
 /*
- * TODO: Make easy-medium-hard modes for AI opponent
- * TODO: graphics
+ * TODO: Make easy-medium-hard modes for AIPlayer (mostly done, AIPlayer needs better movement)
+ * TODO: Fix easy mode's shooting
+ * TODO: Add horizontal movement to AIPlayer
+ * TODO: Adjust GameObject dimensions (smaller player & ball, larger goal)
+ * TODO: Adjust the speeds of players and the ball
+ * TODO: Adjust players' energy according to chosen game length
+ * TODO: Fix 2 Player mode shooting (make shooting side specific)
+ * TODO: Create a zone in the middle where players can't walk into, making it possible to press the pause button without moving your character
+ * TODO: Graphics (mostly done, menu backgrounds and tap effects need a touch-up)
+ * TODO: Make the pause button functional
+ * TODO: Add in game pause menu (with a resume and a main menu button)
  */
 
 /**
