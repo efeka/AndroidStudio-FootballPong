@@ -18,7 +18,6 @@ public class OnePlayerMenu extends GameObject {
 
     private Texture tex = Game.getTexture();
     private GameData gameData = Game.getGameData();
-    private Context context;
     private Paint paint;
 
     private static float touchX = -1f, touchY = -1f;
@@ -26,78 +25,46 @@ public class OnePlayerMenu extends GameObject {
     private int selectedDifficulty = GameData.DIFFICULTY_MEDIUM;
     private int selectedTime = 2;
 
-    //temporary
-    int[] colors = new int[3];
-
     public OnePlayerMenu(Context context, double x, double y, int width, int height) {
         super(x, y, width, height);
-        this.context = context;
-
         paint = new Paint();
-        colors[0] = ContextCompat.getColor(context, R.color.teal_200);
-        colors[1] = ContextCompat.getColor(context, R.color.white);
-        colors[2] = ContextCompat.getColor(context, R.color.black);
     }
 
     @Override
     public void draw(Canvas canvas) {
         canvas.drawBitmap(tex.menuBackground, 0, 0, paint);
-
-        paint.setColor(colors[2]);
-        canvas.drawRect(getBoundsBack(), paint);
-        canvas.drawRect(getBoundsStart(), paint);
+        canvas.drawBitmap(tex.menuTitles[1], width / 3, height / 10, paint);
+        canvas.drawBitmap(tex.otherButtons[0], getRectX(getBoundsBack()), getRectY(getBoundsBack()), paint);
+        canvas.drawBitmap(tex.otherButtons[1], getRectX(getBoundsStart()), getRectY(getBoundsStart()), paint);
 
         if (selectedDifficulty == GameData.DIFFICULTY_EASY) {
-            paint.setColor(colors[1]);
-            canvas.drawRect(getBoundsEasy(), paint);
-            paint.setColor(colors[2]);
-            canvas.drawRect(getBoundsMedium(), paint);
-            canvas.drawRect(getBoundsHard(), paint);
+            canvas.drawBitmap(tex.onePlayerMenuButtons[3], getRectX(getBoundsEasy()), getRectY(getBoundsEasy()), paint);
+            canvas.drawBitmap(tex.onePlayerMenuButtons[1], getRectX(getBoundsMedium()), getRectY(getBoundsMedium()), paint);
+            canvas.drawBitmap(tex.onePlayerMenuButtons[2], getRectX(getBoundsHard()), getRectY(getBoundsHard()), paint);
         } else if (selectedDifficulty == GameData.DIFFICULTY_MEDIUM) {
-            paint.setColor(colors[1]);
-            canvas.drawRect(getBoundsMedium(), paint);
-            paint.setColor(colors[2]);
-            canvas.drawRect(getBoundsEasy(), paint);
-            canvas.drawRect(getBoundsHard(), paint);
+            canvas.drawBitmap(tex.onePlayerMenuButtons[0], getRectX(getBoundsEasy()), getRectY(getBoundsEasy()), paint);
+            canvas.drawBitmap(tex.onePlayerMenuButtons[4], getRectX(getBoundsMedium()), getRectY(getBoundsMedium()), paint);
+            canvas.drawBitmap(tex.onePlayerMenuButtons[2], getRectX(getBoundsHard()), getRectY(getBoundsHard()), paint);
         } else if (selectedDifficulty == GameData.DIFFICULTY_HARD) {
-            paint.setColor(colors[1]);
-            canvas.drawRect(getBoundsHard(), paint);
-            paint.setColor(colors[2]);
-            canvas.drawRect(getBoundsMedium(), paint);
-            canvas.drawRect(getBoundsEasy(), paint);
+            canvas.drawBitmap(tex.onePlayerMenuButtons[0], getRectX(getBoundsEasy()), getRectY(getBoundsEasy()), paint);
+            canvas.drawBitmap(tex.onePlayerMenuButtons[1], getRectX(getBoundsMedium()), getRectY(getBoundsMedium()), paint);
+            canvas.drawBitmap(tex.onePlayerMenuButtons[5], getRectX(getBoundsHard()), getRectY(getBoundsHard()), paint);
         }
 
         if (selectedTime == 1) {
-            paint.setColor(colors[1]);
-            canvas.drawRect(getBoundsLength1(), paint);
-            paint.setColor(colors[2]);
-            canvas.drawRect(getBoundsLength2(), paint);
-            canvas.drawRect(getBoundsLength3(), paint);
+            canvas.drawBitmap(tex.onePlayerMenuButtons[9], getRectX(getBoundsLength1()), getRectY(getBoundsLength1()), paint);
+            canvas.drawBitmap(tex.onePlayerMenuButtons[7], getRectX(getBoundsLength2()), getRectY(getBoundsLength2()), paint);
+            canvas.drawBitmap(tex.onePlayerMenuButtons[8], getRectX(getBoundsLength3()), getRectY(getBoundsLength3()), paint);
         } else if (selectedTime == 2) {
-            paint.setColor(colors[1]);
-            canvas.drawRect(getBoundsLength2(), paint);
-            paint.setColor(colors[2]);
-            canvas.drawRect(getBoundsLength1(), paint);
-            canvas.drawRect(getBoundsLength3(), paint);
+            canvas.drawBitmap(tex.onePlayerMenuButtons[6], getRectX(getBoundsLength1()), getRectY(getBoundsLength1()), paint);
+            canvas.drawBitmap(tex.onePlayerMenuButtons[10], getRectX(getBoundsLength2()), getRectY(getBoundsLength2()), paint);
+            canvas.drawBitmap(tex.onePlayerMenuButtons[8], getRectX(getBoundsLength3()), getRectY(getBoundsLength3()), paint);
         } else {
-            paint.setColor(colors[1]);
-            canvas.drawRect(getBoundsLength3(), paint);
-            paint.setColor(colors[2]);
-            canvas.drawRect(getBoundsLength2(), paint);
-            canvas.drawRect(getBoundsLength1(), paint);
+            canvas.drawBitmap(tex.onePlayerMenuButtons[6], getRectX(getBoundsLength1()), getRectY(getBoundsLength1()), paint);
+            canvas.drawBitmap(tex.onePlayerMenuButtons[7], getRectX(getBoundsLength2()), getRectY(getBoundsLength2()), paint);
+            canvas.drawBitmap(tex.onePlayerMenuButtons[11], getRectX(getBoundsLength3()), getRectY(getBoundsLength3()), paint);
         }
 
-        canvas.drawBitmap(tex.menuTitles[1], width / 3, height / 10, paint);
-
-        paint.setColor(colors[0]);
-        paint.setTextSize(108);
-        canvas.drawText("Back", 10, getBoundsBack().centerY(), paint);
-        canvas.drawText("Easy", getBoundsEasy().centerX() - getBoundsEasy().width() / 2, getBoundsEasy().centerY(), paint);
-        canvas.drawText("Medium", getBoundsMedium().centerX() - getBoundsMedium().width() / 2, getBoundsMedium().centerY(), paint);
-        canvas.drawText("Hard", getBoundsHard().centerX() - getBoundsHard().width() / 2, getBoundsHard().centerY(), paint);
-        canvas.drawText("3 min.", getBoundsLength1().centerX() - getBoundsLength1().width() / 2, getBoundsLength1().centerY(), paint);
-        canvas.drawText("8 min.", getBoundsLength2().centerX() - getBoundsLength2().width() / 2, getBoundsLength2().centerY(), paint);
-        canvas.drawText("10 min.", getBoundsLength3().centerX() - getBoundsLength3().width() / 2, getBoundsLength3().centerY(), paint);
     }
 
     @Override
@@ -113,9 +80,9 @@ public class OnePlayerMenu extends GameObject {
                 if (selectedTime == 1)
                     gameData.setGameTimer(3, 0);
                 else if (selectedTime == 2)
-                    gameData.setGameTimer(8, 0);
+                    gameData.setGameTimer(5, 0);
                 else
-                    gameData.setGameTimer(10, 0);
+                    gameData.setGameTimer(8, 0);
             }
             if (getBoundsEasy().contains((int) touchX, (int) touchY))
                 selectedDifficulty = GameData.DIFFICULTY_EASY;
@@ -152,7 +119,7 @@ public class OnePlayerMenu extends GameObject {
     }
 
     private Rect getBoundsBack() {
-        return createRect(10, 10, width / 8, height / 8);
+        return createRect(15, 50, width / 8, height / 8);
     }
 
     private Rect getBoundsEasy() {
@@ -181,6 +148,14 @@ public class OnePlayerMenu extends GameObject {
 
     private Rect getBoundsStart() {
         return createRect(3 * width / 8, 42 * height / 80 + 9 * height / 156 + height / 5, width / 4, height / 6);
+    }
+
+    private int getRectX(Rect rect) {
+        return rect.centerX() - rect.width() / 2;
+    }
+
+    private int getRectY(Rect rect) {
+        return rect.centerY() - rect.height() / 2;
     }
 
     @Override
