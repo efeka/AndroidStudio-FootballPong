@@ -19,22 +19,13 @@ import com.example.androidstudio_footballpong.Texture;
 public class MainMenu extends GameObject {
 
     private Texture tex = Game.getTexture();
-    private Context context;
     private Paint paint;
 
     private static float touchX = -1f, touchY = -1f;
 
-    //placeholder graphics
-    int[] colors = new int[3];
-
     public MainMenu(Context context, double x, double y, int width, int height) {
         super(x, y, width, height);
-        this.context = context;
         paint = new Paint();
-
-        colors[0] = ContextCompat.getColor(context, R.color.teal_200);
-        colors[1] = ContextCompat.getColor(context, R.color.white);
-        colors[2] = ContextCompat.getColor(context, R.color.black);
     }
 
     @Override
@@ -56,8 +47,8 @@ public class MainMenu extends GameObject {
                 OnePlayerMenu.resetTouch();
             }
             if (getBounds2P().contains((int) touchX, (int) touchY)) {
-                //Game.state = Game.STATE.TWO_PLAYERS_MENU;
-                Game.state = Game.STATE.TWO_PLAYERS;
+                Game.state = Game.STATE.TWO_PLAYERS_MENU;
+                TwoPlayersMenu.resetTouch();
             }
             if (getBoundsSettings().contains((int) touchX, (int) touchY)) {
                 Game.state = Game.STATE.SETTINGS;

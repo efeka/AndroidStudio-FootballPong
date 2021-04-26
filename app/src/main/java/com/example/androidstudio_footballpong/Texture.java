@@ -35,7 +35,7 @@ public class Texture {
             background_sheet = BitmapFactory.decodeResource(context.getResources(), R.drawable.background);
 
             menu_sheet = BitmapFactory.decodeResource(context.getResources(), R.drawable.menu_assets);
-            menu_sheet = Bitmap.createScaledBitmap(menu_sheet, 555, 1200, false);
+            menu_sheet = Bitmap.createScaledBitmap(menu_sheet, 555, 641, false);
 
             game_menu = BitmapFactory.decodeResource(context.getResources(), R.drawable.game_menu);
             game_menu = Bitmap.createScaledBitmap(game_menu, 500, 500, false);
@@ -70,7 +70,7 @@ public class Texture {
         menuTitles[1] = Bitmap.createBitmap(menu_sheet, 1, 330, 255, 66);
         menuTitles[1] = Bitmap.createScaledBitmap(menuTitles[1], MainActivity.screenWidth / 3, MainActivity.screenHeight / 7, false);
         menuTitles[2] = Bitmap.createBitmap(menu_sheet, 257, 330, 292, 66);
-        menuTitles[2] = Bitmap.createScaledBitmap(menuTitles[2], 2 * MainActivity.screenWidth / 3, MainActivity.screenHeight / 4, false);
+        menuTitles[2] = Bitmap.createScaledBitmap(menuTitles[2], MainActivity.screenWidth / 3, MainActivity.screenHeight / 7, false);
 
         for (int i = 0; i < 3; i++) {
             onePlayerMenuButtons[i] = Bitmap.createBitmap(menu_sheet, 1 + 121 * i, 397, 120, 60);

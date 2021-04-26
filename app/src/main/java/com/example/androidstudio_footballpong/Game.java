@@ -19,6 +19,7 @@ import com.example.androidstudio_footballpong.objects.MainMenu;
 import com.example.androidstudio_footballpong.objects.OnePlayerMenu;
 import com.example.androidstudio_footballpong.objects.Player1;
 import com.example.androidstudio_footballpong.objects.Player2;
+import com.example.androidstudio_footballpong.objects.TwoPlayersMenu;
 
 /*
  * TODO: Make easy-medium-hard modes for AI opponent
@@ -39,6 +40,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
     private final MainMenu mainMenu;
     private final OnePlayerMenu onePlayerMenu;
+    private final TwoPlayersMenu twoPlayersMenu;
     private final GameMenu gameMenu;
     private final Player1 player1;
     private final Player2 player2;
@@ -67,6 +69,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         gameData = new GameData();
         mainMenu = new MainMenu(getContext(), 0, 0, MainActivity.screenWidth, MainActivity.screenHeight);
         onePlayerMenu = new OnePlayerMenu(getContext(), 0, 0, MainActivity.screenWidth, MainActivity.screenHeight);
+        twoPlayersMenu = new TwoPlayersMenu(getContext(), 0, 0, MainActivity.screenWidth, MainActivity.screenHeight);
         int goalWidth = 100, goalHeight = 2 * MainActivity.screenHeight / 7;
         leftGoal = new Goal(getContext(), 0, (float) MainActivity.screenHeight / 2 - (float) goalHeight / 2, goalWidth, goalHeight, Goal.LEFT_GOAL);
         rightGoal = new Goal(getContext(), MainActivity.screenWidth - goalWidth, (float) MainActivity.screenHeight / 2 - (float) goalHeight / 2, goalWidth, goalHeight, Goal.RIGHT_GOAL);
@@ -150,6 +153,15 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                     OnePlayerMenu.resetTouch();
                     return true;
             }
+        } else if (state == STATE.TWO_PLAYERS_MENU) {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    twoPlayersMenu.handleTouchEvent(event);
+                    return true;
+                case MotionEvent.ACTION_UP:
+                    TwoPlayersMenu.resetTouch();
+                    return true;
+            }
         }
         return super.onTouchEvent(event);
     }
@@ -206,6 +218,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
             case ONE_PLAYER_MENU:
                 onePlayerMenu.draw(canvas);
                 break;
+            case TWO_PLAYERS_MENU:
+                twoPlayersMenu.draw(canvas);
+                break;
         }
     }
 
@@ -240,6 +255,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                 break;
             case ONE_PLAYER_MENU:
                 onePlayerMenu.update();
+                break;
+            case TWO_PLAYERS_MENU:
+                twoPlayersMenu.update();
                 break;
         }
     }
