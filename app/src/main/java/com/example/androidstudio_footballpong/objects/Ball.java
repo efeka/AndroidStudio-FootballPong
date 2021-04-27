@@ -174,6 +174,8 @@ public class Ball extends GameObject {
                 velX = (float) (MAX_SPEED * (releaseX - touchStartX) / hypot);
                 velY = (float) (MAX_SPEED * (releaseY - touchStartY) / hypot);
             }
+        }
+        else if (playerId == 2) {
             if (getBounds().intersect(player2.getBounds())) {
                 double hypot = Math.hypot(releaseX - touchStartX, releaseY - touchStartY);
                 velX = (float) (MAX_SPEED * (releaseX - touchStartX) / hypot);

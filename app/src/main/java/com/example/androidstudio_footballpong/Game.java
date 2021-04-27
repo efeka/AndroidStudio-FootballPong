@@ -25,10 +25,10 @@ import com.example.androidstudio_footballpong.objects.TwoPlayersMenu;
  * TODO: Make easy-medium-hard modes for AIPlayer (mostly done, AIPlayer needs better movement)
  * TODO: Fix easy mode's shooting
  * TODO: Add horizontal movement to AIPlayer
+ * TODO: Add a no-walk zone in front of the goals to stop players from cheating by camping the goal
  * TODO: Adjust GameObject dimensions (smaller player & ball, larger goal)
  * TODO: Adjust the speeds of players and the ball
  * TODO: Adjust players' energy according to chosen game length
- * TODO: Fix 2 Player mode shooting (make shooting side specific)
  * TODO: Create a zone in the middle where players can't walk into, making it possible to press the pause button without moving your character
  * TODO: Graphics (mostly done, menu backgrounds and tap effects need a touch-up)
  * TODO: Make the pause button functional
@@ -140,7 +140,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                         touchEffect.setY(touchStartY - (float) touchEffect.getHeight() / 2);
                         touchEffect.resumeAnimation();
                     } else {
-                        ball.handleSwipe(1, touchStartX, touchStartY, releaseX, releaseY);
+                        if (touchStartX < MainActivity.screenWidth / 2)
+                            ball.handleSwipe(1, touchStartX, touchStartY, releaseX, releaseY);
+                        else
+                            ball.handleSwipe(2, touchStartX, touchStartY, releaseX, releaseY);
                     }
                     return true;
             }
