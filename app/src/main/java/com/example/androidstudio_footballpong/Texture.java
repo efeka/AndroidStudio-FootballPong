@@ -113,9 +113,9 @@ public class Texture {
         }
 
         goals[0] = Bitmap.createBitmap(assets_sheet, 1, 1, 32, 100);
-        goals[0] = Bitmap.createScaledBitmap(goals[0], 100, 2 * MainActivity.screenHeight / 7, false);
+        goals[0] = Bitmap.createScaledBitmap(goals[0], 100, 2 * MainActivity.screenHeight / 5, false);
         goals[1] = Bitmap.createBitmap(assets_sheet, 34, 1, 32, 100);
-        goals[1] = Bitmap.createScaledBitmap(goals[1], 100, 2 * MainActivity.screenHeight / 7, false);
+        goals[1] = Bitmap.createScaledBitmap(goals[1], 100, 2 * MainActivity.screenHeight / 5, false);
 
         ball = Bitmap.createBitmap(assets_sheet, 67, 1, 100, 100);
         ball = Bitmap.createScaledBitmap(ball, MainActivity.screenWidth / 25, MainActivity.screenWidth / 25, false);

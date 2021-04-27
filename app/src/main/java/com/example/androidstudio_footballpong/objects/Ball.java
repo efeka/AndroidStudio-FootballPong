@@ -108,19 +108,19 @@ public class Ball extends GameObject {
             velY *= -1;
             y = leftGoal.getBoundsTop().centerY() + leftGoal.getBoundsTop().height() / 2;
         }
-        else if (getBoundsTop().intersect(leftGoal.getBoundsBottom())) {
+        if (getBoundsTop().intersect(leftGoal.getBoundsBottom())) {
             velY *= -1;
             y = leftGoal.getBoundsBottom().centerY() + leftGoal.getHeight() / 2;
         }
-        else if (getBoundsBottom().intersect(leftGoal.getBoundsTop())) {
+        if (getBoundsBottom().intersect(leftGoal.getBoundsTop())) {
             velY *= -1;
             y = leftGoal.getBoundsTop().centerY() - leftGoal.getBoundsTop().height() / 2 - width;
         }
-        else if (getBoundsBottom().intersect(leftGoal.getBoundsBottom())) {
+        if (getBoundsBottom().intersect(leftGoal.getBoundsBottom())) {
             velY *= -1;
             y = leftGoal.getBoundsBottom().centerY() + leftGoal.getBoundsBottom().height() / 2 - width;
         }
-        else if (getBoundsLeft().intersect(leftGoal.getBoundsTop()) || getBoundsLeft().intersect(leftGoal.getBoundsBottom())) {
+        if (getBoundsLeft().intersect(leftGoal.getBoundsTop()) || getBoundsLeft().intersect(leftGoal.getBoundsBottom())) {
             velX *= -1;
             x = leftGoal.getX() + leftGoal.getWidth() + width;
         }
