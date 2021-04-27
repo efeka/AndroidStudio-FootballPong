@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.util.Log;
 
 import androidx.core.content.ContextCompat;
 
@@ -171,7 +172,24 @@ public class AIPlayer extends GameObject {
                 ball.handleSwipe(0, (float) ball.getX() + ball.getWidth() / 2, (float) ball.getY() + ball.getWidth() / 2, targetX, targetY);
             }
         } else if (shotType == 1) { //bounce from top/bottom borders
-            if (gameData.getDifficulty() == GameData.DIFFICULTY_MEDIUM || gameData.getDifficulty() == GameData.DIFFICULTY_HARD) {
+            if (gameData.getDifficulty() == GameData.DIFFICULTY_EASY) {
+                int accuracy = (int) (Math.random() * 5);
+                if (accuracy < 2) { //40% chance for a purposefully flawed shot
+                    int mistakeType = (int) (Math.random() * 2);
+                    float targetX = leftGoal.getBounds().centerX();
+                    float targetY;
+                    if (mistakeType == 0) { //shoot too high
+                        targetY = leftGoal.getBounds().centerY() - leftGoal.getBounds().height() / 2;
+                    } else { //shoot too low
+                        targetY = leftGoal.getBounds().centerY() + leftGoal.getBounds().height() / 2;
+                    }
+                    ball.handleSwipe(0, (float) ball.getX() + ball.getWidth() / 2, (float) ball.getY() + ball.getWidth() / 2, targetX, targetY);
+                } else { //60% chance for an accurate shot
+                    float targetX = leftGoal.getBounds().centerX();
+                    float targetY = leftGoal.getBounds().centerY();
+                    ball.handleSwipe(0, (float) ball.getX() + ball.getWidth() / 2, (float) ball.getY() + ball.getWidth() / 2, targetX, targetY);
+                }
+            } else if (gameData.getDifficulty() == GameData.DIFFICULTY_MEDIUM || gameData.getDifficulty() == GameData.DIFFICULTY_HARD) {
                 //Calculating a shot where the ball will bounce from the top or bottom border and go into the center of the goal.
                 float h = MainActivity.screenHeight;
                 float w = MainActivity.screenWidth;

@@ -110,7 +110,7 @@ public class Ball extends GameObject {
         }
         if (getBoundsTop().intersect(leftGoal.getBoundsBottom())) {
             velY *= -1;
-            y = leftGoal.getBoundsBottom().centerY() + leftGoal.getHeight() / 2;
+            y = leftGoal.getBoundsBottom().centerY() + leftGoal.getBoundsBottom().height() / 2;
         }
         if (getBoundsBottom().intersect(leftGoal.getBoundsTop())) {
             velY *= -1;
@@ -137,7 +137,7 @@ public class Ball extends GameObject {
         }
         else if (getBoundsTop().intersect(rightGoal.getBoundsBottom())) {
             velY *= -1;
-            y = rightGoal.getBoundsBottom().centerY() + rightGoal.getHeight() / 2;
+            y = rightGoal.getBoundsBottom().centerY() + rightGoal.getBoundsBottom().height() / 2;
         }
         else if (getBoundsBottom().intersect(rightGoal.getBoundsTop())) {
             velY *= -1;

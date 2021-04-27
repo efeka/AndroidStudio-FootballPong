@@ -23,7 +23,6 @@ import com.example.androidstudio_footballpong.objects.TwoPlayersMenu;
 
 /*
  * TODO: Make easy-medium-hard modes for AIPlayer (mostly done, AIPlayer needs better movement)
- * TODO: Fix easy mode's shooting
  * TODO: Add horizontal movement to AIPlayer
  * TODO: Add a no-walk zone in front of the goals to stop players from cheating by camping the goal
  * TODO: Adjust the speeds of players and the ball
@@ -139,10 +138,14 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                         touchEffect.setY(touchStartY - (float) touchEffect.getHeight() / 2);
                         touchEffect.resumeAnimation();
                     } else {
-                        if (touchStartX < MainActivity.screenWidth / 2)
+                        if (state == STATE.ONE_PLAYER)
                             ball.handleSwipe(1, touchStartX, touchStartY, releaseX, releaseY);
-                        else
-                            ball.handleSwipe(2, touchStartX, touchStartY, releaseX, releaseY);
+                        else {
+                            if (touchStartX < MainActivity.screenWidth / 2)
+                                ball.handleSwipe(1, touchStartX, touchStartY, releaseX, releaseY);
+                            else
+                                ball.handleSwipe(2, touchStartX, touchStartY, releaseX, releaseY);
+                        }
                     }
                     return true;
             }
