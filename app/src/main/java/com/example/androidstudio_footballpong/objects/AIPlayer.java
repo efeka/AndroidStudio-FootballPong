@@ -87,11 +87,16 @@ public class AIPlayer extends GameObject {
             }
         }
 
-        if (ball.getVelX() <= 0 || (Math.abs(x - ball.getX()) < 30 && Math.abs(y - ball.getY()) < 30)) {
+        int winningMovementThreshold = height * 2;
+        int losingMovementThreshold = height / 2;
+        boolean winning = (gameData.getScore1() - gameData.getScore2() < 0);
+        int currentMovementThreshold = winning ? winningMovementThreshold : losingMovementThreshold;
+
+        if (ball.getVelX() <= 0 || (Math.abs(x - ball.getX()) < currentMovementThreshold && Math.abs(y - ball.getY()) < currentMovementThreshold)) {
             velX = velY = 0;
             moving = false;
         } else {
-            if (Math.abs(y - ball.getY()) < 30) {
+            if (Math.abs(y - ball.getY()) < currentMovementThreshold) {
                 velY = 0;
             } else if (y < ball.getY()) {
                 velY = maxSpeed;
@@ -101,7 +106,7 @@ public class AIPlayer extends GameObject {
                 moving = true;
             }
 
-            if (Math.abs(x - ball.getX()) < 30) {
+            if (Math.abs(x - ball.getX()) < currentMovementThreshold) {
                 velX = 0;
             } else if (Math.abs(y - ball.getY()) < MainActivity.screenHeight / 3) {
                 if (x < ball.getX()) {
@@ -117,14 +122,8 @@ public class AIPlayer extends GameObject {
         if (moving) {
             if (energy > 0)
                 energy -= 1;
-
             x += velX;
             y += velY;
-
-            if ((Math.abs(x - targetX) <= 10 || ignoreX) && (Math.abs(y - targetY) <= 10 || ignoreY)) {
-                moving = false;
-                velX = velY = 0;
-            }
         }
 
         collision();
