@@ -28,8 +28,8 @@ public class Player1 extends GameObject {
 
     private Goal leftGoal;
 
-    private final int DEFAULT_MAX_SPEED = 15;
-    private int maxSpeed = 15;
+    private final int DEFAULT_MAX_SPEED = 10;
+    private int maxSpeed = 10;
 
     private boolean moving = false;
     private double targetX = 0, targetY = 0;
@@ -40,7 +40,7 @@ public class Player1 extends GameObject {
 
     private Animation player1Idle, player1Walk;
 
-    public Player1(Context context, Goal leftGoal, double x, double y, int width, int height) {
+    public Player1(Goal leftGoal, double x, double y, int width, int height) {
         super(x, y, width, height);
         this.leftGoal = leftGoal;
 

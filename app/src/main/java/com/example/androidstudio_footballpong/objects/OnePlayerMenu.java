@@ -20,13 +20,16 @@ public class OnePlayerMenu extends GameObject {
     private GameData gameData = Game.getGameData();
     private Paint paint;
 
+    private AIPlayer aiPlayer;
+
     private static float touchX = -1f, touchY = -1f;
 
     private int selectedDifficulty = GameData.DIFFICULTY_MEDIUM;
     private int selectedTime = 2;
 
-    public OnePlayerMenu(Context context, double x, double y, int width, int height) {
+    public OnePlayerMenu(AIPlayer aiPlayer, double x, double y, int width, int height) {
         super(x, y, width, height);
+        this.aiPlayer = aiPlayer;
         paint = new Paint();
     }
 
@@ -74,22 +77,34 @@ public class OnePlayerMenu extends GameObject {
                 Game.state = Game.STATE.MAIN_MENU;
                 MainMenu.resetTouch();
             }
+
             if (getBoundsStart().contains((int) touchX, (int) touchY)) {
-                Game.state = Game.STATE.ONE_PLAYER;
                 gameData.setDifficulty(selectedDifficulty);
+
+                if (selectedDifficulty == GameData.DIFFICULTY_EASY)
+                    aiPlayer.setMaxSpeed(AIPlayer.DEFAULT_MAX_SPEED_EASY);
+                else if (selectedDifficulty == GameData.DIFFICULTY_MEDIUM)
+                    aiPlayer.setMaxSpeed(AIPlayer.DEFAULT_MAX_SPEED_MEDIUM);
+                else
+                    aiPlayer.setMaxSpeed(AIPlayer.DEFAULT_MAX_SPEED_HARD);
+
                 if (selectedTime == 1)
                     gameData.setGameTimer(3, 0);
                 else if (selectedTime == 2)
                     gameData.setGameTimer(5, 0);
                 else
                     gameData.setGameTimer(8, 0);
+
+                Game.state = Game.STATE.ONE_PLAYER;
             }
+
             if (getBoundsEasy().contains((int) touchX, (int) touchY))
                 selectedDifficulty = GameData.DIFFICULTY_EASY;
             if (getBoundsMedium().contains((int) touchX, (int) touchY))
                 selectedDifficulty = GameData.DIFFICULTY_MEDIUM;
             if (getBoundsHard().contains((int) touchX, (int) touchY))
                 selectedDifficulty = GameData.DIFFICULTY_HARD;
+
             if (getBoundsLength1().contains((int) touchX, (int) touchY))
                 selectedTime = 1;
             if (getBoundsLength2().contains((int) touchX, (int) touchY))

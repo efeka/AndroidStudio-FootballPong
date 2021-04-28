@@ -23,7 +23,7 @@ public class MainMenu extends GameObject {
 
     private static float touchX = -1f, touchY = -1f;
 
-    public MainMenu(Context context, double x, double y, int width, int height) {
+    public MainMenu(double x, double y, int width, int height) {
         super(x, y, width, height);
         paint = new Paint();
     }

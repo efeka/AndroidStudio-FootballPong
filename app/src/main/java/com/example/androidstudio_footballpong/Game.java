@@ -23,11 +23,8 @@ import com.example.androidstudio_footballpong.objects.TwoPlayersMenu;
 
 /*
  * TODO: Make easy-medium-hard modes for AIPlayer (mostly done, AIPlayer needs better movement)
- * TODO: Add horizontal movement to AIPlayer
  * TODO: Add a no-walk zone in front of the goals to stop players from cheating by camping the goal
- * TODO: Adjust the speeds of players and the ball
  * TODO: Adjust players' energy according to chosen game length
- * TODO: Create a zone in the middle where players can't walk into, making it possible to press the pause button without moving your character
  * TODO: Graphics (mostly done, menu backgrounds and tap effects need a touch-up, shooting animation for players, maybe a new character sprite for AIPlayer)
  * TODO: Make the pause button functional
  * TODO: Add in game pause menu (with a resume and a main menu button)
@@ -74,16 +71,16 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         touchEffect = new Animation(1, tex.touchEffect[7], tex.touchEffect[6], tex.touchEffect[5], tex.touchEffect[4], tex.touchEffect[3], tex.touchEffect[2], tex.touchEffect[1], tex.touchEffect[0]);
 
         gameData = new GameData();
-        mainMenu = new MainMenu(getContext(), 0, 0, MainActivity.screenWidth, MainActivity.screenHeight);
-        onePlayerMenu = new OnePlayerMenu(getContext(), 0, 0, MainActivity.screenWidth, MainActivity.screenHeight);
+        mainMenu = new MainMenu(0, 0, MainActivity.screenWidth, MainActivity.screenHeight);
         twoPlayersMenu = new TwoPlayersMenu(getContext(), 0, 0, MainActivity.screenWidth, MainActivity.screenHeight);
         int goalWidth = 100, goalHeight = 2 * MainActivity.screenHeight / 5;
         leftGoal = new Goal(getContext(), 0, (float) MainActivity.screenHeight / 2 - (float) goalHeight / 2, goalWidth, goalHeight, Goal.LEFT_GOAL);
         rightGoal = new Goal(getContext(), MainActivity.screenWidth - goalWidth, (float) MainActivity.screenHeight / 2 - (float) goalHeight / 2, goalWidth, goalHeight, Goal.RIGHT_GOAL);
-        player1 = new Player1(getContext(), leftGoal, (float) MainActivity.screenWidth / 4 - MainActivity.screenWidth / 20, (float) MainActivity.screenHeight / 2 - MainActivity.screenWidth / 20, MainActivity.screenHeight / 6, MainActivity.screenWidth / 12);
-        player2 = new Player2(getContext(), rightGoal, (float) 3 * MainActivity.screenWidth / 4 - MainActivity.screenWidth / 20, (float) MainActivity.screenHeight / 2 - MainActivity.screenWidth / 20, MainActivity.screenHeight / 6, MainActivity.screenWidth / 12);
-        ball = new Ball(getContext(), leftGoal, rightGoal, player1, player2, gameData, (float) MainActivity.screenWidth / 2, (float) MainActivity.screenHeight / 2, MainActivity.screenWidth / 25, MainActivity.screenWidth / 25);
+        player1 = new Player1(leftGoal, (float) MainActivity.screenWidth / 4 - MainActivity.screenWidth / 20, (float) MainActivity.screenHeight / 2 - MainActivity.screenWidth / 20, MainActivity.screenHeight / 6, MainActivity.screenWidth / 12);
+        player2 = new Player2(rightGoal, (float) 3 * MainActivity.screenWidth / 4 - MainActivity.screenWidth / 20, (float) MainActivity.screenHeight / 2 - MainActivity.screenWidth / 20, MainActivity.screenHeight / 6, MainActivity.screenWidth / 12);
+        ball = new Ball(leftGoal, rightGoal, player1, player2, gameData, (float) MainActivity.screenWidth / 2, (float) MainActivity.screenHeight / 2, MainActivity.screenWidth / 25, MainActivity.screenWidth / 25);
         aiPlayer = new AIPlayer(getContext(), ball, leftGoal, (float) 3 * MainActivity.screenWidth / 4, (float) MainActivity.screenHeight / 2, MainActivity.screenHeight / 10, MainActivity.screenWidth / 10);
+        onePlayerMenu = new OnePlayerMenu(aiPlayer, 0, 0, MainActivity.screenWidth, MainActivity.screenHeight);
         gameMenu = new GameMenu(getContext(), player1, player2, aiPlayer, gameData, (float) MainActivity.screenWidth / 2 - (float) MainActivity.screenWidth / 28, 3);
 
         setFocusable(true);
@@ -99,13 +96,16 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         ONE_PLAYER,
         TWO_PLAYERS
     }
+
     public static STATE state = STATE.MAIN_MENU;
 
     public static Texture getTexture() {
         return tex;
     }
 
-    public static GameData getGameData() { return gameData; }
+    public static GameData getGameData() {
+        return gameData;
+    }
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -140,7 +140,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                     } else {
                         if (state == STATE.ONE_PLAYER)
                             ball.handleSwipe(1, touchStartX, touchStartY, releaseX, releaseY);
-                        else {
+                        else if (gameMenu.getPauseButtonBorder().contains(touchStartX, touchStartY)) {
+                            // TODO: Pause game, bring up pause menu
+                        } else {
                             if (touchStartX < MainActivity.screenWidth / 2)
                                 ball.handleSwipe(1, touchStartX, touchStartY, releaseX, releaseY);
                             else

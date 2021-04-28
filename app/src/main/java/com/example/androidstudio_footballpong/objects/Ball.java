@@ -28,7 +28,6 @@ public class Ball extends GameObject {
 
     private Paint paint;
     private Texture tex = Game.getTexture();
-    private Context context;
 
     private Player1 player1;
     private Player2 player2;
@@ -40,13 +39,9 @@ public class Ball extends GameObject {
     private final int MIN_SPEED = 10;
     private final int MAX_SPEED = 60;
     private final float DECELERATION = 0.01f;
-    private float currentSpeedX, currentSpeedY;
 
-    public ArrayList<GameObject> trailList = new ArrayList<>();
-
-    public Ball(Context context, Goal leftGoal, Goal rightGoal, Player1 player1, Player2 player2, GameData gamedata, double x, double y, int width, int height) {
+    public Ball(Goal leftGoal, Goal rightGoal, Player1 player1, Player2 player2, GameData gamedata, double x, double y, int width, int height) {
         super(x, y, width, height);
-        this.context = context;
         this.leftGoal = leftGoal;
         this.rightGoal = rightGoal;
         this.player1 = player1;
@@ -58,12 +53,8 @@ public class Ball extends GameObject {
 
         velX = -MIN_SPEED;
         velY = MIN_SPEED;
-        currentSpeedX = (float) velX;
-        currentSpeedY = (float) velY;
 
         paint = new Paint();
-        int color = ContextCompat.getColor(context, R.color.purple_200);
-        paint.setColor(color);
     }
 
     @Override

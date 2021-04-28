@@ -4,10 +4,10 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.util.Log;
 
 import androidx.core.content.ContextCompat;
 
+import com.example.androidstudio_footballpong.Animation;
 import com.example.androidstudio_footballpong.Game;
 import com.example.androidstudio_footballpong.GameData;
 import com.example.androidstudio_footballpong.MainActivity;
@@ -33,8 +33,10 @@ public class AIPlayer extends GameObject {
     private Ball ball;
     private Goal leftGoal;
 
-    private final int DEFAULT_MAX_SPEED = 15;
-    private int maxSpeed = 15;
+    public static final int DEFAULT_MAX_SPEED_EASY = 7;
+    public static final int DEFAULT_MAX_SPEED_MEDIUM = 9;
+    public static final int DEFAULT_MAX_SPEED_HARD = 11;
+    private int maxSpeed = 0;
 
     private boolean moving = false;
     private double targetX = 0, targetY = 0;
@@ -45,16 +47,7 @@ public class AIPlayer extends GameObject {
 
     private int shootTimer = 0, shootCooldown = 60;
 
-    /*
-    Scoring with a wall bounce from the top border formula
-    ----------------------------------
-    double h = MainActivity.screenHeight;
-    double w = MainActivity.screenWidth;
-    double t = w - x;
-    double z = y;
-    int releaseX = (int) ((h * w - h * t) / (2 * z + h));
-    int releaseY = 0;
-    */
+    private Animation player2Idle, player2Walk;
 
     public AIPlayer(Context context, Ball ball, Goal leftGoal, double x, double y, int width, int height) {
         super(x, y, width, height);
@@ -63,25 +56,43 @@ public class AIPlayer extends GameObject {
 
         paint = new Paint();
         paint.setColor(ContextCompat.getColor(context, R.color.black));
+        player2Walk = new Animation(2, tex.player2[4], tex.player2[3], tex.player2[2], tex.player2[1], tex.player2[0]);
+        player2Idle = new Animation(2, tex.player2[7], tex.player2[6], tex.player2[5], tex.player2[6]);
     }
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawRect(getBoundsExact(), paint);
+        if (moving)
+            player2Walk.drawAnimation(canvas, paint, (float) x, (float) y);
+        else
+            player2Idle.drawAnimation(canvas, paint, (float) x, (float) y);
     }
 
     @Override
     public void update() {
-        if (energy <= 0 && maxSpeed > DEFAULT_MAX_SPEED / 4)
-            maxSpeed = DEFAULT_MAX_SPEED / 4;
+        if (energy <= 0) {
+            switch (gameData.getDifficulty()) {
+                case GameData.DIFFICULTY_EASY:
+                    if (maxSpeed > DEFAULT_MAX_SPEED_EASY / 4)
+                        maxSpeed = DEFAULT_MAX_SPEED_EASY / 4;
+                    break;
+                case GameData.DIFFICULTY_MEDIUM:
+                    if (maxSpeed > DEFAULT_MAX_SPEED_MEDIUM / 4)
+                        maxSpeed = DEFAULT_MAX_SPEED_MEDIUM / 4;
+                    break;
+                case GameData.DIFFICULTY_HARD:
+                    if (maxSpeed > DEFAULT_MAX_SPEED_HARD / 4)
+                        maxSpeed = DEFAULT_MAX_SPEED_HARD / 4;
+                    break;
+            }
+        }
 
-        if (ball.getVelX() <= 0) {
+        if (ball.getVelX() <= 0 || (Math.abs(x - ball.getX()) < 30 && Math.abs(y - ball.getY()) < 30)) {
             velX = velY = 0;
             moving = false;
         } else {
             if (Math.abs(y - ball.getY()) < 30) {
                 velY = 0;
-                moving = false;
             } else if (y < ball.getY()) {
                 velY = maxSpeed;
                 moving = true;
@@ -89,8 +100,19 @@ public class AIPlayer extends GameObject {
                 velY = -maxSpeed;
                 moving = true;
             }
-        }
 
+            if (Math.abs(x - ball.getX()) < 30) {
+                velX = 0;
+            } else if (Math.abs(y - ball.getY()) < MainActivity.screenHeight / 3) {
+                if (x < ball.getX()) {
+                    velX = maxSpeed;
+                    moving = true;
+                } else {
+                    velX = -maxSpeed;
+                    moving = true;
+                }
+            }
+        }
 
         if (moving) {
             if (energy > 0)
@@ -106,6 +128,8 @@ public class AIPlayer extends GameObject {
         }
 
         collision();
+        player2Walk.runAnimation();
+        player2Idle.runAnimation();
     }
 
     private void collision() {
@@ -226,5 +250,13 @@ public class AIPlayer extends GameObject {
 
     public void setMaxEnergy(int maxEnergy) {
         this.maxEnergy = maxEnergy;
+    }
+
+    public int getMaxSpeed() {
+        return maxSpeed;
+    }
+
+    public void setMaxSpeed(int maxSpeed) {
+        this.maxSpeed = maxSpeed;
     }
 }
