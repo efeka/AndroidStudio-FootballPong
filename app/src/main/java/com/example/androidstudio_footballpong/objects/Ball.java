@@ -34,6 +34,8 @@ public class Ball extends GameObject {
     private Goal leftGoal, rightGoal;
     private GameData gameData;
 
+    private int resetTimer = 0, resetCooldown = 90;
+    private boolean resetting = false;
     private double initialX, initialY;
 
     private final int MIN_SPEED = 10;
@@ -64,6 +66,32 @@ public class Ball extends GameObject {
 
     @Override
     public void update() {
+        if (resetting) {
+            if (resetTimer <= resetCooldown / 2) {
+                resetTimer++;
+                return;
+            }
+            else if (resetTimer < resetCooldown) {
+                resetTimer++;
+                resetPosition();
+                return;
+            }
+            else {
+                resetting = false;
+                int randomX = (int) (Math.random() * 2);
+                int randomY = (int) (Math.random() * 2);
+                if (randomX == 0)
+                    velX = MIN_SPEED;
+                else
+                    velX = -MIN_SPEED;
+
+                if (randomY == 0)
+                    velY = MIN_SPEED;
+                else
+                    velY = -MIN_SPEED;
+            }
+        }
+
         x += velX;
         y += velY;
 
@@ -117,8 +145,7 @@ public class Ball extends GameObject {
         }
         if (getBounds().intersect(leftGoal.getBoundsScore())) {
             gameData.setScore2(gameData.getScore2() + 1);
-            //TODO: pause the game for a moment
-            resetPosition();
+            resetBall();
         }
 
         //collision with the right goal
@@ -144,8 +171,7 @@ public class Ball extends GameObject {
         }
         if (getBounds().intersect(rightGoal.getBoundsScore())) {
             gameData.setScore1(gameData.getScore1() + 1);
-            //TODO: pause the game for a moment
-            resetPosition();
+            resetBall();
         }
 
     }
@@ -175,11 +201,15 @@ public class Ball extends GameObject {
         }
     }
 
+    private void resetBall() {
+        velX = velY = 0;
+        resetting = true;
+        resetTimer = 0;
+    }
+
     public void resetPosition() {
-        x = initialX;
-        y = initialY;
-        velX = -MIN_SPEED;
-        velY = MIN_SPEED;
+        x = initialX - width / 2;
+        y = initialY - width / 2;
     }
 
     @Override

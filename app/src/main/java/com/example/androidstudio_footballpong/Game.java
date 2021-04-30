@@ -28,6 +28,7 @@ import com.example.androidstudio_footballpong.objects.TwoPlayersMenu;
  * TODO: Graphics (mostly done, menu backgrounds and tap effects need a touch-up, shooting animation for players, maybe a new character sprite for AIPlayer)
  * TODO: Make the pause button functional
  * TODO: Add in game pause menu (with a resume and a main menu button)
+ * TODO: Add sound effects
  */
 
 /**
