@@ -34,7 +34,7 @@ public class Ball extends GameObject {
     private Goal leftGoal, rightGoal;
     private GameData gameData;
 
-    private int resetTimer = 0, resetCooldown = 90;
+    private int resetTimer = 0, resetCooldown = 45;
     private int nextDirection;
     private boolean resetting = false;
     private double initialX, initialY;
@@ -68,11 +68,7 @@ public class Ball extends GameObject {
     @Override
     public void update() {
         if (resetting) {
-            if (resetTimer <= resetCooldown / 2) {
-                resetTimer++;
-                return;
-            }
-            else if (resetTimer < resetCooldown) {
+            if (resetTimer < resetCooldown) {
                 resetTimer++;
                 resetPosition();
                 return;
@@ -207,7 +203,7 @@ public class Ball extends GameObject {
     /**
      * @param nextDirection indicates if the ball will go left (=0) or right (=1) after a player scores
      */
-    private void resetBall(int nextDirection) {
+    public void resetBall(int nextDirection) {
         velX = velY = 0;
         resetting = true;
         this.nextDirection = nextDirection;

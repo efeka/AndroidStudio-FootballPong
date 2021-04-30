@@ -26,6 +26,8 @@ public class Player2 extends GameObject {
     private Texture tex = Game.getTexture();
     private Paint paint;
 
+    private double initialX, initialY;
+
     private Goal rightGoal;
 
     private final int DEFAULT_MAX_SPEED = 10;
@@ -43,6 +45,9 @@ public class Player2 extends GameObject {
     public Player2(Goal rightGoal, double x, double y, int width, int height) {
         super(x, y, width, height);
         this.rightGoal = rightGoal;
+
+        initialX = x;
+        initialY = y;
 
         paint = new Paint();
         player2Walk = new Animation(2, tex.player2[4], tex.player2[3], tex.player2[2], tex.player2[1], tex.player2[0]);
@@ -169,6 +174,12 @@ public class Player2 extends GameObject {
 
     public void setMaxEnergy(int maxEnergy) {
         this.maxEnergy = maxEnergy;
+    }
+
+    public void reset() {
+        x = initialX;
+        y = initialY;
+        velX = velY = 0;
     }
 
 }

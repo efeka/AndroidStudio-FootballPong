@@ -28,8 +28,6 @@ import com.example.androidstudio_footballpong.objects.TwoPlayersMenu;
  * TODO: Adjust players' energy according to chosen game length
  * TODO: Make a game over menu (with restart and main menu buttons)
  * TODO: Graphics (mostly done, menu backgrounds and tap effects need a touch-up, shooting animation for players, maybe a new character sprite for AIPlayer)
- * TODO: Make the pause button functional
- * TODO: Add in game pause menu (with a resume and a main menu button)
  * TODO: Add sound effects
  */
 
@@ -86,7 +84,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         aiPlayer = new AIPlayer(getContext(), ball, leftGoal, (float) 3 * MainActivity.screenWidth / 4 - MainActivity.screenWidth / 20, (float) MainActivity.screenHeight / 2 - MainActivity.screenWidth / 20, MainActivity.screenHeight / 6, MainActivity.screenWidth / 12);
         onePlayerMenu = new OnePlayerMenu(aiPlayer, 0, 0, MainActivity.screenWidth, MainActivity.screenHeight);
         gameMenu = new GameMenu(getContext(), player1, player2, aiPlayer, gameData, (float) MainActivity.screenWidth / 2 - (float) MainActivity.screenWidth / 28, 3);
-        pauseMenu = new PauseMenu(0, 0, MainActivity.screenWidth, MainActivity.screenHeight);
+        pauseMenu = new PauseMenu(gameData, player1, player2, aiPlayer, ball, 0, 0, MainActivity.screenWidth, MainActivity.screenHeight);
 
         setFocusable(true);
     }
@@ -133,24 +131,26 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                     //if the user did not swipe far enough, the swipe will be assumed to be accidental and it will count as a tap instead
                     int minimumSwipeLimit = 50;
                     if ((Math.abs(touchStartX - releaseX) < minimumSwipeLimit) && (Math.abs(touchStartY - releaseY) < minimumSwipeLimit)) {
-                        if (touchStartX < MainActivity.screenWidth / 2)
-                            player1.handleTap(touchStartX, touchStartY);
-                        else
-                            player2.handleTap(touchStartX, touchStartY);
-
-                        touchEffect.resetAnimation();
-                        touchEffect.setX(touchStartX - (float) touchEffect.getWidth() / 2);
-                        touchEffect.setY(touchStartY - (float) touchEffect.getHeight() / 2);
-                        touchEffect.resumeAnimation();
-                    } else {
-                        if (state == STATE.ONE_PLAYER)
-                            ball.handleSwipe(1, touchStartX, touchStartY, releaseX, releaseY);
-                        else if (gameMenu.getPauseButtonBorder().contains(touchStartX, touchStartY)) {
+                        if (gameMenu.getPauseButtonBorder().contains(touchStartX, touchStartY)) {
                             if (state == STATE.ONE_PLAYER)
                                 state = STATE.PAUSED_1P;
                             else if (state == STATE.TWO_PLAYERS)
                                 state = STATE.PAUSED_2P;
                         } else {
+                            if (touchStartX < MainActivity.screenWidth / 2)
+                                player1.handleTap(touchStartX, touchStartY);
+                            else
+                                player2.handleTap(touchStartX, touchStartY);
+
+                            touchEffect.resetAnimation();
+                            touchEffect.setX(touchStartX - (float) touchEffect.getWidth() / 2);
+                            touchEffect.setY(touchStartY - (float) touchEffect.getHeight() / 2);
+                            touchEffect.resumeAnimation();
+                        }
+                    } else {
+                        if (state == STATE.ONE_PLAYER)
+                            ball.handleSwipe(1, touchStartX, touchStartY, releaseX, releaseY);
+                        else if (state == STATE.TWO_PLAYERS) {
                             if (touchStartX < MainActivity.screenWidth / 2)
                                 ball.handleSwipe(1, touchStartX, touchStartY, releaseX, releaseY);
                             else
@@ -186,16 +186,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                     TwoPlayersMenu.resetTouch();
                     return true;
             }
-        } else if (state == STATE.PAUSED_1P) {
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    pauseMenu.handleTouchEvent(event);
-                    return true;
-                case MotionEvent.ACTION_UP:
-                    PauseMenu.resetTouch();
-                    return true;
-            }
-        } else if (state == STATE.PAUSED_2P) {
+        } else if (state == STATE.PAUSED_1P || state == STATE.PAUSED_2P) {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     pauseMenu.handleTouchEvent(event);

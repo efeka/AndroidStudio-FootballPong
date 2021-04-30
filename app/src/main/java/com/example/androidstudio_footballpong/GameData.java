@@ -25,6 +25,9 @@ public class GameData {
         return score1;
     }
 
+    /**
+     * @param score1 the score of the player on the left.
+     */
     public void setScore1(int score1) {
         this.score1 = score1;
     }
@@ -36,8 +39,15 @@ public class GameData {
         return score2;
     }
 
+    /**
+     * @param score2 the score of the player on the right.
+     */
     public void setScore2(int score2) {
         this.score2 = score2;
+    }
+
+    public void resetScores() {
+        score1 = score2 = 0;
     }
 
     public int getDifficulty() {

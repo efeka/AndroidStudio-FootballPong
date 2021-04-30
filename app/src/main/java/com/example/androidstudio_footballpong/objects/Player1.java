@@ -28,6 +28,8 @@ public class Player1 extends GameObject {
 
     private Goal leftGoal;
 
+    private double initialX, initialY;
+
     private final int DEFAULT_MAX_SPEED = 10;
     private int maxSpeed = 10;
 
@@ -43,6 +45,9 @@ public class Player1 extends GameObject {
     public Player1(Goal leftGoal, double x, double y, int width, int height) {
         super(x, y, width, height);
         this.leftGoal = leftGoal;
+
+        initialX = x;
+        initialY = y;
 
         paint = new Paint();
         player1Walk = new Animation(2, tex.player1[3], tex.player1[4], tex.player1[5], tex.player1[6], tex.player1[7]);
@@ -176,6 +181,12 @@ public class Player1 extends GameObject {
 
     public void setMaxEnergy(int maxEnergy) {
         this.maxEnergy = maxEnergy;
+    }
+
+    public void reset() {
+        x = initialX;
+        y = initialY;
+        velX = velY = 0;
     }
 
 }

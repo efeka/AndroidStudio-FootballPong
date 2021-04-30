@@ -72,7 +72,7 @@ public class GameMenu extends GameObject {
         canvas.drawText(gameData.getTimerDisplay(), button.centerX(), button.centerY() + button.height(), paint);
 
 
-        if (Game.state == Game.STATE.ONE_PLAYER) {
+        if (Game.state == Game.STATE.ONE_PLAYER || Game.state == Game.STATE.PAUSED_1P) {
             //AIPlayer energy
             rectRadius = 10;
             paint.setColor(energyColors[0]);
@@ -82,7 +82,7 @@ public class GameMenu extends GameObject {
             paint.setColor(energyColors[2]);
             canvas.drawRoundRect(getEnergyAIBar(), rectRadius, rectRadius, paint);
         }
-        else if (Game.state == Game.STATE.TWO_PLAYERS) {
+        else if (Game.state == Game.STATE.TWO_PLAYERS || Game.state == Game.STATE.PAUSED_2P) {
             //Player2 energy
             rectRadius = 10;
             paint.setColor(energyColors[0]);

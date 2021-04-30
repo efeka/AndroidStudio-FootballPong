@@ -14,21 +14,69 @@ public class PauseMenu extends GameObject {
     private Texture tex = Game.getTexture();
     private Paint paint;
 
+    private GameData gameData;
+    private Player1 player1;
+    private Player2 player2;
+    private AIPlayer aiPlayer;
+    private Ball ball;
+
     private static float touchX = -1f, touchY = -1f;
 
-    public PauseMenu(double x, double y, int width, int height) {
+    public PauseMenu(GameData gameData, Player1 player1, Player2 player2, AIPlayer aiPlayer, Ball ball, double x, double y, int width, int height) {
         super(x, y, width, height);
+        this.gameData = gameData;
+        this.player1 = player1;
+        this.player2 = player2;
+        this.aiPlayer = aiPlayer;
+        this.ball = ball;
+
         paint = new Paint();
     }
 
     @Override
     public void draw(Canvas canvas) {
-
+        if (Game.state == Game.STATE.PAUSED_1P || Game.state == Game.STATE.PAUSED_2P) {
+            if (gameData.getGameTimer() > 0)
+                canvas.drawBitmap(tex.pauseMenuButtons[0], getRectX(getBoundsResume()), getRectY(getBoundsResume()), paint);
+            else
+                canvas.drawBitmap(tex.pauseMenuButtons[2], getRectX(getBoundsResume()), getRectY(getBoundsResume()), paint);
+            canvas.drawBitmap(tex.pauseMenuButtons[1], getRectX(getBoundsMainMenu()), getRectY(getBoundsMainMenu()), paint);
+        }
     }
 
     @Override
     public void update() {
+        if (touchX != -1 && touchY != -1) {
+            if (gameData.getGameTimer() > 0 && getBoundsResume().contains((int) touchX, (int) touchY)) {
+                resetTouch();
+                if (Game.state == Game.STATE.PAUSED_1P)
+                    Game.state = Game.STATE.ONE_PLAYER;
+                else if (Game.state == Game.STATE.PAUSED_2P)
+                    Game.state = Game.STATE.TWO_PLAYERS;
+            }
+            if (getBoundsMainMenu().contains((int) touchX, (int) touchY)) {
+                resetGame();
+                MainMenu.resetTouch();
+                Game.state = Game.STATE.MAIN_MENU;
+            }
+            if (gameData.getGameTimer() <= 0 && getBoundsRestart().contains((int) touchX, (int) touchY)) {
+                resetGame();
+                if (Game.state == Game.STATE.PAUSED_1P)
+                    Game.state = Game.STATE.ONE_PLAYER;
+                else if (Game.state == Game.STATE.PAUSED_2P)
+                    Game.state = Game.STATE.TWO_PLAYERS;
+            }
+        }
+    }
 
+    private void resetGame() {
+        player1.reset();
+        player2.reset();
+        aiPlayer.reset();
+        gameData.resetScores();
+        int randomDirection = (int) (Math.random() * 2);
+        ball.resetBall(randomDirection);
+        resetTouch();
     }
 
     public void handleTouchEvent(MotionEvent event) {
@@ -54,4 +102,25 @@ public class PauseMenu extends GameObject {
     public Rect getBounds() {
         return null;
     }
+
+    private Rect getBoundsResume() {
+        return createRect(width / 3, 3 * height / 10 - 10, width / 3, height / 5);
+    }
+
+    private Rect getBoundsRestart() {
+        return createRect(width / 3, 3 * height / 10 - 10, width / 3, height / 5);
+    }
+
+    private Rect getBoundsMainMenu() {
+        return createRect(width / 3, 5 * height / 10 + 10, width / 3, height / 5);
+    }
+
+    private int getRectX(Rect rect) {
+        return rect.centerX() - rect.width() / 2;
+    }
+
+    private int getRectY(Rect rect) {
+        return rect.centerY() - rect.height() / 2;
+    }
+
 }

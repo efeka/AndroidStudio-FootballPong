@@ -38,6 +38,8 @@ public class AIPlayer extends GameObject {
     public static final int DEFAULT_MAX_SPEED_HARD = 11;
     private int maxSpeed = 0;
 
+    private double initialX, initialY;
+
     private boolean moving = false;
     private double targetX = 0, targetY = 0;
     private boolean ignoreX = false, ignoreY = false;
@@ -53,6 +55,9 @@ public class AIPlayer extends GameObject {
         super(x, y, width, height);
         this.ball = ball;
         this.leftGoal = leftGoal;
+
+        initialX = x;
+        initialY = y;
 
         paint = new Paint();
         paint.setColor(ContextCompat.getColor(context, R.color.black));
@@ -258,4 +263,11 @@ public class AIPlayer extends GameObject {
     public void setMaxSpeed(int maxSpeed) {
         this.maxSpeed = maxSpeed;
     }
+
+    public void reset() {
+        x = initialX;
+        y = initialY;
+        velX = velY = 0;
+    }
+
 }
