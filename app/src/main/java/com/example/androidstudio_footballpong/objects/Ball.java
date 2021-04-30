@@ -35,6 +35,7 @@ public class Ball extends GameObject {
     private GameData gameData;
 
     private int resetTimer = 0, resetCooldown = 90;
+    private int nextDirection;
     private boolean resetting = false;
     private double initialX, initialY;
 
@@ -78,12 +79,11 @@ public class Ball extends GameObject {
             }
             else {
                 resetting = false;
-                int randomX = (int) (Math.random() * 2);
                 int randomY = (int) (Math.random() * 2);
-                if (randomX == 0)
-                    velX = MIN_SPEED;
-                else
+                if (nextDirection == 0)
                     velX = -MIN_SPEED;
+                else
+                    velX = MIN_SPEED;
 
                 if (randomY == 0)
                     velY = MIN_SPEED;
@@ -145,7 +145,7 @@ public class Ball extends GameObject {
         }
         if (getBounds().intersect(leftGoal.getBoundsScore())) {
             gameData.setScore2(gameData.getScore2() + 1);
-            resetBall();
+            resetBall(0);
         }
 
         //collision with the right goal
@@ -171,15 +171,18 @@ public class Ball extends GameObject {
         }
         if (getBounds().intersect(rightGoal.getBoundsScore())) {
             gameData.setScore1(gameData.getScore1() + 1);
-            resetBall();
+            resetBall(1);
         }
 
     }
 
     /**
-     * @param playerId indicates which player did the swipe, set this to 0 for AIPlayer, 1 for Player1 or Player2
+     * @param playerId indicates which player did the swipe, set this to 0 for AIPlayer, 1 for Player1 and 2 for Player2
      */
     public void handleSwipe(int playerId, float touchStartX, float touchStartY, float releaseX, float releaseY) {
+        if (resetting)
+            return;
+
         if (playerId == 0) {
             double hypot = Math.hypot(releaseX - touchStartX, releaseY - touchStartY);
             velX = (float) (MAX_SPEED * (releaseX - touchStartX) / hypot);
@@ -201,9 +204,13 @@ public class Ball extends GameObject {
         }
     }
 
-    private void resetBall() {
+    /**
+     * @param nextDirection indicates if the ball will go left (=0) or right (=1) after a player scores
+     */
+    private void resetBall(int nextDirection) {
         velX = velY = 0;
         resetting = true;
+        this.nextDirection = nextDirection;
         resetTimer = 0;
     }
 

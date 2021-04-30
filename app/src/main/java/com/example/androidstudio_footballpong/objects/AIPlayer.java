@@ -87,7 +87,7 @@ public class AIPlayer extends GameObject {
             }
         }
 
-        int winningMovementThreshold = height * 2;
+        int winningMovementThreshold = height;
         int losingMovementThreshold = height / 2;
         boolean winning = (gameData.getScore1() - gameData.getScore2() < 0);
         int currentMovementThreshold = winning ? winningMovementThreshold : losingMovementThreshold;

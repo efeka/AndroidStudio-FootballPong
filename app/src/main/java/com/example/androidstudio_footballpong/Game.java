@@ -17,6 +17,7 @@ import com.example.androidstudio_footballpong.objects.GameMenu;
 import com.example.androidstudio_footballpong.objects.Goal;
 import com.example.androidstudio_footballpong.objects.MainMenu;
 import com.example.androidstudio_footballpong.objects.OnePlayerMenu;
+import com.example.androidstudio_footballpong.objects.PauseMenu;
 import com.example.androidstudio_footballpong.objects.Player1;
 import com.example.androidstudio_footballpong.objects.Player2;
 import com.example.androidstudio_footballpong.objects.TwoPlayersMenu;
@@ -25,6 +26,7 @@ import com.example.androidstudio_footballpong.objects.TwoPlayersMenu;
  * TODO: Make easy-medium-hard modes for AIPlayer (mostly done, AIPlayer needs better movement)
  * TODO: Add a no-walk zone in front of the goals to stop players from cheating by camping the goal
  * TODO: Adjust players' energy according to chosen game length
+ * TODO: Make a game over menu (with restart and main menu buttons)
  * TODO: Graphics (mostly done, menu backgrounds and tap effects need a touch-up, shooting animation for players, maybe a new character sprite for AIPlayer)
  * TODO: Make the pause button functional
  * TODO: Add in game pause menu (with a resume and a main menu button)
@@ -47,6 +49,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private final OnePlayerMenu onePlayerMenu;
     private final TwoPlayersMenu twoPlayersMenu;
     private final GameMenu gameMenu;
+    private final PauseMenu pauseMenu;
     private final Player1 player1;
     private final Player2 player2;
     private final AIPlayer aiPlayer;
@@ -80,9 +83,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         player1 = new Player1(leftGoal, (float) MainActivity.screenWidth / 4 - MainActivity.screenWidth / 20, (float) MainActivity.screenHeight / 2 - MainActivity.screenWidth / 20, MainActivity.screenHeight / 6, MainActivity.screenWidth / 12);
         player2 = new Player2(rightGoal, (float) 3 * MainActivity.screenWidth / 4 - MainActivity.screenWidth / 20, (float) MainActivity.screenHeight / 2 - MainActivity.screenWidth / 20, MainActivity.screenHeight / 6, MainActivity.screenWidth / 12);
         ball = new Ball(leftGoal, rightGoal, player1, player2, gameData, (float) MainActivity.screenWidth / 2, (float) MainActivity.screenHeight / 2, MainActivity.screenWidth / 25, MainActivity.screenWidth / 25);
-        aiPlayer = new AIPlayer(getContext(), ball, leftGoal, (float) 3 * MainActivity.screenWidth / 4, (float) MainActivity.screenHeight / 2, MainActivity.screenHeight / 10, MainActivity.screenWidth / 10);
+        aiPlayer = new AIPlayer(getContext(), ball, leftGoal, (float) 3 * MainActivity.screenWidth / 4 - MainActivity.screenWidth / 20, (float) MainActivity.screenHeight / 2 - MainActivity.screenWidth / 20, MainActivity.screenHeight / 6, MainActivity.screenWidth / 12);
         onePlayerMenu = new OnePlayerMenu(aiPlayer, 0, 0, MainActivity.screenWidth, MainActivity.screenHeight);
         gameMenu = new GameMenu(getContext(), player1, player2, aiPlayer, gameData, (float) MainActivity.screenWidth / 2 - (float) MainActivity.screenWidth / 28, 3);
+        pauseMenu = new PauseMenu(0, 0, MainActivity.screenWidth, MainActivity.screenHeight);
 
         setFocusable(true);
     }
@@ -142,7 +146,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                         if (state == STATE.ONE_PLAYER)
                             ball.handleSwipe(1, touchStartX, touchStartY, releaseX, releaseY);
                         else if (gameMenu.getPauseButtonBorder().contains(touchStartX, touchStartY)) {
-                            // TODO: Pause game, bring up pause menu
+                            if (state == STATE.ONE_PLAYER)
+                                state = STATE.PAUSED_1P;
+                            else if (state == STATE.TWO_PLAYERS)
+                                state = STATE.PAUSED_2P;
                         } else {
                             if (touchStartX < MainActivity.screenWidth / 2)
                                 ball.handleSwipe(1, touchStartX, touchStartY, releaseX, releaseY);
@@ -177,6 +184,24 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                     return true;
                 case MotionEvent.ACTION_UP:
                     TwoPlayersMenu.resetTouch();
+                    return true;
+            }
+        } else if (state == STATE.PAUSED_1P) {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    pauseMenu.handleTouchEvent(event);
+                    return true;
+                case MotionEvent.ACTION_UP:
+                    PauseMenu.resetTouch();
+                    return true;
+            }
+        } else if (state == STATE.PAUSED_2P) {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    pauseMenu.handleTouchEvent(event);
+                    return true;
+                case MotionEvent.ACTION_UP:
+                    PauseMenu.resetTouch();
                     return true;
             }
         }
@@ -238,6 +263,28 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
             case TWO_PLAYERS_MENU:
                 twoPlayersMenu.draw(canvas);
                 break;
+            case PAUSED_1P:
+                canvas.drawBitmap(tex.gameBackground, 0f, 0f, paint);
+                player1.draw(canvas);
+                aiPlayer.draw(canvas);
+                ball.draw(canvas);
+                gameMenu.draw(canvas);
+                touchEffect.drawAnimation(canvas, paint);
+                leftGoal.draw(canvas);
+                rightGoal.draw(canvas);
+                pauseMenu.draw(canvas);
+                break;
+            case PAUSED_2P:
+                canvas.drawBitmap(tex.gameBackground, 0f, 0f, paint);
+                player1.draw(canvas);
+                player2.draw(canvas);
+                ball.draw(canvas);
+                gameMenu.draw(canvas);
+                touchEffect.drawAnimation(canvas, paint);
+                leftGoal.draw(canvas);
+                rightGoal.draw(canvas);
+                pauseMenu.draw(canvas);
+                break;
         }
     }
 
@@ -275,6 +322,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                 break;
             case TWO_PLAYERS_MENU:
                 twoPlayersMenu.update();
+                break;
+            case PAUSED_1P:
+            case PAUSED_2P:
+                pauseMenu.update();
                 break;
         }
     }
