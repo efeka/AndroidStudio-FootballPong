@@ -25,8 +25,9 @@ import com.example.androidstudio_footballpong.objects.TwoPlayersMenu;
 /*
  * TODO: Make easy-medium-hard modes for AIPlayer (mostly done, AIPlayer needs better movement)
  * TODO: Add a no-walk zone in front of the goals to stop players from cheating by camping the goal
- * TODO: Graphics (mostly done, menu backgrounds and tap effects need a touch-up, shooting animation for players, maybe a new character sprite for AIPlayer)
+ * TODO: Graphics (maybe a robot character for AIPlayer, shooting animations)
  * TODO: Add sound effects
+ * TODO: Add a settings menu which has music volume settings (on/off), effects volume settings (on/off) and credits
  */
 
 /**

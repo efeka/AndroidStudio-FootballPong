@@ -15,10 +15,8 @@ public class Texture {
     private Bitmap background_sheet = null;
     private Bitmap menu_sheet = null;
     private Bitmap assets_sheet = null;
-    private Bitmap game_menu = null;
-    private Bitmap effect_sheet = null;
 
-    public Bitmap[] gameMenu = new Bitmap[5];
+    public Bitmap pauseButton;
     public Bitmap gameBackground;
     public Bitmap[] player1 = new Bitmap[8];
     public Bitmap[] player2 = new Bitmap[8];
@@ -42,15 +40,8 @@ public class Texture {
             menu_sheet = BitmapFactory.decodeResource(context.getResources(), R.drawable.menu_assets);
             menu_sheet = Bitmap.createScaledBitmap(menu_sheet, 555, 702, false);
 
-            game_menu = BitmapFactory.decodeResource(context.getResources(), R.drawable.game_menu);
-            game_menu = Bitmap.createScaledBitmap(game_menu, 500, 500, false);
-
             assets_sheet = BitmapFactory.decodeResource(context.getResources(), R.drawable.assets_sheet);
             assets_sheet = Bitmap.createScaledBitmap(assets_sheet, 800, 600, false);
-
-            effect_sheet = BitmapFactory.decodeResource(context.getResources(), R.drawable.effect_sheet);
-            effect_sheet = Bitmap.createScaledBitmap(effect_sheet, 800, 600, false);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -114,11 +105,11 @@ public class Texture {
         }
 
         //in game pause button
-        gameMenu[0] = Bitmap.createBitmap(game_menu, 1, 1, 100, 100);
-        gameMenu[0] = Bitmap.createScaledBitmap(gameMenu[0], MainActivity.screenWidth / 14, MainActivity.screenWidth / 14, false);
+        pauseButton = Bitmap.createBitmap(menu_sheet, 402, 1, 100, 100);
+        pauseButton = Bitmap.createScaledBitmap(pauseButton, MainActivity.screenWidth / 14, MainActivity.screenWidth / 14, false);
 
         for (int i = 0; i < touchEffect.length; i++) {
-            touchEffect[i] = Bitmap.createBitmap(effect_sheet, 1 + 65 * i, 1, 64, 64);
+            touchEffect[i] = Bitmap.createBitmap(assets_sheet, 1 + 65 * i, 200, 64, 64);
             touchEffect[i] = Bitmap.createScaledBitmap(touchEffect[i], MainActivity.screenHeight / 10, MainActivity.screenHeight / 10, false);
         }
 

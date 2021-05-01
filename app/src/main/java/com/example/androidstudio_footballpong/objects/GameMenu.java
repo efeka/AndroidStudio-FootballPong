@@ -47,7 +47,7 @@ public class GameMenu extends GameObject {
     @Override
     public void draw(Canvas canvas) {
         //pause button
-        canvas.drawBitmap(tex.gameMenu[0], (float) x, (float) y, paint);
+        canvas.drawBitmap(tex.pauseButton, (float) x, (float) y, paint);
 
         //Player1 energy
         int rectRadius = 10;
