@@ -1,16 +1,12 @@
 package com.example.androidstudio_footballpong.objects;
 
-import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
-import androidx.core.content.ContextCompat;
-
 import com.example.androidstudio_footballpong.Animation;
 import com.example.androidstudio_footballpong.Game;
 import com.example.androidstudio_footballpong.MainActivity;
-import com.example.androidstudio_footballpong.R;
 import com.example.androidstudio_footballpong.Texture;
 
 /**

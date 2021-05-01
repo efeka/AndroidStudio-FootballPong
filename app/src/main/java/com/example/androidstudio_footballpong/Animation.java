@@ -25,7 +25,7 @@ public class Animation {
 
     /**
      * @param speed Number of frames to skip before drawing the next sprite.
-     * @param args Each sprite of the animation in order.
+     * @param args  Each sprite of the animation in order.
      */
     public Animation(int speed, Bitmap... args) {
         this.speed = speed;

@@ -1,19 +1,13 @@
 package com.example.androidstudio_footballpong.objects;
 
-import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
-import androidx.core.content.ContextCompat;
-
 import com.example.androidstudio_footballpong.Game;
 import com.example.androidstudio_footballpong.GameData;
 import com.example.androidstudio_footballpong.MainActivity;
-import com.example.androidstudio_footballpong.R;
 import com.example.androidstudio_footballpong.Texture;
-
-import java.util.ArrayList;
 
 /**
  * Ball is an object that bounces from goals and screen borders and is used for scoring goals.
@@ -72,8 +66,7 @@ public class Ball extends GameObject {
                 resetTimer++;
                 resetPosition();
                 return;
-            }
-            else {
+            } else {
                 resetting = false;
                 int randomY = (int) (Math.random() * 2);
                 if (nextDirection == 0)
@@ -148,20 +141,16 @@ public class Ball extends GameObject {
         if (getBoundsTop().intersect(rightGoal.getBoundsTop())) {
             velY *= -1;
             y = rightGoal.getBoundsTop().centerY() + rightGoal.getBoundsTop().height() / 2;
-        }
-        else if (getBoundsTop().intersect(rightGoal.getBoundsBottom())) {
+        } else if (getBoundsTop().intersect(rightGoal.getBoundsBottom())) {
             velY *= -1;
             y = rightGoal.getBoundsBottom().centerY() + rightGoal.getBoundsBottom().height() / 2;
-        }
-        else if (getBoundsBottom().intersect(rightGoal.getBoundsTop())) {
+        } else if (getBoundsBottom().intersect(rightGoal.getBoundsTop())) {
             velY *= -1;
             y = rightGoal.getBoundsTop().centerY() - rightGoal.getBoundsTop().height() / 2 - width;
-        }
-        else if (getBoundsBottom().intersect(rightGoal.getBoundsBottom())) {
+        } else if (getBoundsBottom().intersect(rightGoal.getBoundsBottom())) {
             velY *= -1;
             y = rightGoal.getBoundsBottom().centerY() + rightGoal.getBoundsBottom().height() / 2 - width;
-        }
-        else if (getBoundsRight().intersect(rightGoal.getBoundsTop()) || getBoundsRight().intersect(rightGoal.getBoundsBottom())) {
+        } else if (getBoundsRight().intersect(rightGoal.getBoundsTop()) || getBoundsRight().intersect(rightGoal.getBoundsBottom())) {
             velX *= -1;
             x = rightGoal.getX() - width;
         }
@@ -183,15 +172,13 @@ public class Ball extends GameObject {
             double hypot = Math.hypot(releaseX - touchStartX, releaseY - touchStartY);
             velX = (float) (MAX_SPEED * (releaseX - touchStartX) / hypot);
             velY = (float) (MAX_SPEED * (releaseY - touchStartY) / hypot);
-        }
-        else if (playerId == 1) {
+        } else if (playerId == 1) {
             if (getBounds().intersect(player1.getBounds())) {
                 double hypot = Math.hypot(releaseX - touchStartX, releaseY - touchStartY);
                 velX = (float) (MAX_SPEED * (releaseX - touchStartX) / hypot);
                 velY = (float) (MAX_SPEED * (releaseY - touchStartY) / hypot);
             }
-        }
-        else if (playerId == 2) {
+        } else if (playerId == 2) {
             if (getBounds().intersect(player2.getBounds())) {
                 double hypot = Math.hypot(releaseX - touchStartX, releaseY - touchStartY);
                 velX = (float) (MAX_SPEED * (releaseX - touchStartX) / hypot);

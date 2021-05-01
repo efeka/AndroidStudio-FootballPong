@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.util.Log;
 
 import androidx.core.content.ContextCompat;
 
@@ -71,7 +70,6 @@ public class GameMenu extends GameObject {
         paint.setTextAlign(Paint.Align.CENTER);
         canvas.drawText(gameData.getTimerDisplay(), button.centerX(), button.centerY() + button.height(), paint);
 
-
         if (Game.state == Game.STATE.ONE_PLAYER || Game.state == Game.STATE.PAUSED_1P) {
             //AIPlayer energy
             rectRadius = 10;
@@ -81,8 +79,7 @@ public class GameMenu extends GameObject {
             canvas.drawRoundRect(getEnergyAIBackground(), rectRadius, rectRadius, paint);
             paint.setColor(energyColors[2]);
             canvas.drawRoundRect(getEnergyAIBar(), rectRadius, rectRadius, paint);
-        }
-        else if (Game.state == Game.STATE.TWO_PLAYERS || Game.state == Game.STATE.PAUSED_2P) {
+        } else if (Game.state == Game.STATE.TWO_PLAYERS || Game.state == Game.STATE.PAUSED_2P) {
             //Player2 energy
             rectRadius = 10;
             paint.setColor(energyColors[0]);

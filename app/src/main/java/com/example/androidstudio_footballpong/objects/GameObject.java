@@ -28,7 +28,9 @@ public abstract class GameObject {
     }
 
     public abstract void draw(Canvas canvas);
+
     public abstract void update();
+
     public abstract Rect getBounds();
 
     public Rect getBoundsExact() {
@@ -44,7 +46,7 @@ public abstract class GameObject {
     }
 
     public double getVelY() {
-        return  velY;
+        return velY;
     }
 
     public void setVelY(double velY) {
@@ -85,9 +87,10 @@ public abstract class GameObject {
 
     /**
      * For creating Rects in a simpler way, similar to java.awt style.
-     * @param x x coordinate of the top left corner
-     * @param y y coordinate of the top left corner
-     * @param width width of the Rect, originating from the top left corner
+     *
+     * @param x      x coordinate of the top left corner
+     * @param y      y coordinate of the top left corner
+     * @param width  width of the Rect, originating from the top left corner
      * @param height height of the Rect, originating from the top left corner
      */
     public Rect createRect(int x, int y, int width, int height) {

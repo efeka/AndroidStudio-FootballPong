@@ -1,7 +1,6 @@
 package com.example.androidstudio_footballpong;
 
 import android.graphics.Canvas;
-import android.view.Surface;
 import android.view.SurfaceHolder;
 
 /**
@@ -51,7 +50,7 @@ public class GameLoop extends Thread {
         //Game Loop
         Canvas canvas = null;
         startTime = System.currentTimeMillis();
-        while(isRunning) {
+        while (isRunning) {
             try {
                 canvas = surfaceHolder.lockCanvas();
                 synchronized (surfaceHolder) {
@@ -59,14 +58,14 @@ public class GameLoop extends Thread {
                     updateCount++;
                     game.draw(canvas);
                 }
-            } catch(IllegalArgumentException e) {
+            } catch (IllegalArgumentException e) {
                 e.printStackTrace();
             } finally {
                 if (canvas != null) {
                     try {
                         surfaceHolder.unlockCanvasAndPost(canvas);
                         frameCount++;
-                    } catch(Exception e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
@@ -82,7 +81,7 @@ public class GameLoop extends Thread {
                 }
             }
 
-            while(sleepTime < 0 && updateCount < MAX_UPS - 1) {
+            while (sleepTime < 0 && updateCount < MAX_UPS - 1) {
                 game.update();
                 updateCount++;
                 elapsedTime = System.currentTimeMillis() - startTime;
@@ -104,7 +103,7 @@ public class GameLoop extends Thread {
         isRunning = false;
         try {
             join();
-        } catch(InterruptedException e) {
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }

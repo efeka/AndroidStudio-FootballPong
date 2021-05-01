@@ -1,14 +1,10 @@
 package com.example.androidstudio_footballpong;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Window;
 import android.view.WindowManager;
-
-import com.example.androidstudio_footballpong.Game;
 
 //Entry point to the application
 
