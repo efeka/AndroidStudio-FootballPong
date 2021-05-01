@@ -74,6 +74,7 @@ public class PauseMenu extends GameObject {
         player2.reset();
         aiPlayer.reset();
         gameData.resetScores();
+        gameData.resetGameTimer();
         int randomDirection = (int) (Math.random() * 2);
         ball.resetBall(randomDirection);
         resetTouch();

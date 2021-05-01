@@ -9,9 +9,12 @@ public class GameData {
     private int score1 = 0, score2 = 0;
     private int gameTimer = 60;
     private int difficulty = DIFFICULTY_MEDIUM;
+    private int selectedGameLength = 1;
 
     /**
-     * Decreases game timer by the amount of given seconds.
+     * Decreases the game timer by the amount of given seconds
+     * @param seconds amount of seconds to remove from the game timer
+     * @return current value of the game timer
      */
     public int decrementTimer(int seconds) {
         gameTimer -= seconds;
@@ -68,6 +71,27 @@ public class GameData {
 
     public void setGameTimer(int minutes, int seconds) {
         gameTimer = minutes * 60 + seconds;
+    }
+
+    public int getSelectedGameLength() {
+        return selectedGameLength;
+    }
+
+    public void setSelectedGameLength(int length) {
+        selectedGameLength = length;
+    }
+
+    public void resetGameTimer() {
+        switch (selectedGameLength) {
+            case 1:
+                setGameTimer(3, 0);
+                break;
+            case 2:
+                setGameTimer(5, 0);
+                break;
+            case 3:
+                setGameTimer(8, 0);
+        }
     }
 
     /**

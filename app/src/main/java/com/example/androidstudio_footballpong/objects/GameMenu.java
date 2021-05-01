@@ -97,7 +97,13 @@ public class GameMenu extends GameObject {
             updateCount++;
         else {
             updateCount = 0;
-            gameData.decrementTimer(1);
+            int gameTimer = gameData.decrementTimer(1);
+            if (gameTimer <= 0) {
+                if (Game.state == Game.STATE.ONE_PLAYER)
+                    Game.state = Game.STATE.PAUSED_1P;
+                else if (Game.state == Game.STATE.TWO_PLAYERS)
+                    Game.state = Game.STATE.PAUSED_2P;
+            }
         }
     }
 

@@ -84,6 +84,7 @@ public class OnePlayerMenu extends GameObject {
                 else
                     aiPlayer.setMaxSpeed(AIPlayer.DEFAULT_MAX_SPEED_HARD);
 
+                gameData.setSelectedGameLength(selectedTime);
                 if (selectedTime == 1) {
                     gameData.setGameTimer(3, 0);
                     Player1.setMaxEnergy(calculateMaxEnergy(3, 0));

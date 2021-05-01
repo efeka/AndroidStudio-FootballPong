@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 
 import com.example.androidstudio_footballpong.Game;
 import com.example.androidstudio_footballpong.GameData;
+import com.example.androidstudio_footballpong.GameLoop;
 import com.example.androidstudio_footballpong.Texture;
 
 public class TwoPlayersMenu extends GameObject {
@@ -55,13 +56,18 @@ public class TwoPlayersMenu extends GameObject {
                 MainMenu.resetTouch();
             }
             if (getBoundsStart().contains((int) touchX, (int) touchY)) {
-                Game.state = Game.STATE.TWO_PLAYERS;
-                if (selectedTime == 1)
+                gameData.setSelectedGameLength(selectedTime);
+                if (selectedTime == 1) {
                     gameData.setGameTimer(3, 0);
-                else if (selectedTime == 2)
+                    Player1.setMaxEnergy(calculateMaxEnergy(3, 0));
+                } else if (selectedTime == 2) {
                     gameData.setGameTimer(5, 0);
-                else
+                    Player1.setMaxEnergy(calculateMaxEnergy(5, 0));
+                } else {
                     gameData.setGameTimer(8, 0);
+                    Player1.setMaxEnergy(calculateMaxEnergy(8, 0));
+                }
+                Game.state = Game.STATE.TWO_PLAYERS;
             }
 
             if (getBoundsLength1().contains((int) touchX, (int) touchY))
@@ -83,6 +89,11 @@ public class TwoPlayersMenu extends GameObject {
                 touchY = event.getY();
                 break;
         }
+    }
+
+    private int calculateMaxEnergy(int minutes, int seconds) {
+        int time = minutes * 60 + seconds;
+        return (int) (time * GameLoop.MAX_UPS / 5);
     }
 
     /**
