@@ -37,8 +37,8 @@ public class Player1 extends GameObject {
     private double targetX = 0, targetY = 0;
     private boolean ignoreX = false, ignoreY = false;
 
-    public int maxEnergy = 1000;
-    public static int energy = 1000;
+    private static int maxEnergy = 1000;
+    private static int energy = 1000;
 
     private Animation player1Idle, player1Walk;
 
@@ -167,20 +167,20 @@ public class Player1 extends GameObject {
         velY = (float) (maxSpeed * (targetY - y) / hypot);
     }
 
-    public int getEnergy() {
+    public static int getEnergy() {
         return energy;
     }
 
-    public void setEnergy(int energy) {
-        this.energy = energy;
+    public static void setEnergy(int eng) {
+        energy = eng;
     }
 
-    public int getMaxEnergy() {
+    public static int getMaxEnergy() {
         return maxEnergy;
     }
 
-    public void setMaxEnergy(int maxEnergy) {
-        this.maxEnergy = maxEnergy;
+    public static void setMaxEnergy(int maxEng) {
+        maxEnergy = energy = maxEng;
     }
 
     public void reset() {

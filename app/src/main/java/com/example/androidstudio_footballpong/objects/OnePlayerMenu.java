@@ -1,17 +1,13 @@
 package com.example.androidstudio_footballpong.objects;
 
-import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.view.MotionEvent;
 
-import androidx.core.content.ContextCompat;
-
 import com.example.androidstudio_footballpong.Game;
 import com.example.androidstudio_footballpong.GameData;
-import com.example.androidstudio_footballpong.MainActivity;
-import com.example.androidstudio_footballpong.R;
+import com.example.androidstudio_footballpong.GameLoop;
 import com.example.androidstudio_footballpong.Texture;
 
 public class OnePlayerMenu extends GameObject {
@@ -88,12 +84,16 @@ public class OnePlayerMenu extends GameObject {
                 else
                     aiPlayer.setMaxSpeed(AIPlayer.DEFAULT_MAX_SPEED_HARD);
 
-                if (selectedTime == 1)
+                if (selectedTime == 1) {
                     gameData.setGameTimer(3, 0);
-                else if (selectedTime == 2)
+                    Player1.setMaxEnergy(calculateMaxEnergy(3, 0));
+                } else if (selectedTime == 2) {
                     gameData.setGameTimer(5, 0);
-                else
+                    Player1.setMaxEnergy(calculateMaxEnergy(5, 0));
+                } else {
                     gameData.setGameTimer(8, 0);
+                    Player1.setMaxEnergy(calculateMaxEnergy(8, 0));
+                }
 
                 Game.state = Game.STATE.ONE_PLAYER;
             }
@@ -112,6 +112,11 @@ public class OnePlayerMenu extends GameObject {
             if (getBoundsLength3().contains((int) touchX, (int) touchY))
                 selectedTime = 3;
         }
+    }
+
+    private int calculateMaxEnergy(int minutes, int seconds) {
+        int time = minutes * 60 + seconds;
+        return (int) (time * GameLoop.MAX_UPS / 5);
     }
 
     public void handleTouchEvent(MotionEvent event) {
