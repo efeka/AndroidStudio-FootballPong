@@ -25,7 +25,6 @@ import com.example.androidstudio_footballpong.objects.TwoPlayersMenu;
 /*
  * TODO: Make easy-medium-hard modes for AIPlayer (mostly done, AIPlayer needs better movement)
  * TODO: Add a no-walk zone in front of the goals to stop players from cheating by camping the goal
- * TODO: Make a game over menu (with restart and main menu buttons)
  * TODO: Graphics (mostly done, menu backgrounds and tap effects need a touch-up, shooting animation for players, maybe a new character sprite for AIPlayer)
  * TODO: Add sound effects
  */
@@ -228,21 +227,25 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                 canvas.drawBitmap(tex.gameBackground, 0f, 0f, paint);
                 player1.draw(canvas);
                 aiPlayer.draw(canvas);
+                canvas.drawBitmap(tex.backgroundFiller[0], leftGoal.getBounds().centerX() - leftGoal.getBounds().width() / 2, leftGoal.getBounds().centerY() - leftGoal.getBounds().height() / 2, paint);
+                canvas.drawBitmap(tex.backgroundFiller[1], rightGoal.getBounds().centerX() - rightGoal.getBounds().width() / 2, rightGoal.getBounds().centerY() - rightGoal.getBounds().height() / 2, paint);
                 ball.draw(canvas);
-                gameMenu.draw(canvas);
-                touchEffect.drawAnimation(canvas, paint);
                 leftGoal.draw(canvas);
                 rightGoal.draw(canvas);
+                gameMenu.draw(canvas);
+                touchEffect.drawAnimation(canvas, paint);
                 break;
             case TWO_PLAYERS:
                 canvas.drawBitmap(tex.gameBackground, 0f, 0f, paint);
                 player1.draw(canvas);
                 player2.draw(canvas);
+                canvas.drawBitmap(tex.backgroundFiller[0], leftGoal.getBounds().centerX() - leftGoal.getBounds().width() / 2, leftGoal.getBounds().centerY() - leftGoal.getBounds().height() / 2, paint);
+                canvas.drawBitmap(tex.backgroundFiller[1], rightGoal.getBounds().centerX() - rightGoal.getBounds().width() / 2, rightGoal.getBounds().centerY() - rightGoal.getBounds().height() / 2, paint);
                 ball.draw(canvas);
-                gameMenu.draw(canvas);
-                touchEffect.drawAnimation(canvas, paint);
                 leftGoal.draw(canvas);
                 rightGoal.draw(canvas);
+                gameMenu.draw(canvas);
+                touchEffect.drawAnimation(canvas, paint);
                 break;
             case MAIN_MENU:
                 mainMenu.draw(canvas);
@@ -257,22 +260,26 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                 canvas.drawBitmap(tex.gameBackground, 0f, 0f, paint);
                 player1.draw(canvas);
                 aiPlayer.draw(canvas);
+                canvas.drawBitmap(tex.backgroundFiller[0], leftGoal.getBounds().centerX() - leftGoal.getBounds().width() / 2, leftGoal.getBounds().centerY() - leftGoal.getBounds().height() / 2, paint);
+                canvas.drawBitmap(tex.backgroundFiller[1], rightGoal.getBounds().centerX() - rightGoal.getBounds().width() / 2, rightGoal.getBounds().centerY() - rightGoal.getBounds().height() / 2, paint);
                 ball.draw(canvas);
-                gameMenu.draw(canvas);
-                touchEffect.drawAnimation(canvas, paint);
                 leftGoal.draw(canvas);
                 rightGoal.draw(canvas);
+                gameMenu.draw(canvas);
+                touchEffect.drawAnimation(canvas, paint);
                 pauseMenu.draw(canvas);
                 break;
             case PAUSED_2P:
                 canvas.drawBitmap(tex.gameBackground, 0f, 0f, paint);
                 player1.draw(canvas);
                 player2.draw(canvas);
+                canvas.drawBitmap(tex.backgroundFiller[0], leftGoal.getBounds().centerX() - leftGoal.getBounds().width() / 2, leftGoal.getBounds().centerY() - leftGoal.getBounds().height() / 2, paint);
+                canvas.drawBitmap(tex.backgroundFiller[1], rightGoal.getBounds().centerX() - rightGoal.getBounds().width() / 2, rightGoal.getBounds().centerY() - rightGoal.getBounds().height() / 2, paint);
                 ball.draw(canvas);
-                gameMenu.draw(canvas);
-                touchEffect.drawAnimation(canvas, paint);
                 leftGoal.draw(canvas);
                 rightGoal.draw(canvas);
+                gameMenu.draw(canvas);
+                touchEffect.drawAnimation(canvas, paint);
                 pauseMenu.draw(canvas);
                 break;
         }

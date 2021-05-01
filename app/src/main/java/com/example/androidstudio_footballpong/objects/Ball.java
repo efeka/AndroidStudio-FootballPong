@@ -28,7 +28,7 @@ public class Ball extends GameObject {
     private Goal leftGoal, rightGoal;
     private GameData gameData;
 
-    private int resetTimer = 0, resetCooldown = 45;
+    private int resetTimer = 0, resetCooldown = 90;
     private int nextDirection;
     private boolean resetting = false;
     private double initialX, initialY;
@@ -62,7 +62,10 @@ public class Ball extends GameObject {
     @Override
     public void update() {
         if (resetting) {
-            if (resetTimer < resetCooldown) {
+            if (resetTimer <= resetCooldown / 2) {
+                resetTimer++;
+                return;
+            } else if (resetTimer < resetCooldown) {
                 resetTimer++;
                 resetPosition();
                 return;

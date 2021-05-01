@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import com.example.androidstudio_footballpong.objects.MainMenu;
+
 /**
  * This class is for getting image files as Bitmaps.
  * It prepares the Bitmaps by scaling and cropping so that they can be easily used in other classes.
@@ -30,6 +32,8 @@ public class Texture {
     public Bitmap[] pauseMenuButtons = new Bitmap[3];
     public Bitmap[] otherButtons = new Bitmap[2];
     public Bitmap[] menuTitles = new Bitmap[3];
+
+    public Bitmap[] backgroundFiller = new Bitmap[2];
 
     public Texture(Context context) {
         try {
@@ -125,6 +129,11 @@ public class Texture {
 
         ball = Bitmap.createBitmap(assets_sheet, 67, 1, 100, 100);
         ball = Bitmap.createScaledBitmap(ball, MainActivity.screenWidth / 25, MainActivity.screenWidth / 25, false);
+
+        for (int i = 0; i < backgroundFiller.length; i++) {
+            backgroundFiller[i] = Bitmap.createBitmap(assets_sheet, 269 + 26 * i, 1, 25, 76);
+            backgroundFiller[i] = Bitmap.createScaledBitmap(backgroundFiller[i], 100, 2 * MainActivity.screenHeight / 5, false);
+        }
     }
 
 }
