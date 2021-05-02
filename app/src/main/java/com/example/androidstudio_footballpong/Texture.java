@@ -20,6 +20,7 @@ public class Texture {
     public Bitmap gameBackground;
     public Bitmap[] player1 = new Bitmap[8];
     public Bitmap[] player2 = new Bitmap[8];
+    public Bitmap[] aiPlayer = new Bitmap[8];
     public Bitmap[] touchEffect = new Bitmap[8];
     public Bitmap[] goals = new Bitmap[2];
     public Bitmap ball;
@@ -102,6 +103,10 @@ public class Texture {
         for (int i = 0; i < player2.length; i++) {
             player2[i] = Bitmap.createBitmap(assets_sheet, 1 + 49 * i, 151, 48, 48);
             player2[i] = Bitmap.createScaledBitmap(player2[i], MainActivity.screenHeight / 6, MainActivity.screenWidth / 12, false);
+        }
+        for (int i = 0; i < aiPlayer.length; i++) {
+            aiPlayer[i] = Bitmap.createBitmap(assets_sheet, 1 + 49 * i, 265, 48, 48);
+            aiPlayer[i] = Bitmap.createScaledBitmap(aiPlayer[i], MainActivity.screenHeight / 6, MainActivity.screenWidth / 12, false);
         }
 
         //in game pause button

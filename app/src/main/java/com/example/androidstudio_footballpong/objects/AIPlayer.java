@@ -49,7 +49,7 @@ public class AIPlayer extends GameObject {
 
     private int shootTimer = 0, shootCooldown = 60;
 
-    private Animation player2Idle, player2Walk;
+    private Animation aiPlayerIdle, aiPlayerWalk;
 
     public AIPlayer(Context context, Ball ball, Goal leftGoal, double x, double y, int width, int height) {
         super(x, y, width, height);
@@ -61,16 +61,16 @@ public class AIPlayer extends GameObject {
 
         paint = new Paint();
         paint.setColor(ContextCompat.getColor(context, R.color.black));
-        player2Walk = new Animation(2, tex.player2[4], tex.player2[3], tex.player2[2], tex.player2[1], tex.player2[0]);
-        player2Idle = new Animation(2, tex.player2[7], tex.player2[6], tex.player2[5], tex.player2[6]);
+        aiPlayerWalk = new Animation(2, tex.aiPlayer[4], tex.aiPlayer[3], tex.aiPlayer[2], tex.aiPlayer[1], tex.aiPlayer[0]);
+        aiPlayerIdle = new Animation(2, tex.aiPlayer[7], tex.aiPlayer[6], tex.aiPlayer[5], tex.aiPlayer[6]);
     }
 
     @Override
     public void draw(Canvas canvas) {
         if (moving)
-            player2Walk.drawAnimation(canvas, paint, (float) x, (float) y);
+            aiPlayerWalk.drawAnimation(canvas, paint, (float) x, (float) y);
         else
-            player2Idle.drawAnimation(canvas, paint, (float) x, (float) y);
+            aiPlayerIdle.drawAnimation(canvas, paint, (float) x, (float) y);
     }
 
     @Override
@@ -132,8 +132,8 @@ public class AIPlayer extends GameObject {
         }
 
         collision();
-        player2Walk.runAnimation();
-        player2Idle.runAnimation();
+        aiPlayerWalk.runAnimation();
+        aiPlayerIdle.runAnimation();
     }
 
     private void collision() {
