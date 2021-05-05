@@ -20,11 +20,12 @@ import com.example.androidstudio_footballpong.objects.OnePlayerMenu;
 import com.example.androidstudio_footballpong.objects.PauseMenu;
 import com.example.androidstudio_footballpong.objects.Player1;
 import com.example.androidstudio_footballpong.objects.Player2;
+import com.example.androidstudio_footballpong.objects.SettingsMenu;
 import com.example.androidstudio_footballpong.objects.TwoPlayersMenu;
 
 /*
  * TODO: Better movement for AIPlayer
- * TODO: Graphics (maybe a robot character for AIPlayer, shooting animations)
+ * TODO: Graphics (shooting animations)
  * TODO: Add sound effects
  * TODO: Add a settings menu which has music volume settings (on/off), effects volume settings (on/off) and credits
  */
@@ -46,6 +47,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private final TwoPlayersMenu twoPlayersMenu;
     private final GameMenu gameMenu;
     private final PauseMenu pauseMenu;
+    private final SettingsMenu settingsMenu;
     private final Player1 player1;
     private final Player2 player2;
     private final AIPlayer aiPlayer;
@@ -83,6 +85,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         onePlayerMenu = new OnePlayerMenu(aiPlayer, 0, 0, MainActivity.screenWidth, MainActivity.screenHeight);
         gameMenu = new GameMenu(getContext(), player1, player2, aiPlayer, gameData, (float) MainActivity.screenWidth / 2 - (float) MainActivity.screenWidth / 28, 3);
         pauseMenu = new PauseMenu(gameData, player1, player2, aiPlayer, ball, 0, 0, MainActivity.screenWidth, MainActivity.screenHeight);
+        settingsMenu = new SettingsMenu(gameData, 0, 0, MainActivity.screenWidth, MainActivity.screenHeight);
 
         setFocusable(true);
     }
@@ -193,7 +196,17 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                     PauseMenu.resetTouch();
                     return true;
             }
+        } else if (state == STATE.SETTINGS) {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    settingsMenu.handleTouchEvent(event);
+                    return true;
+                case MotionEvent.ACTION_UP:
+                    SettingsMenu.resetTouch();
+                    return true;
+            }
         }
+
         return super.onTouchEvent(event);
     }
 
@@ -255,6 +268,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                 break;
             case TWO_PLAYERS_MENU:
                 twoPlayersMenu.draw(canvas);
+                break;
+            case SETTINGS:
+                settingsMenu.draw(canvas);
                 break;
             case PAUSED_1P:
                 canvas.drawBitmap(tex.gameBackground, 0f, 0f, paint);
@@ -319,6 +335,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                 break;
             case TWO_PLAYERS_MENU:
                 twoPlayersMenu.update();
+                break;
+            case SETTINGS:
+                settingsMenu.update();
                 break;
             case PAUSED_1P:
             case PAUSED_2P:

@@ -29,8 +29,9 @@ public class Texture {
     public Bitmap[] mainMenuButtons = new Bitmap[3];
     public Bitmap[] onePlayerMenuButtons = new Bitmap[12];
     public Bitmap[] pauseMenuButtons = new Bitmap[3];
+    public Bitmap[] settingsMenuButtons = new Bitmap[4];
     public Bitmap[] otherButtons = new Bitmap[2];
-    public Bitmap[] menuTitles = new Bitmap[3];
+    public Bitmap[] menuTitles = new Bitmap[4];
 
     public Bitmap[] backgroundFiller = new Bitmap[2];
 
@@ -39,7 +40,7 @@ public class Texture {
             background_sheet = BitmapFactory.decodeResource(context.getResources(), R.drawable.background);
 
             menu_sheet = BitmapFactory.decodeResource(context.getResources(), R.drawable.menu_assets);
-            menu_sheet = Bitmap.createScaledBitmap(menu_sheet, 555, 702, false);
+            menu_sheet = Bitmap.createScaledBitmap(menu_sheet, 555, 769, false);
 
             assets_sheet = BitmapFactory.decodeResource(context.getResources(), R.drawable.assets_sheet);
             assets_sheet = Bitmap.createScaledBitmap(assets_sheet, 800, 600, false);
@@ -68,6 +69,9 @@ public class Texture {
         menuTitles[1] = Bitmap.createScaledBitmap(menuTitles[1], MainActivity.screenWidth / 3, MainActivity.screenHeight / 7, false);
         menuTitles[2] = Bitmap.createBitmap(menu_sheet, 257, 330, 292, 66);
         menuTitles[2] = Bitmap.createScaledBitmap(menuTitles[2], MainActivity.screenWidth / 3, MainActivity.screenHeight / 7, false);
+        menuTitles[3] = Bitmap.createBitmap(menu_sheet, 1, 703, 266, 65);
+        menuTitles[3] = Bitmap.createScaledBitmap(menuTitles[3], MainActivity.screenWidth / 3, MainActivity.screenHeight / 7, false);
+
 
         for (int i = 0; i < 3; i++) {
             onePlayerMenuButtons[i] = Bitmap.createBitmap(menu_sheet, 1 + 121 * i, 397, 120, 60);
@@ -89,6 +93,11 @@ public class Texture {
         for (int i = 0; i < pauseMenuButtons.length; i++) {
             pauseMenuButtons[i] = Bitmap.createBitmap(menu_sheet, 1 + 181 * i, 641, 180, 60);
             pauseMenuButtons[i] = Bitmap.createScaledBitmap(pauseMenuButtons[i], MainActivity.screenWidth / 3, MainActivity.screenHeight / 5, false);
+        }
+
+        for (int i = 0; i < settingsMenuButtons.length; i++) {
+            settingsMenuButtons[i] = Bitmap.createBitmap(menu_sheet, 268 + 67 * i, 702, 66, 66);
+            settingsMenuButtons[i] = Bitmap.createScaledBitmap(settingsMenuButtons[i], MainActivity.screenHeight / 4, MainActivity.screenHeight / 4, false);
         }
 
         otherButtons[0] = Bitmap.createBitmap(menu_sheet, 364, 397, 160, 80);

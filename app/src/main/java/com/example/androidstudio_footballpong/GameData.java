@@ -11,6 +11,25 @@ public class GameData {
     private int difficulty = DIFFICULTY_MEDIUM;
     private int selectedGameLength = 1;
 
+    private boolean isSoundOn = true;
+    private boolean isMusicOn = true;
+
+    public boolean isSoundOn() {
+        return isSoundOn;
+    }
+
+    public void setIsSoundOn(boolean isSoundOn) {
+        this.isSoundOn = isSoundOn;
+    }
+
+    public boolean isMusicOn() {
+        return isMusicOn;
+    }
+
+    public void setIsMusicOn(boolean isMusicOn) {
+        this.isMusicOn = isMusicOn;
+    }
+
     /**
      * Decreases the game timer by the amount of given seconds
      * @param seconds amount of seconds to remove from the game timer
