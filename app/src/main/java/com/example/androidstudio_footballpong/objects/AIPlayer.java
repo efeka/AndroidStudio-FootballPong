@@ -24,6 +24,8 @@ public class AIPlayer extends GameObject {
     private final int BORDER_RIGHT = MainActivity.screenWidth;
     private final int BORDER_UP = 0;
     private final int BORDER_DOWN = MainActivity.screenHeight;
+    private final int SECOND_BORDER_LEFT = 3 * MainActivity.screenWidth / 4;
+    private int currentLeftBorder = BORDER_LEFT;
 
     private Texture tex = Game.getTexture();
     private GameData gameData = Game.getGameData();
@@ -41,11 +43,12 @@ public class AIPlayer extends GameObject {
     private double initialX, initialY;
 
     private boolean moving = false;
+    private boolean repositioning = false;
     private double targetX = 0, targetY = 0;
     private boolean ignoreX = false, ignoreY = false;
 
-    public int maxEnergy = 1000;
-    public static int energy = 1000;
+    private static int maxEnergy = 1000;
+    private static int energy = 1000;
 
     private int shootTimer = 0, shootCooldown = 60;
 
@@ -97,29 +100,39 @@ public class AIPlayer extends GameObject {
         boolean winning = (gameData.getScore1() - gameData.getScore2() < 0);
         int currentMovementThreshold = winning ? winningMovementThreshold : losingMovementThreshold;
 
-        if (ball.getVelX() <= 0 || (Math.abs(x - ball.getX()) < currentMovementThreshold && Math.abs(y - ball.getY()) < currentMovementThreshold)) {
-            velX = velY = 0;
-            moving = false;
+        repositioning = energy <= maxEnergy / 4 && x < SECOND_BORDER_LEFT;
+        if (repositioning) {
+            velX = maxSpeed;
+            moving = true;
         } else {
-            if (Math.abs(y - ball.getY()) < currentMovementThreshold) {
-                velY = 0;
-            } else if (y < ball.getY()) {
-                velY = maxSpeed;
-                moving = true;
-            } else if (y > ball.getY()) {
-                velY = -maxSpeed;
-                moving = true;
+            if (energy <= maxEnergy / 2 && x >= SECOND_BORDER_LEFT) {
+                currentLeftBorder = SECOND_BORDER_LEFT;
             }
 
-            if (Math.abs(x - ball.getX()) < currentMovementThreshold) {
-                velX = 0;
-            } else if (Math.abs(y - ball.getY()) < MainActivity.screenHeight / 3) {
-                if (x < ball.getX()) {
-                    velX = maxSpeed;
+            if (ball.getVelX() <= 0 || (Math.abs(x - ball.getX()) < currentMovementThreshold && Math.abs(y - ball.getY()) < currentMovementThreshold)) {
+                velX = velY = 0;
+                moving = false;
+            } else {
+                if (Math.abs(y - ball.getY()) < currentMovementThreshold) {
+                    velY = 0;
+                } else if (y < ball.getY()) {
+                    velY = maxSpeed;
                     moving = true;
-                } else {
-                    velX = -maxSpeed;
+                } else if (y > ball.getY()) {
+                    velY = -maxSpeed;
                     moving = true;
+                }
+
+                if (Math.abs(x - ball.getX()) < currentMovementThreshold) {
+                    velX = 0;
+                } else if (Math.abs(y - ball.getY()) < MainActivity.screenHeight / 3) {
+                    if (x < ball.getX()) {
+                        velX = maxSpeed;
+                        moving = true;
+                    } else {
+                        velX = -maxSpeed;
+                        moving = true;
+                    }
                 }
             }
         }
@@ -147,8 +160,8 @@ public class AIPlayer extends GameObject {
         }
 
         //collisions with screen borders
-        if (x < BORDER_LEFT) {
-            x = BORDER_LEFT;
+        if (x < currentLeftBorder) {
+            x = currentLeftBorder;
             ignoreX = true;
             velX = 0;
         }
@@ -252,8 +265,8 @@ public class AIPlayer extends GameObject {
         return maxEnergy;
     }
 
-    public void setMaxEnergy(int maxEnergy) {
-        this.maxEnergy = maxEnergy;
+    public static void setMaxEnergy(int maxEng) {
+        maxEnergy = energy = maxEng;
     }
 
     public int getMaxSpeed() {

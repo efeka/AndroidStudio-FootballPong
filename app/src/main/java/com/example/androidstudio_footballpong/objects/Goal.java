@@ -73,6 +73,13 @@ public class Goal extends GameObject {
         return createRect((int) x, (int) y + height - height / 8, width, height / 8);
     }
 
+    public Rect getBoundsRestrictedZone() {
+        if (type == LEFT_GOAL)
+            return createRect((int) x, (int) y, width * 3, height);
+        else
+            return createRect((int) x - width * 2, (int) y, width * 3, height);
+    }
+
     public Rect getBoundsScore() {
         if (type == LEFT_GOAL)
             return createRect((int) x, (int) y + height / 8, width / 2, height - height / 4);

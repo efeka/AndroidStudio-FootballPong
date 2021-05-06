@@ -88,12 +88,15 @@ public class OnePlayerMenu extends GameObject {
                 if (selectedTime == 1) {
                     gameData.setGameTimer(3, 0);
                     Player1.setMaxEnergy(calculateMaxEnergy(3, 0));
+                    AIPlayer.setMaxEnergy(calculateMaxEnergy(3, 0));
                 } else if (selectedTime == 2) {
                     gameData.setGameTimer(5, 0);
                     Player1.setMaxEnergy(calculateMaxEnergy(5, 0));
+                    AIPlayer.setMaxEnergy(calculateMaxEnergy(5, 0));
                 } else {
                     gameData.setGameTimer(8, 0);
                     Player1.setMaxEnergy(calculateMaxEnergy(8, 0));
+                    AIPlayer.setMaxEnergy(calculateMaxEnergy(8, 0));
                 }
 
                 Game.state = Game.STATE.ONE_PLAYER;

@@ -40,6 +40,7 @@ public class SettingsMenu extends GameObject {
             if (getBoundsBack().contains((int) touchX, (int) touchY)) {
                 Game.state = Game.STATE.MAIN_MENU;
                 MainMenu.resetTouch();
+                resetTouch();
             }
             if (getBoundsMusic().contains((int) touchX, (int) touchY)) {
                 gameData.setIsMusicOn(!gameData.isMusicOn());
