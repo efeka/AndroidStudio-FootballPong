@@ -49,7 +49,7 @@ public class Ball extends GameObject {
         initialY = y;
 
         velX = -MIN_SPEED;
-        velY = MIN_SPEED;
+        velY = 2 * MIN_SPEED;
 
         paint = new Paint();
     }
@@ -78,9 +78,9 @@ public class Ball extends GameObject {
                     velX = MIN_SPEED;
 
                 if (randomY == 0)
-                    velY = MIN_SPEED;
+                    velY = 2 * MIN_SPEED;
                 else
-                    velY = -MIN_SPEED;
+                    velY = -2 * MIN_SPEED;
             }
         }
 
@@ -203,6 +203,10 @@ public class Ball extends GameObject {
     public void resetPosition() {
         x = initialX - width / 2;
         y = initialY - width / 2;
+    }
+
+    public boolean getResetting() {
+        return resetting;
     }
 
     @Override

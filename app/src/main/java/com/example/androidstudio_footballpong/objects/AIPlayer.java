@@ -36,14 +36,14 @@ public class AIPlayer extends GameObject {
     private Goal leftGoal;
 
     public static final int DEFAULT_MAX_SPEED_EASY = 7;
-    public static final int DEFAULT_MAX_SPEED_MEDIUM = 9;
-    public static final int DEFAULT_MAX_SPEED_HARD = 11;
+    public static final int DEFAULT_MAX_SPEED_MEDIUM = 11;
+    public static final int DEFAULT_MAX_SPEED_HARD = 13;
     private int maxSpeed = 0;
 
     private double initialX, initialY;
 
     private boolean moving = false;
-    private boolean repositioning = false;
+    private boolean repositioningX = false, repositioningY = false;
     private double targetX = 0, targetY = 0;
     private boolean ignoreX = false, ignoreY = false;
 
@@ -100,10 +100,20 @@ public class AIPlayer extends GameObject {
         boolean winning = (gameData.getScore1() - gameData.getScore2() < 0);
         int currentMovementThreshold = winning ? winningMovementThreshold : losingMovementThreshold;
 
-        repositioning = energy <= maxEnergy / 4 && x < SECOND_BORDER_LEFT;
-        if (repositioning) {
-            velX = maxSpeed;
-            moving = true;
+        repositioningY = ball.getResetting() && Math.abs(y + height / 2 - MainActivity.screenHeight / 2) > height / 2;
+        repositioningX = energy <= maxEnergy / 4 && x < SECOND_BORDER_LEFT;
+        if (repositioningX || repositioningY) {
+            if (repositioningY) {
+                if (y + height / 2 < MainActivity.screenHeight / 2)
+                    velY = maxSpeed;
+                else
+                    velY = -maxSpeed;
+                moving = true;
+            }
+            if (repositioningX) {
+                velX = maxSpeed;
+                moving = true;
+            }
         } else {
             if (energy <= maxEnergy / 2 && x >= SECOND_BORDER_LEFT) {
                 currentLeftBorder = SECOND_BORDER_LEFT;
