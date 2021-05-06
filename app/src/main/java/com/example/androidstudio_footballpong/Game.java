@@ -27,7 +27,6 @@ import com.example.androidstudio_footballpong.objects.TwoPlayersMenu;
  * TODO: Better movement for AIPlayer
  * TODO: Graphics (shooting animations)
  * TODO: Add sound effects
- * TODO: Add a settings menu which has music volume settings (on/off), effects volume settings (on/off) and credits
  */
 
 /**

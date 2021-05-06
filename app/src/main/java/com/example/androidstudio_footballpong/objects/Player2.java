@@ -104,6 +104,8 @@ public class Player2 extends GameObject {
             velY = 0;
         }
 
+        //collisions with the right goal
+        /*
         if (getBoundsTop().intersect(rightGoal.getBounds())) {
             y = rightGoal.getBounds().centerY() + rightGoal.getBounds().height() / 2;
             ignoreY = true;
@@ -117,7 +119,20 @@ public class Player2 extends GameObject {
             ignoreX = true;
             velX = 0;
         }
-
+        */
+        if (getBoundsTop().intersect(rightGoal.getBoundsRestrictedZone())) {
+            y = rightGoal.getBoundsRestrictedZone().centerY() + rightGoal.getBoundsRestrictedZone().height() / 2;
+            ignoreY = true;
+            velY = 0;
+        } else if (getBoundsBot().intersect(rightGoal.getBoundsRestrictedZone())) {
+            y = rightGoal.getBoundsRestrictedZone().centerY() - rightGoal.getBoundsRestrictedZone().height() / 2 - height;
+            ignoreY = true;
+            velY = 0;
+        } else if (getBoundsRight().intersect(rightGoal.getBoundsRestrictedZone())) {
+            x = rightGoal.getBoundsRestrictedZone().centerX() - rightGoal.getBoundsRestrictedZone().width() / 2 - width;
+            ignoreX = true;
+            velX = 0;
+        }
     }
 
     public Rect getBoundsTop() {
