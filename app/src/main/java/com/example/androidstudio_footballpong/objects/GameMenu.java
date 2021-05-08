@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.media.MediaPlayer;
 
 import androidx.core.content.ContextCompat;
 
@@ -19,6 +20,7 @@ public class GameMenu extends GameObject {
 
     private Texture tex = Game.getTexture();
     private Paint paint;
+    private Context context;
 
     private Player1 player1;
     private Player2 player2;
@@ -30,12 +32,16 @@ public class GameMenu extends GameObject {
     private int[] energyColors = new int[3];
     private int textColor;
 
+    private MediaPlayer gameOverSound;
+    private int soundReleaseTimer = 90, soundLength = 90;
+
     public GameMenu(Context context, Player1 player1, Player2 player2, AIPlayer aiPlayer, GameData gameData, double x, double y) {
         super(x, y);
         this.player1 = player1;
         this.player2 = player2;
         this.aiPlayer = aiPlayer;
         this.gameData = gameData;
+        this.context = context;
 
         paint = new Paint();
         energyColors[0] = ContextCompat.getColor(context, R.color.energy_border);
@@ -99,12 +105,21 @@ public class GameMenu extends GameObject {
             updateCount = 0;
             int gameTimer = gameData.decrementTimer(1);
             if (gameTimer <= 0) {
+                gameOverSound = MediaPlayer.create(context, R.raw.whistle);
+                soundReleaseTimer = 0;
+                gameOverSound.start();
+
                 if (Game.state == Game.STATE.ONE_PLAYER)
                     Game.state = Game.STATE.PAUSED_1P;
                 else if (Game.state == Game.STATE.TWO_PLAYERS)
                     Game.state = Game.STATE.PAUSED_2P;
             }
         }
+
+        if (soundReleaseTimer < soundLength)
+            soundReleaseTimer++;
+        else
+            releaseMediaPlayer();
     }
 
     @Override
@@ -182,6 +197,19 @@ public class GameMenu extends GameObject {
 
     public RectF createRectF(int x, int y, int width, int height) {
         return new RectF(x, y, x + width, y + height);
+    }
+
+    private void releaseMediaPlayer() {
+        try {
+            if (gameOverSound != null) {
+                if (gameOverSound.isPlaying())
+                    gameOverSound.stop();
+                gameOverSound.release();
+                gameOverSound = null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

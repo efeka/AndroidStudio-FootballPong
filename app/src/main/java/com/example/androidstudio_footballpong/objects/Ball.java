@@ -1,12 +1,15 @@
 package com.example.androidstudio_footballpong.objects;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.media.MediaPlayer;
 
 import com.example.androidstudio_footballpong.Game;
 import com.example.androidstudio_footballpong.GameData;
 import com.example.androidstudio_footballpong.MainActivity;
+import com.example.androidstudio_footballpong.R;
 import com.example.androidstudio_footballpong.Texture;
 
 /**
@@ -22,6 +25,7 @@ public class Ball extends GameObject {
 
     private Paint paint;
     private Texture tex = Game.getTexture();
+    private Context context;
 
     private Player1 player1;
     private Player2 player2;
@@ -37,13 +41,17 @@ public class Ball extends GameObject {
     private final int MAX_SPEED = 60;
     private final float DECELERATION = 0.01f;
 
-    public Ball(Goal leftGoal, Goal rightGoal, Player1 player1, Player2 player2, GameData gamedata, double x, double y, int width, int height) {
+    private MediaPlayer kickSound;
+    private int soundReleaseTimer = 90, soundLength = 90;
+
+    public Ball(Context context, Goal leftGoal, Goal rightGoal, Player1 player1, Player2 player2, GameData gamedata, double x, double y, int width, int height) {
         super(x, y, width, height);
         this.leftGoal = leftGoal;
         this.rightGoal = rightGoal;
         this.player1 = player1;
         this.player2 = player2;
         this.gameData = gamedata;
+        this.context = context;
 
         initialX = x;
         initialY = y;
@@ -93,6 +101,11 @@ public class Ball extends GameObject {
             velY -= velY * DECELERATION;
 
         collision();
+
+        if (soundReleaseTimer < soundLength)
+            soundReleaseTimer++;
+        else
+            releaseMediaPlayer();
     }
 
     public void collision() {
@@ -172,17 +185,29 @@ public class Ball extends GameObject {
             return;
 
         if (playerId == 0) {
+            kickSound = MediaPlayer.create(context, R.raw.kick1);
+            soundReleaseTimer = 0;
+            kickSound.start();
+
             double hypot = Math.hypot(releaseX - touchStartX, releaseY - touchStartY);
             velX = (float) (MAX_SPEED * (releaseX - touchStartX) / hypot);
             velY = (float) (MAX_SPEED * (releaseY - touchStartY) / hypot);
         } else if (playerId == 1) {
             if (getBounds().intersect(player1.getBounds())) {
+                kickSound = MediaPlayer.create(context, R.raw.kick1);
+                soundReleaseTimer = 0;
+                kickSound.start();
+
                 double hypot = Math.hypot(releaseX - touchStartX, releaseY - touchStartY);
                 velX = (float) (MAX_SPEED * (releaseX - touchStartX) / hypot);
                 velY = (float) (MAX_SPEED * (releaseY - touchStartY) / hypot);
             }
         } else if (playerId == 2) {
             if (getBounds().intersect(player2.getBounds())) {
+                kickSound = MediaPlayer.create(context, R.raw.kick1);
+                soundReleaseTimer = 0;
+                kickSound.start();
+
                 double hypot = Math.hypot(releaseX - touchStartX, releaseY - touchStartY);
                 velX = (float) (MAX_SPEED * (releaseX - touchStartX) / hypot);
                 velY = (float) (MAX_SPEED * (releaseY - touchStartY) / hypot);
@@ -203,6 +228,19 @@ public class Ball extends GameObject {
     public void resetPosition() {
         x = initialX - width / 2;
         y = initialY - width / 2;
+    }
+
+    private void releaseMediaPlayer() {
+        try {
+            if (kickSound != null) {
+                if (kickSound.isPlaying())
+                    kickSound.stop();
+                kickSound.release();
+                kickSound = null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean getResetting() {

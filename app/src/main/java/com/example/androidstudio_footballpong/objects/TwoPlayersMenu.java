@@ -4,11 +4,15 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.media.MediaPlayer;
 import android.view.MotionEvent;
+
+import androidx.core.content.ContextCompat;
 
 import com.example.androidstudio_footballpong.Game;
 import com.example.androidstudio_footballpong.GameData;
 import com.example.androidstudio_footballpong.GameLoop;
+import com.example.androidstudio_footballpong.R;
 import com.example.androidstudio_footballpong.Texture;
 
 public class TwoPlayersMenu extends GameObject {
@@ -16,13 +20,18 @@ public class TwoPlayersMenu extends GameObject {
     private Texture tex = Game.getTexture();
     private GameData gameData = Game.getGameData();
     private Paint paint;
+    private Context context;
 
     private static float touchX = -1f, touchY = -1f;
 
     private int selectedTime = 2;
 
+    private MediaPlayer menuClickSound;
+    private int soundReleaseTimer = 15, soundLength = 15;
+
     public TwoPlayersMenu(Context context, double x, double y, int width, int height) {
         super(x, y, width, height);
+        this.context = context;
         paint = new Paint();
     }
 
@@ -52,10 +61,22 @@ public class TwoPlayersMenu extends GameObject {
     public void update() {
         if (touchX != -1 && touchY != -1) {
             if (getBoundsBack().contains((int) touchX, (int) touchY)) {
+                if (menuClickSound == null) {
+                    menuClickSound = MediaPlayer.create(context, R.raw.click);
+                    soundReleaseTimer = 0;
+                    menuClickSound.start();
+                }
+
                 Game.state = Game.STATE.MAIN_MENU;
                 MainMenu.resetTouch();
             }
             if (getBoundsStart().contains((int) touchX, (int) touchY)) {
+                if (menuClickSound == null) {
+                    menuClickSound = MediaPlayer.create(context, R.raw.click);
+                    soundReleaseTimer = 0;
+                    menuClickSound.start();
+                }
+
                 gameData.setSelectedGameLength(selectedTime);
                 if (selectedTime == 1) {
                     gameData.setGameTimer(3, 0);
@@ -70,13 +91,39 @@ public class TwoPlayersMenu extends GameObject {
                 Game.state = Game.STATE.TWO_PLAYERS;
             }
 
-            if (getBoundsLength1().contains((int) touchX, (int) touchY))
+            if (getBoundsLength1().contains((int) touchX, (int) touchY)) {
+                if (menuClickSound == null) {
+                    menuClickSound = MediaPlayer.create(context, R.raw.click);
+                    soundReleaseTimer = 0;
+                    menuClickSound.start();
+                }
+
                 selectedTime = 1;
-            if (getBoundsLength2().contains((int) touchX, (int) touchY))
+            }
+            if (getBoundsLength2().contains((int) touchX, (int) touchY)) {
+                if (menuClickSound == null) {
+                    menuClickSound = MediaPlayer.create(context, R.raw.click);
+                    soundReleaseTimer = 0;
+                    menuClickSound.start();
+                }
+
                 selectedTime = 2;
-            if (getBoundsLength3().contains((int) touchX, (int) touchY))
+            }
+            if (getBoundsLength3().contains((int) touchX, (int) touchY)) {
+                if (menuClickSound == null) {
+                    menuClickSound = MediaPlayer.create(context, R.raw.click);
+                    soundReleaseTimer = 0;
+                    menuClickSound.start();
+                }
+
                 selectedTime = 3;
+            }
         }
+
+        if (soundReleaseTimer < soundLength)
+            soundReleaseTimer++;
+        else
+            releaseMediaPlayer();
     }
 
     public void handleTouchEvent(MotionEvent event) {
@@ -101,6 +148,19 @@ public class TwoPlayersMenu extends GameObject {
      */
     public static void resetTouch() {
         touchX = touchY = -1;
+    }
+
+    private void releaseMediaPlayer() {
+        try {
+            if (menuClickSound != null) {
+                if (menuClickSound.isPlaying())
+                    menuClickSound.stop();
+                menuClickSound.release();
+                menuClickSound = null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private Rect getBoundsBack() {

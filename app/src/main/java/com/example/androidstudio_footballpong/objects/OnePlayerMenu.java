@@ -1,13 +1,16 @@
 package com.example.androidstudio_footballpong.objects;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.media.MediaPlayer;
 import android.view.MotionEvent;
 
 import com.example.androidstudio_footballpong.Game;
 import com.example.androidstudio_footballpong.GameData;
 import com.example.androidstudio_footballpong.GameLoop;
+import com.example.androidstudio_footballpong.R;
 import com.example.androidstudio_footballpong.Texture;
 
 public class OnePlayerMenu extends GameObject {
@@ -15,6 +18,7 @@ public class OnePlayerMenu extends GameObject {
     private Texture tex = Game.getTexture();
     private GameData gameData = Game.getGameData();
     private Paint paint;
+    private Context context;
 
     private AIPlayer aiPlayer;
 
@@ -23,9 +27,13 @@ public class OnePlayerMenu extends GameObject {
     private int selectedDifficulty = GameData.DIFFICULTY_MEDIUM;
     private int selectedTime = 2;
 
-    public OnePlayerMenu(AIPlayer aiPlayer, double x, double y, int width, int height) {
+    private MediaPlayer menuClickSound;
+    private int soundReleaseTimer = 15, soundLength = 15;
+
+    public OnePlayerMenu(Context context, AIPlayer aiPlayer, double x, double y, int width, int height) {
         super(x, y, width, height);
         this.aiPlayer = aiPlayer;
+        this.context = context;
         paint = new Paint();
     }
 
@@ -70,11 +78,23 @@ public class OnePlayerMenu extends GameObject {
     public void update() {
         if (touchX != -1 && touchY != -1) {
             if (getBoundsBack().contains((int) touchX, (int) touchY)) {
+                if (menuClickSound == null) {
+                    menuClickSound = MediaPlayer.create(context, R.raw.click);
+                    soundReleaseTimer = 0;
+                    menuClickSound.start();
+                }
+
                 Game.state = Game.STATE.MAIN_MENU;
                 MainMenu.resetTouch();
             }
 
             if (getBoundsStart().contains((int) touchX, (int) touchY)) {
+                if (menuClickSound == null) {
+                    menuClickSound = MediaPlayer.create(context, R.raw.click);
+                    soundReleaseTimer = 0;
+                    menuClickSound.start();
+                }
+
                 gameData.setDifficulty(selectedDifficulty);
 
                 if (selectedDifficulty == GameData.DIFFICULTY_EASY)
@@ -86,7 +106,7 @@ public class OnePlayerMenu extends GameObject {
 
                 gameData.setSelectedGameLength(selectedTime);
                 if (selectedTime == 1) {
-                    gameData.setGameTimer(3, 0);
+                    gameData.setGameTimer(0, 10);
                     Player1.setMaxEnergy(calculateMaxEnergy(3, 0));
                     AIPlayer.setMaxEnergy(calculateMaxEnergy(3, 0));
                 } else if (selectedTime == 2) {
@@ -102,20 +122,67 @@ public class OnePlayerMenu extends GameObject {
                 Game.state = Game.STATE.ONE_PLAYER;
             }
 
-            if (getBoundsEasy().contains((int) touchX, (int) touchY))
-                selectedDifficulty = GameData.DIFFICULTY_EASY;
-            if (getBoundsMedium().contains((int) touchX, (int) touchY))
-                selectedDifficulty = GameData.DIFFICULTY_MEDIUM;
-            if (getBoundsHard().contains((int) touchX, (int) touchY))
-                selectedDifficulty = GameData.DIFFICULTY_HARD;
+            if (getBoundsEasy().contains((int) touchX, (int) touchY)) {
+                if (menuClickSound == null) {
+                    menuClickSound = MediaPlayer.create(context, R.raw.click);
+                    soundReleaseTimer = 0;
+                    menuClickSound.start();
+                }
 
-            if (getBoundsLength1().contains((int) touchX, (int) touchY))
+                selectedDifficulty = GameData.DIFFICULTY_EASY;
+            }
+            if (getBoundsMedium().contains((int) touchX, (int) touchY)) {
+                if (menuClickSound == null) {
+                    menuClickSound = MediaPlayer.create(context, R.raw.click);
+                    soundReleaseTimer = 0;
+                    menuClickSound.start();
+                }
+
+                selectedDifficulty = GameData.DIFFICULTY_MEDIUM;
+            }
+            if (getBoundsHard().contains((int) touchX, (int) touchY)) {
+                if (menuClickSound == null) {
+                    menuClickSound = MediaPlayer.create(context, R.raw.click);
+                    soundReleaseTimer = 0;
+                    menuClickSound.start();
+                }
+
+                selectedDifficulty = GameData.DIFFICULTY_HARD;
+            }
+
+            if (getBoundsLength1().contains((int) touchX, (int) touchY)) {
+                if (menuClickSound == null) {
+                    menuClickSound = MediaPlayer.create(context, R.raw.click);
+                    soundReleaseTimer = 0;
+                    menuClickSound.start();
+                }
+
                 selectedTime = 1;
-            if (getBoundsLength2().contains((int) touchX, (int) touchY))
+            }
+            if (getBoundsLength2().contains((int) touchX, (int) touchY)) {
+                if (menuClickSound == null) {
+                    menuClickSound = MediaPlayer.create(context, R.raw.click);
+                    soundReleaseTimer = 0;
+                    menuClickSound.start();
+                }
+
                 selectedTime = 2;
-            if (getBoundsLength3().contains((int) touchX, (int) touchY))
+            }
+            if (getBoundsLength3().contains((int) touchX, (int) touchY)) {
+                if (menuClickSound == null) {
+                    menuClickSound = MediaPlayer.create(context, R.raw.click);
+                    soundReleaseTimer = 0;
+                    menuClickSound.start();
+                }
+
                 selectedTime = 3;
+            }
         }
+
+        if (soundReleaseTimer < soundLength)
+            soundReleaseTimer++;
+        else
+            releaseMediaPlayer();
     }
 
     private int calculateMaxEnergy(int minutes, int seconds) {
@@ -140,6 +207,19 @@ public class OnePlayerMenu extends GameObject {
      */
     public static void resetTouch() {
         touchX = touchY = -1;
+    }
+
+    private void releaseMediaPlayer() {
+        try {
+            if (menuClickSound != null) {
+                if (menuClickSound.isPlaying())
+                    menuClickSound.stop();
+                menuClickSound.release();
+                menuClickSound = null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private Rect getBoundsBack() {

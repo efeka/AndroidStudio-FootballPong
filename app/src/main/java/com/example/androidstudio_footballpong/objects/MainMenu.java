@@ -1,11 +1,15 @@
 package com.example.androidstudio_footballpong.objects;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.view.MotionEvent;
 
 import com.example.androidstudio_footballpong.Game;
+import com.example.androidstudio_footballpong.R;
 import com.example.androidstudio_footballpong.Texture;
 
 /**
@@ -16,11 +20,16 @@ public class MainMenu extends GameObject {
 
     private Texture tex = Game.getTexture();
     private Paint paint;
+    private Context context;
 
     private static float touchX = -1f, touchY = -1f;
 
-    public MainMenu(double x, double y, int width, int height) {
+    private MediaPlayer menuClickSound;
+    private int soundReleaseTimer = 15, soundLength = 15;
+
+    public MainMenu(Context context, double x, double y, int width, int height) {
         super(x, y, width, height);
+        this.context = context;
         paint = new Paint();
     }
 
@@ -39,17 +48,34 @@ public class MainMenu extends GameObject {
     public void update() {
         if (touchX != -1 && touchY != -1) {
             if (getBounds1P().contains((int) touchX, (int) touchY)) {
+                menuClickSound = MediaPlayer.create(context, R.raw.click);
+                soundReleaseTimer = 0;
+                menuClickSound.start();
+
                 Game.state = Game.STATE.ONE_PLAYER_MENU;
                 OnePlayerMenu.resetTouch();
             }
             if (getBounds2P().contains((int) touchX, (int) touchY)) {
+                menuClickSound = MediaPlayer.create(context, R.raw.click);
+                soundReleaseTimer = 0;
+                menuClickSound.start();
+
                 Game.state = Game.STATE.TWO_PLAYERS_MENU;
                 TwoPlayersMenu.resetTouch();
             }
             if (getBoundsSettings().contains((int) touchX, (int) touchY)) {
+                menuClickSound = MediaPlayer.create(context, R.raw.click);
+                soundReleaseTimer = 0;
+                menuClickSound.start();
+
                 Game.state = Game.STATE.SETTINGS;
             }
         }
+
+        if (soundReleaseTimer < soundLength)
+            soundReleaseTimer++;
+        else
+            releaseMediaPlayer();
     }
 
     public void handleTouchEvent(MotionEvent event) {
@@ -69,6 +95,19 @@ public class MainMenu extends GameObject {
      */
     public static void resetTouch() {
         touchX = touchY = -1;
+    }
+
+    private void releaseMediaPlayer() {
+        try {
+            if (menuClickSound != null) {
+                if (menuClickSound.isPlaying())
+                    menuClickSound.stop();
+                menuClickSound.release();
+                menuClickSound = null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private Rect getBounds1P() {

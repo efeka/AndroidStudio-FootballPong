@@ -72,19 +72,19 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         touchEffect = new Animation(1, tex.touchEffect[7], tex.touchEffect[6], tex.touchEffect[5], tex.touchEffect[4], tex.touchEffect[3], tex.touchEffect[2], tex.touchEffect[1], tex.touchEffect[0]);
 
         gameData = new GameData();
-        mainMenu = new MainMenu(0, 0, MainActivity.screenWidth, MainActivity.screenHeight);
+        mainMenu = new MainMenu(getContext(), 0, 0, MainActivity.screenWidth, MainActivity.screenHeight);
         twoPlayersMenu = new TwoPlayersMenu(getContext(), 0, 0, MainActivity.screenWidth, MainActivity.screenHeight);
         int goalWidth = 100, goalHeight = 2 * MainActivity.screenHeight / 5;
         leftGoal = new Goal(getContext(), 0, (float) MainActivity.screenHeight / 2 - (float) goalHeight / 2, goalWidth, goalHeight, Goal.LEFT_GOAL);
         rightGoal = new Goal(getContext(), MainActivity.screenWidth - goalWidth, (float) MainActivity.screenHeight / 2 - (float) goalHeight / 2, goalWidth, goalHeight, Goal.RIGHT_GOAL);
         player1 = new Player1(leftGoal, (float) MainActivity.screenWidth / 4 - MainActivity.screenWidth / 20, (float) MainActivity.screenHeight / 2 - MainActivity.screenWidth / 20, MainActivity.screenHeight / 6, MainActivity.screenWidth / 12);
         player2 = new Player2(rightGoal, (float) 3 * MainActivity.screenWidth / 4 - MainActivity.screenWidth / 20, (float) MainActivity.screenHeight / 2 - MainActivity.screenWidth / 20, MainActivity.screenHeight / 6, MainActivity.screenWidth / 12);
-        ball = new Ball(leftGoal, rightGoal, player1, player2, gameData, (float) MainActivity.screenWidth / 2, (float) MainActivity.screenHeight / 2, MainActivity.screenWidth / 25, MainActivity.screenWidth / 25);
+        ball = new Ball(getContext(), leftGoal, rightGoal, player1, player2, gameData, (float) MainActivity.screenWidth / 2, (float) MainActivity.screenHeight / 2, MainActivity.screenWidth / 25, MainActivity.screenWidth / 25);
         aiPlayer = new AIPlayer(getContext(), ball, leftGoal, (float) 3 * MainActivity.screenWidth / 4 - MainActivity.screenWidth / 20, (float) MainActivity.screenHeight / 2 - MainActivity.screenWidth / 20, MainActivity.screenHeight / 6, MainActivity.screenWidth / 12);
-        onePlayerMenu = new OnePlayerMenu(aiPlayer, 0, 0, MainActivity.screenWidth, MainActivity.screenHeight);
+        onePlayerMenu = new OnePlayerMenu(getContext(), aiPlayer, 0, 0, MainActivity.screenWidth, MainActivity.screenHeight);
         gameMenu = new GameMenu(getContext(), player1, player2, aiPlayer, gameData, (float) MainActivity.screenWidth / 2 - (float) MainActivity.screenWidth / 28, 3);
-        pauseMenu = new PauseMenu(gameData, player1, player2, aiPlayer, ball, 0, 0, MainActivity.screenWidth, MainActivity.screenHeight);
-        settingsMenu = new SettingsMenu(gameData, 0, 0, MainActivity.screenWidth, MainActivity.screenHeight);
+        pauseMenu = new PauseMenu(getContext(), gameData, player1, player2, aiPlayer, ball, 0, 0, MainActivity.screenWidth, MainActivity.screenHeight);
+        settingsMenu = new SettingsMenu(getContext(), gameData, 0, 0, MainActivity.screenWidth, MainActivity.screenHeight);
 
         setFocusable(true);
     }
