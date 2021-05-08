@@ -106,7 +106,7 @@ public class OnePlayerMenu extends GameObject {
 
                 gameData.setSelectedGameLength(selectedTime);
                 if (selectedTime == 1) {
-                    gameData.setGameTimer(0, 10);
+                    gameData.setGameTimer(3, 0);
                     Player1.setMaxEnergy(calculateMaxEnergy(3, 0));
                     AIPlayer.setMaxEnergy(calculateMaxEnergy(3, 0));
                 } else if (selectedTime == 2) {

@@ -41,7 +41,7 @@ public class Texture {
             menu_sheet = Bitmap.createScaledBitmap(menu_sheet, 555, 769, false);
 
             assets_sheet = BitmapFactory.decodeResource(context.getResources(), R.drawable.assets_sheet);
-            assets_sheet = Bitmap.createScaledBitmap(assets_sheet, 800, 600, false);
+            assets_sheet = Bitmap.createScaledBitmap(assets_sheet, 521, 314, false);
         } catch (Exception e) {
             e.printStackTrace();
         }
