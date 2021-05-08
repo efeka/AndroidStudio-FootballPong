@@ -4,8 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import com.example.androidstudio_footballpong.objects.MainMenu;
-
 /**
  * This class is for getting image files as Bitmaps.
  * It prepares the Bitmaps by scaling and cropping so that they can be easily used in other classes.

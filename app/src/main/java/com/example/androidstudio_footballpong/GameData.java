@@ -32,6 +32,7 @@ public class GameData {
 
     /**
      * Decreases the game timer by the amount of given seconds
+     *
      * @param seconds amount of seconds to remove from the game timer
      * @return current value of the game timer
      */
