@@ -104,7 +104,7 @@ public class GameMenu extends GameObject {
         else {
             updateCount = 0;
             int gameTimer = gameData.decrementTimer(1);
-            if (gameTimer <= 0) {
+            if (gameData.isSoundOn() && gameTimer <= 0) {
                 gameOverSound = MediaPlayer.create(context, R.raw.whistle);
                 soundReleaseTimer = 0;
                 gameOverSound.start();

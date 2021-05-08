@@ -83,8 +83,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         aiPlayer = new AIPlayer(getContext(), ball, leftGoal, (float) 3 * MainActivity.screenWidth / 4 - MainActivity.screenWidth / 20, (float) MainActivity.screenHeight / 2 - MainActivity.screenWidth / 20, MainActivity.screenHeight / 6, MainActivity.screenWidth / 12);
         onePlayerMenu = new OnePlayerMenu(getContext(), aiPlayer, 0, 0, MainActivity.screenWidth, MainActivity.screenHeight);
         gameMenu = new GameMenu(getContext(), player1, player2, aiPlayer, gameData, (float) MainActivity.screenWidth / 2 - (float) MainActivity.screenWidth / 28, 3);
-        pauseMenu = new PauseMenu(getContext(), gameData, player1, player2, aiPlayer, ball, 0, 0, MainActivity.screenWidth, MainActivity.screenHeight);
-        settingsMenu = new SettingsMenu(getContext(), gameData, 0, 0, MainActivity.screenWidth, MainActivity.screenHeight);
+        pauseMenu = new PauseMenu(getContext(), player1, player2, aiPlayer, ball, 0, 0, MainActivity.screenWidth, MainActivity.screenHeight);
+        settingsMenu = new SettingsMenu(getContext(), 0, 0, MainActivity.screenWidth, MainActivity.screenHeight);
 
         setFocusable(true);
     }

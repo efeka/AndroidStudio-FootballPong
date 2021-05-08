@@ -59,7 +59,7 @@ public class TwoPlayersMenu extends GameObject {
     public void update() {
         if (touchX != -1 && touchY != -1) {
             if (getBoundsBack().contains((int) touchX, (int) touchY)) {
-                if (menuClickSound == null) {
+                if (gameData.isSoundOn() && menuClickSound == null) {
                     menuClickSound = MediaPlayer.create(context, R.raw.click);
                     soundReleaseTimer = 0;
                     menuClickSound.start();
@@ -69,7 +69,7 @@ public class TwoPlayersMenu extends GameObject {
                 MainMenu.resetTouch();
             }
             if (getBoundsStart().contains((int) touchX, (int) touchY)) {
-                if (menuClickSound == null) {
+                if (gameData.isSoundOn() && menuClickSound == null) {
                     menuClickSound = MediaPlayer.create(context, R.raw.click);
                     soundReleaseTimer = 0;
                     menuClickSound.start();
@@ -90,7 +90,7 @@ public class TwoPlayersMenu extends GameObject {
             }
 
             if (getBoundsLength1().contains((int) touchX, (int) touchY)) {
-                if (menuClickSound == null) {
+                if (gameData.isSoundOn() && menuClickSound == null) {
                     menuClickSound = MediaPlayer.create(context, R.raw.click);
                     soundReleaseTimer = 0;
                     menuClickSound.start();
@@ -99,7 +99,7 @@ public class TwoPlayersMenu extends GameObject {
                 selectedTime = 1;
             }
             if (getBoundsLength2().contains((int) touchX, (int) touchY)) {
-                if (menuClickSound == null) {
+                if (gameData.isSoundOn() && menuClickSound == null) {
                     menuClickSound = MediaPlayer.create(context, R.raw.click);
                     soundReleaseTimer = 0;
                     menuClickSound.start();
@@ -108,7 +108,7 @@ public class TwoPlayersMenu extends GameObject {
                 selectedTime = 2;
             }
             if (getBoundsLength3().contains((int) touchX, (int) touchY)) {
-                if (menuClickSound == null) {
+                if (gameData.isSoundOn() && menuClickSound == null) {
                     menuClickSound = MediaPlayer.create(context, R.raw.click);
                     soundReleaseTimer = 0;
                     menuClickSound.start();

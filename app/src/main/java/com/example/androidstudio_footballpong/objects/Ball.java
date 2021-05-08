@@ -185,18 +185,22 @@ public class Ball extends GameObject {
             return;
 
         if (playerId == 0) {
-            kickSound = MediaPlayer.create(context, R.raw.kick1);
-            soundReleaseTimer = 0;
-            kickSound.start();
+            if (gameData.isSoundOn()) {
+                kickSound = MediaPlayer.create(context, R.raw.kick1);
+                soundReleaseTimer = 0;
+                kickSound.start();
+            }
 
             double hypot = Math.hypot(releaseX - touchStartX, releaseY - touchStartY);
             velX = (float) (MAX_SPEED * (releaseX - touchStartX) / hypot);
             velY = (float) (MAX_SPEED * (releaseY - touchStartY) / hypot);
         } else if (playerId == 1) {
             if (getBounds().intersect(player1.getBounds())) {
-                kickSound = MediaPlayer.create(context, R.raw.kick1);
-                soundReleaseTimer = 0;
-                kickSound.start();
+                if (gameData.isSoundOn()) {
+                    kickSound = MediaPlayer.create(context, R.raw.kick1);
+                    soundReleaseTimer = 0;
+                    kickSound.start();
+                }
 
                 double hypot = Math.hypot(releaseX - touchStartX, releaseY - touchStartY);
                 velX = (float) (MAX_SPEED * (releaseX - touchStartX) / hypot);
@@ -204,9 +208,11 @@ public class Ball extends GameObject {
             }
         } else if (playerId == 2) {
             if (getBounds().intersect(player2.getBounds())) {
-                kickSound = MediaPlayer.create(context, R.raw.kick1);
-                soundReleaseTimer = 0;
-                kickSound.start();
+                if (gameData.isSoundOn()) {
+                    kickSound = MediaPlayer.create(context, R.raw.kick1);
+                    soundReleaseTimer = 0;
+                    kickSound.start();
+                }
 
                 double hypot = Math.hypot(releaseX - touchStartX, releaseY - touchStartY);
                 velX = (float) (MAX_SPEED * (releaseX - touchStartX) / hypot);

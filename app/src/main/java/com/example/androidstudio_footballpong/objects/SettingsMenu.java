@@ -7,8 +7,11 @@ import android.graphics.Rect;
 import android.media.MediaPlayer;
 import android.view.MotionEvent;
 
+import androidx.core.content.ContextCompat;
+
 import com.example.androidstudio_footballpong.Game;
 import com.example.androidstudio_footballpong.GameData;
+import com.example.androidstudio_footballpong.MainActivity;
 import com.example.androidstudio_footballpong.R;
 import com.example.androidstudio_footballpong.Texture;
 
@@ -24,7 +27,7 @@ public class SettingsMenu extends GameObject {
     private MediaPlayer menuClickSound;
     private int soundReleaseTimer = 15, soundLength = 15;
 
-    public SettingsMenu(Context context, GameData gameData, double x, double y, int width, int height) {
+    public SettingsMenu(Context context, double x, double y, int width, int height) {
         super(x, y, width, height);
         this.context = context;
         paint = new Paint();
@@ -36,6 +39,11 @@ public class SettingsMenu extends GameObject {
         canvas.drawBitmap(tex.menuTitles[3], width / 3, height / 10, paint);
         canvas.drawBitmap(tex.otherButtons[0], getRectX(getBoundsBack()), getRectY(getBoundsBack()), paint);
 
+        paint.setTextAlign(Paint.Align.CENTER);
+        paint.setColor(ContextCompat.getColor(context, R.color.white));
+        paint.setTextSize(70);
+        canvas.drawText("Sounds from ZapSplat.com", MainActivity.screenWidth / 2, getBoundsMusic().centerY() + getBoundsMusic().height(), paint);
+
         int music = gameData.isMusicOn() ? 0 : 1;
         int sound = gameData.isSoundOn() ? 2 : 3;
         canvas.drawBitmap(tex.settingsMenuButtons[music], getRectX(getBoundsMusic()), getRectY(getBoundsMusic()), paint);
@@ -46,7 +54,7 @@ public class SettingsMenu extends GameObject {
     public void update() {
         if (touchX != -1 && touchY != -1) {
             if (getBoundsBack().contains((int) touchX, (int) touchY)) {
-                if (menuClickSound == null) {
+                if (gameData.isSoundOn() && menuClickSound == null) {
                     menuClickSound = MediaPlayer.create(context, R.raw.click);
                     soundReleaseTimer = 0;
                     menuClickSound.start();
@@ -57,7 +65,7 @@ public class SettingsMenu extends GameObject {
                 resetTouch();
             }
             if (getBoundsMusic().contains((int) touchX, (int) touchY)) {
-                if (menuClickSound == null) {
+                if (gameData.isSoundOn() && menuClickSound == null) {
                     menuClickSound = MediaPlayer.create(context, R.raw.click);
                     soundReleaseTimer = 0;
                     menuClickSound.start();
@@ -67,7 +75,7 @@ public class SettingsMenu extends GameObject {
                 resetTouch();
             }
             if (getBoundsSound().contains((int) touchX, (int) touchY)) {
-                if (menuClickSound == null) {
+                if (gameData.isSoundOn() && menuClickSound == null) {
                     menuClickSound = MediaPlayer.create(context, R.raw.click);
                     soundReleaseTimer = 0;
                     menuClickSound.start();

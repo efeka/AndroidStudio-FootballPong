@@ -8,6 +8,7 @@ import android.media.MediaPlayer;
 import android.view.MotionEvent;
 
 import com.example.androidstudio_footballpong.Game;
+import com.example.androidstudio_footballpong.GameData;
 import com.example.androidstudio_footballpong.R;
 import com.example.androidstudio_footballpong.Texture;
 
@@ -20,6 +21,7 @@ public class MainMenu extends GameObject {
     private Texture tex = Game.getTexture();
     private Paint paint;
     private Context context;
+    private GameData gameData = Game.getGameData();
 
     private static float touchX = -1f, touchY = -1f;
 
@@ -47,25 +49,31 @@ public class MainMenu extends GameObject {
     public void update() {
         if (touchX != -1 && touchY != -1) {
             if (getBounds1P().contains((int) touchX, (int) touchY)) {
-                menuClickSound = MediaPlayer.create(context, R.raw.click);
-                soundReleaseTimer = 0;
-                menuClickSound.start();
+                if (gameData.isSoundOn()) {
+                    menuClickSound = MediaPlayer.create(context, R.raw.click);
+                    soundReleaseTimer = 0;
+                    menuClickSound.start();
+                }
 
                 Game.state = Game.STATE.ONE_PLAYER_MENU;
                 OnePlayerMenu.resetTouch();
             }
             if (getBounds2P().contains((int) touchX, (int) touchY)) {
-                menuClickSound = MediaPlayer.create(context, R.raw.click);
-                soundReleaseTimer = 0;
-                menuClickSound.start();
+                if (gameData.isSoundOn()) {
+                    menuClickSound = MediaPlayer.create(context, R.raw.click);
+                    soundReleaseTimer = 0;
+                    menuClickSound.start();
+                }
 
                 Game.state = Game.STATE.TWO_PLAYERS_MENU;
                 TwoPlayersMenu.resetTouch();
             }
             if (getBoundsSettings().contains((int) touchX, (int) touchY)) {
-                menuClickSound = MediaPlayer.create(context, R.raw.click);
-                soundReleaseTimer = 0;
-                menuClickSound.start();
+                if (gameData.isSoundOn()) {
+                    menuClickSound = MediaPlayer.create(context, R.raw.click);
+                    soundReleaseTimer = 0;
+                    menuClickSound.start();
+                }
 
                 Game.state = Game.STATE.SETTINGS;
             }
